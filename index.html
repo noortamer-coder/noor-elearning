@@ -1,0 +1,361 @@
+<title>Noor E-Learning</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: module rail on the left (top strip on phones), lesson/quiz workspace on the right. Lab-glass teal with an amber "noor" (light) accent. */
+:root{
+  --bg:#f3f6f5; --surface:#ffffff; --ink:#14211f; --muted:#5b6b68; --line:#d8e2df;
+  --teal:#0f6b62; --teal-soft:#e1efec; --amber:#c98a0c; --amber-soft:#fbf1dc;
+  --good:#1d7a45; --good-soft:#e2f3e8; --bad:#b4372f; --bad-soft:#f8e4e2;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1716; --surface:#152120; --ink:#e4eeec; --muted:#97aaa6; --line:#26403c;
+  --teal:#4fc1b2; --teal-soft:#16302d; --amber:#f0b53c; --amber-soft:#2e2511;
+  --good:#5fcf8c; --good-soft:#15301f; --bad:#f08a80; --bad-soft:#3a1c19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1716; --surface:#152120; --ink:#e4eeec; --muted:#97aaa6; --line:#26403c;
+  --teal:#4fc1b2; --teal-soft:#16302d; --amber:#f0b53c; --amber-soft:#2e2511;
+  --good:#5fcf8c; --good-soft:#15301f; --bad:#f08a80; --bad-soft:#3a1c19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
+header.brand{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.logo{width:44px;height:44px;flex:none}
+.brand h1{font-family:var(--f-display);font-size:1.6rem;margin:0;line-height:1.1;letter-spacing:-.01em}
+.brand h1 span{color:var(--amber)}
+.brand p{margin:0;color:var(--muted);font-size:.9rem}
+.brand .stats{margin-left:auto;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:flex;flex-direction:column;gap:8px}
+.rail .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700}
+.mod{all:unset;cursor:pointer;display:block;padding:12px 14px;border-radius:10px;border:1px solid transparent;transition:background .15s}
+.mod:hover{background:var(--surface)}
+.mod:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.mod[aria-current="true"]{background:var(--surface);border-color:var(--line)}
+.mod .code{font-family:var(--f-mono);font-size:.75rem;color:var(--teal)}
+.mod .name{font-family:var(--f-display);font-weight:700;font-size:1.05rem;display:block;line-height:1.25}
+.mod .best{font-size:.8rem;color:var(--muted)}
+.mod .best b{color:var(--good)}
+.soon{padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:.85rem}
+
+main{min-width:0}
+.mhead h2{font-family:var(--f-display);font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 4px;line-height:1.1;text-wrap:balance}
+.mhead p{margin:0;color:var(--muted);max-width:62ch}
+.tabs{display:flex;gap:6px;margin:20px 0;border-bottom:1px solid var(--line)}
+.tab{all:unset;cursor:pointer;padding:10px 16px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
+.tab[aria-selected="true"]{color:var(--teal);border-color:var(--teal)}
+.tab:focus-visible{outline:2px solid var(--teal)}
+
+.lesson{display:flex;flex-direction:column;gap:28px}
+.sec h3{font-family:var(--f-display);font-size:1.3rem;margin:0 0 8px;display:flex;gap:10px;align-items:baseline}
+.sec h3 .n{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
+.sec p{margin:0 0 10px;max-width:68ch}
+.sec ul{margin:0 0 10px;padding-left:20px;max-width:66ch}
+.formula{font-family:var(--f-mono);background:var(--teal-soft);color:var(--ink);padding:12px 16px;border-radius:8px;margin:10px 0;overflow-x:auto;white-space:nowrap}
+.formula small{display:block;font-family:var(--f-body);color:var(--muted);white-space:normal}
+.pearl{background:var(--amber-soft);border-left:4px solid var(--amber);padding:12px 16px;border-radius:0 8px 8px 0;max-width:68ch}
+.pearl strong{color:var(--amber)}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}
+.term{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.term b{display:block;font-family:var(--f-display)}
+.term span{font-size:.9rem;color:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+.tblwrap{overflow-x:auto;margin:8px 0}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+
+.sim{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
+.sim .row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.sim label{font-size:.9rem;font-weight:700}
+.sim input[type=range]{accent-color:var(--teal);width:180px}
+.sim output{font-family:var(--f-mono);color:var(--teal)}
+.sim svg{width:100%;height:auto;display:block}
+.sim .readout{font-size:.9rem;color:var(--muted)}
+
+.btn{all:unset;cursor:pointer;background:var(--teal);color:var(--surface);font-weight:700;padding:11px 20px;border-radius:8px;text-align:center}
+.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--teal);border:1px solid var(--teal)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.next-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,28px);max-width:760px}
+.qtop{display:flex;justify-content:space-between;gap:12px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 18px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--teal);transition:width .3s}
+.qtext{font-family:var(--f-display);font-size:1.25rem;line-height:1.35;margin:0 0 16px;text-wrap:balance}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{all:unset;cursor:pointer;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
+.opt:hover:not([disabled]){border-color:var(--teal)}
+.opt:focus-visible{outline:2px solid var(--teal)}
+.opt .k{font-family:var(--f-mono);font-weight:600;color:var(--teal);flex:none;width:1.4em}
+.opt.correct{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:.95rem}
+.feedback.ok{background:var(--good-soft)} .feedback.no{background:var(--bad-soft)}
+.feedback b{display:block}
+.qnav{display:flex;justify-content:flex-end;margin-top:16px}
+.result{text-align:center;padding:12px 0}
+.result .score{font-family:var(--f-display);font-size:3.2rem;font-weight:700;color:var(--teal);line-height:1}
+.result p{color:var(--muted)}
+.review{text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.review div{font-size:.9rem;padding:8px 12px;border-radius:8px;background:var(--bg)}
+.review .x{color:var(--bad);font-weight:700}.review .v{color:var(--good);font-weight:700}
+.result .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+
+@media (max-width:800px){
+  .wrap{grid-template-columns:minmax(0,1fr)}
+  nav.rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
+  .rail .label,.soon{display:none}
+  .mod{flex:none;border-color:var(--line);background:var(--surface);max-width:230px}
+  .brand .stats{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="brand">
+    <svg class="logo" viewBox="0 0 44 44" aria-hidden="true">
+      <rect x="2" y="2" width="40" height="40" rx="11" fill="var(--teal)"/>
+      <rect x="18" y="10" width="8" height="24" rx="2" fill="var(--surface)"/>
+      <rect x="10" y="18" width="24" height="8" rx="2" fill="var(--surface)"/>
+      <circle cx="22" cy="22" r="3.4" fill="var(--amber)"/>
+    </svg>
+    <div>
+      <h1>Noor <span>E-Learning</span></h1>
+      <p>Made for Noor · Pharmacy, Year 2 · MSA University</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <nav class="rail" aria-label="Modules">
+    <div class="label">Modules</div>
+    <div id="modlist" style="display:contents"></div>
+    <div class="soon">More modules coming: Autonomic pharmacology, Antimicrobials, Drug interactions.</div>
+  </nav>
+
+  <main>
+    <div class="mhead"><h2 id="mtitle"></h2><p id="msub"></p></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-learn" aria-selected="true">Explanation</button>
+      <button class="tab" role="tab" id="tab-quiz" aria-selected="false">Quiz</button>
+    </div>
+    <section id="view"></section>
+  </main>
+</div>
+
+<script>
+const MODULES = [
+{
+  id:"pk", code:"Pharmacology · Module 1", name:"Pharmacokinetics",
+  sub:"What the body does to the drug: absorption, distribution, metabolism and excretion (ADME), and the numbers that describe them.",
+  lesson:`
+  <div class="sec"><h3><span class="n">1</span>ADME at a glance</h3>
+    <p>Every drug travels the same route: it gets into the blood, spreads to tissues, is chemically changed, and leaves the body. Pharmacokinetics turns that journey into numbers you can use to choose a dose.</p>
+    <div class="terms">
+      <div class="term"><b>Absorption</b><span>Movement from the site of administration into the circulation.</span></div>
+      <div class="term"><b>Distribution</b><span>Reversible movement from blood into tissues and body fluids.</span></div>
+      <div class="term"><b>Metabolism</b><span>Chemical conversion, mainly in the liver, usually to more polar compounds.</span></div>
+      <div class="term"><b>Excretion</b><span>Removal from the body, mainly by the kidneys, also bile and lungs.</span></div>
+    </div>
+  </div>
+  <div class="sec"><h3><span class="n">2</span>Bioavailability (F)</h3>
+    <p>Bioavailability is the fraction of an administered dose that reaches the systemic circulation unchanged. An IV dose has F = 1 (100%) by definition. Oral doses are often lower because of incomplete absorption and <b>first-pass metabolism</b> in the gut wall and liver.</p>
+    <div class="formula">F = (AUC<sub>oral</sub> × Dose<sub>IV</sub>) / (AUC<sub>IV</sub> × Dose<sub>oral</sub>)<small>AUC = area under the plasma concentration–time curve</small></div>
+    <div class="pearl"><strong>Clinical pearl.</strong> Nitroglycerin has a very high first-pass effect, so for angina it is given sublingually, which drains into the systemic circulation and bypasses the liver.</div>
+  </div>
+  <div class="sec"><h3><span class="n">3</span>Volume of distribution (Vd)</h3>
+    <p>Vd is the apparent volume the drug would need to occupy to give the measured plasma concentration. It is not a real anatomical space. A large Vd means the drug leaves the plasma and binds tissues (for example lipophilic drugs); a small Vd means it stays mainly in the blood (for example highly protein-bound or large polar drugs).</p>
+    <div class="formula">Vd = Amount of drug in body / Plasma concentration (C₀)</div>
+  </div>
+  <div class="sec"><h3><span class="n">4</span>Metabolism</h3>
+    <div class="tblwrap"><table>
+      <tr><th>Phase</th><th>Reactions</th><th>Typical result</th></tr>
+      <tr><td><b>Phase I</b></td><td>Oxidation, reduction, hydrolysis, mostly by cytochrome P450 (CYP) enzymes</td><td>Adds or exposes a functional group; product may be active, inactive or toxic</td></tr>
+      <tr><td><b>Phase II</b></td><td>Conjugation: glucuronidation, sulfation, acetylation, glutathione conjugation</td><td>Larger, more water-soluble, usually inactive, easier to excrete</td></tr>
+    </table></div>
+    <div class="pearl"><strong>Clinical pearl.</strong> CYP3A4 metabolizes roughly half of marketed drugs. Inhibitors such as clarithromycin or grapefruit juice can raise levels of its substrates; inducers such as rifampicin can lower them.</div>
+  </div>
+  <div class="sec"><h3><span class="n">5</span>Clearance and half-life</h3>
+    <p><b>Clearance (CL)</b> is the volume of plasma cleared of drug per unit time. <b>Half-life (t½)</b> is the time for the plasma concentration to fall by 50%. Most drugs follow <b>first-order kinetics</b>: a constant <i>fraction</i> is eliminated per unit time. A few (ethanol, and phenytoin or aspirin at high doses) follow <b>zero-order kinetics</b>: a constant <i>amount</i> per unit time, because the enzymes are saturated.</p>
+    <div class="formula">t½ = 0.693 × Vd / CL &nbsp;&nbsp;|&nbsp;&nbsp; k<sub>e</sub> = 0.693 / t½ &nbsp;&nbsp;|&nbsp;&nbsp; CL = k<sub>e</sub> × Vd</div>
+    <div class="sim" id="sim">
+      <div class="row">
+        <label for="hl">Half-life</label><input type="range" id="hl" min="1" max="24" step="1" value="6"><output id="hlout">6 h</output>
+        <label for="dose">Dose</label><input type="range" id="dose" min="50" max="500" step="50" value="100"><output id="doseout">100 mg</output>
+      </div>
+      <svg id="chart" viewBox="0 0 640 230" role="img" aria-label="Amount of drug remaining over 48 hours"></svg>
+      <div class="readout" id="readout"></div>
+    </div>
+  </div>
+  <div class="sec"><h3><span class="n">6</span>Steady state and dosing</h3>
+    <p>With repeated dosing, a drug reaches steady state (intake = elimination) after about <b>4–5 half-lives</b>, whatever the dose. When that is too slow, a <b>loading dose</b> fills Vd quickly; the <b>maintenance dose</b> replaces what is cleared.</p>
+    <div class="formula">Loading dose = (C<sub>target</sub> × Vd) / F &nbsp;&nbsp;|&nbsp;&nbsp; Maintenance dose rate = (C<sub>target</sub> × CL) / F</div>
+    <div class="pearl"><strong>Remember.</strong> Loading dose depends on Vd. Maintenance dose depends on clearance. In renal impairment, reduce the maintenance dose of renally cleared drugs; the loading dose usually stays the same.</div>
+  </div>`,
+  quiz:[
+    {q:"A drug has a half-life of 6 hours. After 18 hours, how much of a 100 mg dose remains in the body (first-order kinetics)?", o:["50 mg","33 mg","25 mg","12.5 mg"], a:3, e:"18 h is three half-lives: 100 → 50 → 25 → 12.5 mg."},
+    {q:"A 500 mg IV bolus gives an initial plasma concentration of 10 mg/L. What is the volume of distribution?", o:["5 L","50 L","500 L","5000 L"], a:1, e:"Vd = Dose / C₀ = 500 mg ÷ 10 mg/L = 50 L."},
+    {q:"Which route has a bioavailability of 100% by definition?", o:["Oral","Sublingual","Intravenous","Transdermal"], a:2, e:"An IV dose enters the systemic circulation directly, so F = 1."},
+    {q:"Approximately how long does it take to reach steady state with repeated dosing?", o:["1 half-life","2 half-lives","4–5 half-lives","10 half-lives"], a:2, e:"After 4–5 half-lives about 94–97% of steady state is reached, regardless of dose size."},
+    {q:"Which reaction is a Phase II metabolic reaction?", o:["Oxidation by CYP450","Hydrolysis","Glucuronidation","Reduction"], a:2, e:"Glucuronidation is a conjugation reaction, which defines Phase II. The others are Phase I."},
+    {q:"Ethanol is eliminated at a roughly constant amount per hour. This is described as:", o:["First-order kinetics","Zero-order kinetics","Second-order kinetics","Non-linear distribution"], a:1, e:"A constant amount per unit time, due to enzyme saturation, is zero-order elimination."},
+    {q:"A drug has Vd = 40 L and elimination rate constant kₑ = 0.1 h⁻¹. What is its clearance?", o:["0.4 L/h","4 L/h","40 L/h","400 L/h"], a:1, e:"CL = kₑ × Vd = 0.1 h⁻¹ × 40 L = 4 L/h."},
+    {q:"Rifampicin is given to a patient stable on a CYP3A4 substrate. What is the expected effect on the substrate's plasma level?", o:["Increase","Decrease","No change","Doubling of half-life"], a:1, e:"Rifampicin is a strong CYP3A4 inducer, so the substrate is metabolized faster and its level falls."},
+    {q:"In a patient with reduced renal function, which dose of a renally cleared drug usually needs reducing?", o:["Loading dose","Maintenance dose","Both equally","Neither"], a:1, e:"Maintenance dose depends on clearance, which falls in renal impairment. Loading dose depends on Vd."},
+    {q:"Why is nitroglycerin given sublingually for acute angina?", o:["It is destroyed by stomach acid only","To avoid extensive first-pass hepatic metabolism","Because it is too large to be absorbed orally","To prolong its half-life"], a:1, e:"Sublingual absorption bypasses the portal circulation, avoiding the liver's high first-pass extraction."}
+  ]
+},
+{
+  id:"pd", code:"Pharmacology · Module 2", name:"Pharmacodynamics",
+  sub:"What the drug does to the body: receptors, dose–response curves, potency, efficacy and safety margins.",
+  lesson:`
+  <div class="sec"><h3><span class="n">1</span>Drugs and receptors</h3>
+    <p>Most drugs act by binding to a target protein, usually a receptor. Binding strength is <b>affinity</b>; the ability to activate the receptor once bound is <b>intrinsic activity</b>.</p>
+    <div class="terms">
+      <div class="term"><b>Full agonist</b><span>Binds and produces the maximal response (e.g. morphine at μ-opioid receptors).</span></div>
+      <div class="term"><b>Partial agonist</b><span>Binds but gives a submaximal response, even at full occupancy (e.g. buprenorphine).</span></div>
+      <div class="term"><b>Antagonist</b><span>Binds without activating; blocks the agonist (e.g. naloxone).</span></div>
+      <div class="term"><b>Inverse agonist</b><span>Reduces constitutive receptor activity below baseline.</span></div>
+    </div>
+  </div>
+  <div class="sec"><h3><span class="n">2</span>Four receptor families</h3>
+    <div class="tblwrap"><table>
+      <tr><th>Family</th><th>Speed</th><th>Example</th></tr>
+      <tr><td>Ligand-gated ion channels</td><td>Milliseconds</td><td>Nicotinic ACh receptor, GABA<sub>A</sub></td></tr>
+      <tr><td>G protein-coupled receptors</td><td>Seconds</td><td>β-adrenoceptors, muscarinic receptors</td></tr>
+      <tr><td>Enzyme-linked (kinase) receptors</td><td>Minutes to hours</td><td>Insulin receptor (tyrosine kinase)</td></tr>
+      <tr><td>Nuclear (intracellular) receptors</td><td>Hours to days</td><td>Glucocorticoid, thyroid hormone receptors</td></tr>
+    </table></div>
+  </div>
+  <div class="sec"><h3><span class="n">3</span>Potency vs efficacy</h3>
+    <p><b>Potency</b> is how much drug is needed for a given effect, measured by EC<sub>50</sub> (the concentration giving 50% of maximal effect). Lower EC<sub>50</sub> means higher potency. <b>Efficacy</b> is the maximum effect a drug can produce (E<sub>max</sub>). Clinically, efficacy usually matters more than potency.</p>
+    <div class="pearl"><strong>Exam tip.</strong> On a log dose–response curve, a curve further to the <i>left</i> is more potent; a <i>taller</i> curve is more efficacious.</div>
+  </div>
+  <div class="sec"><h3><span class="n">4</span>Types of antagonism</h3>
+    <div class="tblwrap"><table>
+      <tr><th>Type</th><th>Effect on agonist curve</th><th>Overcome by more agonist?</th></tr>
+      <tr><td>Competitive (reversible)</td><td>Shifts right; E<sub>max</sub> unchanged; EC<sub>50</sub> increased</td><td>Yes</td></tr>
+      <tr><td>Irreversible / non-competitive</td><td>E<sub>max</sub> reduced</td><td>No</td></tr>
+      <tr><td>Physiological</td><td>Opposing effect through a different receptor (e.g. adrenaline vs histamine in anaphylaxis)</td><td>Not applicable</td></tr>
+      <tr><td>Chemical</td><td>Antagonist binds the drug itself (e.g. protamine neutralizes heparin)</td><td>Not applicable</td></tr>
+    </table></div>
+  </div>
+  <div class="sec"><h3><span class="n">5</span>Safety margin</h3>
+    <div class="formula">Therapeutic index (TI) = TD<sub>50</sub> / ED<sub>50</sub><small>TD₅₀: dose toxic in 50% of subjects · ED₅₀: dose effective in 50% of subjects</small></div>
+    <p>A narrow TI means toxic doses are close to effective ones, so plasma levels are often monitored.</p>
+    <div class="pearl"><strong>Narrow TI drugs to know:</strong> digoxin, lithium, warfarin, phenytoin, theophylline, aminoglycosides.</div>
+  </div>`,
+  quiz:[
+    {q:"Drug A has an EC₅₀ of 2 nM and Drug B an EC₅₀ of 20 nM, with the same Eₘₐₓ. Which statement is correct?", o:["A is more efficacious","A is more potent","B is more potent","They are equally potent"], a:1, e:"Lower EC₅₀ means less drug is needed: A is ten times more potent. Equal Eₘₐₓ means equal efficacy."},
+    {q:"A competitive reversible antagonist affects the agonist dose–response curve by:", o:["Lowering Eₘₐₓ","Shifting it to the right with Eₘₐₓ unchanged","Shifting it to the left","Making it steeper"], a:1, e:"More agonist can outcompete the antagonist, so maximum effect is still reached at higher concentrations."},
+    {q:"Buprenorphine produces a submaximal response even at full receptor occupancy. It is a:", o:["Full agonist","Partial agonist","Competitive antagonist","Inverse agonist"], a:1, e:"Submaximal intrinsic activity at full occupancy defines a partial agonist."},
+    {q:"The therapeutic index is calculated as:", o:["ED₅₀ / TD₅₀","TD₅₀ / ED₅₀","EC₅₀ × Eₘₐₓ","LD₅₀ − ED₅₀"], a:1, e:"TI = TD₅₀ / ED₅₀. A larger TI means a wider safety margin."},
+    {q:"Which receptor type produces the slowest response?", o:["Ligand-gated ion channel","G protein-coupled receptor","Tyrosine kinase receptor","Nuclear receptor"], a:3, e:"Nuclear receptors change gene transcription and protein synthesis, which takes hours to days."},
+    {q:"Protamine reverses heparin by binding to it directly. This is:", o:["Competitive antagonism","Physiological antagonism","Chemical antagonism","Irreversible antagonism"], a:2, e:"The antagonist combines with the drug itself rather than acting at a receptor."},
+    {q:"Which drug has a narrow therapeutic index?", o:["Amoxicillin","Paracetamol at normal doses","Lithium","Omeprazole"], a:2, e:"Lithium's toxic levels are close to therapeutic ones, so serum levels are routinely monitored."},
+    {q:"Adrenaline treats bronchospasm in anaphylaxis by acting on β₂ receptors, opposing histamine. This is:", o:["Chemical antagonism","Physiological antagonism","Competitive antagonism","Pharmacokinetic antagonism"], a:1, e:"Two agonists acting on different receptors produce opposite effects: physiological antagonism."}
+  ]
+}];
+
+/* ---------- state ---------- */
+let cur = MODULES[0], tab = "learn", qs = null;
+const $ = s => document.querySelector(s);
+const store = {
+  get(k){try{return JSON.parse(localStorage.getItem("noor:"+k))}catch(e){return null}},
+  set(k,v){try{localStorage.setItem("noor:"+k,JSON.stringify(v))}catch(e){}}
+};
+
+function renderRail(){
+  $("#modlist").innerHTML = MODULES.map(m=>{
+    const b = store.get("best:"+m.id);
+    return `<button class="mod" data-id="${m.id}" aria-current="${m===cur}">
+      <span class="code">${m.code}</span><span class="name">${m.name}</span>
+      <span class="best">${b!=null?`Best quiz score <b>${b}/${m.quiz.length}</b>`:`${m.quiz.length} quiz questions`}</span></button>`;
+  }).join("");
+  document.querySelectorAll(".mod").forEach(b=>b.onclick=()=>{cur=MODULES.find(m=>m.id===b.dataset.id);tab="learn";render();scrollTo({top:0})});
+  const done = MODULES.filter(m=>store.get("best:"+m.id)!=null).length;
+  $("#stats").textContent = `${done} of ${MODULES.length} quizzes completed`;
+}
+
+function render(){
+  renderRail();
+  $("#mtitle").textContent = cur.name; $("#msub").textContent = cur.sub;
+  $("#tab-learn").setAttribute("aria-selected",tab==="learn");
+  $("#tab-quiz").setAttribute("aria-selected",tab==="quiz");
+  if(tab==="learn"){
+    $("#view").innerHTML = `<div class="lesson">${cur.lesson}
+      <div class="next-cta"><button class="btn" id="go">Start the ${cur.name} quiz</button><span style="color:var(--muted)">${cur.quiz.length} questions with explanations</span></div></div>`;
+    $("#go").onclick=()=>{tab="quiz";startQuiz();render();scrollTo({top:0})};
+    if($("#sim")) initSim();
+  } else {
+    if(!qs || qs.mod!==cur.id) startQuiz();
+    renderQuiz();
+  }
+}
+$("#tab-learn").onclick=()=>{tab="learn";render()};
+$("#tab-quiz").onclick=()=>{tab="quiz";render()};
+
+/* ---------- quiz ---------- */
+function startQuiz(){ qs = {mod:cur.id, i:0, picked:null, answers:[]}; }
+function renderQuiz(){
+  const Q = cur.quiz, n = Q.length;
+  if(qs.i>=n){
+    const score = qs.answers.filter((a,i)=>a===Q[i].a).length;
+    const best = store.get("best:"+cur.id); if(best==null||score>best) store.set("best:"+cur.id,score);
+    renderRail();
+    const pct = Math.round(score/n*100);
+    const msg = pct>=80?"Excellent work. You're ready for the next module.":pct>=60?"Good effort. Review the questions you missed below.":"Go back to the explanation, then try again.";
+    $("#view").innerHTML = `<div class="quiz"><div class="result">
+      <div class="score">${score}/${n}</div><p>${pct}% · ${msg}</p>
+      <div class="review">${Q.map((q,i)=>`<div><span class="${qs.answers[i]===q.a?"v":"x"}">${qs.answers[i]===q.a?"✓":"✗"}</span> ${q.q}<br><small>Answer: <b>${q.o[q.a]}</b></small></div>`).join("")}</div>
+      <div class="actions"><button class="btn" id="retry">Retake quiz</button><button class="btn ghost" id="back">Back to explanation</button></div>
+    </div></div>`;
+    $("#retry").onclick=()=>{startQuiz();renderQuiz()};
+    $("#back").onclick=()=>{tab="learn";render()};
+    return;
+  }
+  const q = Q[qs.i], p = qs.picked;
+  $("#view").innerHTML = `<div class="quiz">
+    <div class="qtop"><span>Question ${qs.i+1} of ${n}</span><span>Score ${qs.answers.filter((a,i)=>a===Q[i].a).length}</span></div>
+    <div class="bar"><i style="width:${qs.i/n*100}%"></i></div>
+    <p class="qtext">${q.q}</p>
+    <div class="opts">${q.o.map((o,j)=>{
+      let c=""; if(p!=null){ if(j===q.a)c="correct"; else if(j===p)c="wrong"; }
+      return `<button class="opt ${c}" data-j="${j}" ${p!=null?"disabled":""}><span class="k">${"ABCD"[j]}</span><span>${o}</span></button>`}).join("")}</div>
+    ${p!=null?`<div class="feedback ${p===q.a?"ok":"no"}"><b>${p===q.a?"Correct.":"Not quite."}</b>${q.e}</div>
+      <div class="qnav"><button class="btn" id="nextq">${qs.i+1<n?"Next question":"See results"}</button></div>`:""}
+  </div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{qs.picked=+b.dataset.j;qs.answers[qs.i]=qs.picked;renderQuiz();$("#nextq").focus()});
+  if(p!=null) $("#nextq").onclick=()=>{qs.i++;qs.picked=null;renderQuiz()};
+}
+
+/* ---------- half-life simulator ---------- */
+function initSim(){
+  const hl=$("#hl"), dose=$("#dose");
+  const draw=()=>{
+    const t=+hl.value, D=+dose.value;
+    $("#hlout").textContent=t+" h"; $("#doseout").textContent=D+" mg";
+    const W=640,H=230,L=52,R=16,T=14,B=34, pw=W-L-R, ph=H-T-B, tmax=48;
+    const x=h=>L+h/tmax*pw, y=a=>T+ph-(a/D)*ph;
+    let g="";
+    [0,.25,.5,.75,1].forEach(f=>{g+=`<line x1="${L}" x2="${W-R}" y1="${y(D*f)}" y2="${y(D*f)}" stroke="var(--line)"/><text x="${L-8}" y="${y(D*f)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${Math.round(D*f)}</text>`});
+    for(let h=0;h<=48;h+=12) g+=`<text x="${x(h)}" y="${H-12}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${h} h</text>`;
+    let pts=[]; for(let h=0;h<=tmax;h+=.5) pts.push(`${x(h).toFixed(1)},${y(D*Math.pow(.5,h/t)).toFixed(1)}`);
+    g+=`<polygon points="${x(0)},${y(0)} ${pts.join(" ")} ${x(tmax)},${y(0)}" fill="var(--teal-soft)"/>`;
+    g+=`<polyline points="${pts.join(" ")}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>`;
+    for(let k=1;k*t<=tmax&&k<=5;k++){const a=D*Math.pow(.5,k);g+=`<circle cx="${x(k*t)}" cy="${y(a)}" r="4.5" fill="var(--amber)"/><text x="${x(k*t)+7}" y="${y(a)-7}" font-size="11" fill="var(--ink)" font-family="var(--f-mono)">${+a.toFixed(1)}</text>`}
+    $("#chart").innerHTML=g;
+    const left24=D*Math.pow(.5,24/t);
+    $("#readout").innerHTML=`Amber points mark each half-life. After 24 h, <b>${left24.toFixed(1)} mg</b> remains (${(left24/D*100).toFixed(1)}%). k<sub>e</sub> = ${(0.693/t).toFixed(3)} h⁻¹.`;
+  };
+  hl.oninput=draw; dose.oninput=draw; draw();
+}
+
+render();
+</script>
