@@ -7455,7 +7455,9 @@ DEEP.physio[2]={en:`
 <b>س2، العامل المساهم:</b> <b>سنه</b>. كبار السن عندهم ماء أقل في الجسم وإحساس عطش أضعف، فبيجيلهم جفاف أسرع وأشد.</div>
 `};
 /*/DEEP*/
-COURSES.forEach(c=>{if(QX[c.id])c.quiz=c.quiz.concat(QX[c.id]);c.quiz.sort((a,b)=>a.l-b.l)});
+COURSES.forEach(c=>{if(QX[c.id])c.quiz=c.quiz.concat(QX[c.id]);c.quiz.sort((a,b)=>a.l-b.l);
+c.quiz.forEach(q=>{if(q.o.length<3||q.o.some(o=>/\b(all|none|both|neither)\b.*\b(above|of these)\b/i.test(o))||q.o.every(o=>/^[\s\d.+\-−–~<>≈()/]/.test(o)))return;
+let h=0;for(const ch of q.q)h=(h*31+ch.charCodeAt(0))>>>0;const t=h%q.o.length;if(t!==q.a){const o=q.o.slice();[o[q.a],o[t]]=[o[t],o[q.a]];q.o=o;q.a=t}})});
 const COMING_UP = [
  {date:"2026-11-04", title:"Dosage Forms 1 assignment due", course:"dosage"},
  {date:"2026-11-17", end:"2026-11-19", title:"Genetics Theoretical Practical Exam 1", note:"DNA extraction, PCR & gel electrophoresis, qPCR, northern and southern blotting", course:"genetics"}
