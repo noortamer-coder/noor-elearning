@@ -1,361 +1,893 @@
 <title>Noor E-Learning</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: module rail on the left (top strip on phones), lesson/quiz workspace on the right. Lab-glass teal with an amber "noor" (light) accent. */
+/* Layout: a study desk. Dashboard = greeting, exam countdown strip, course cards; course view = lecture list + quiz workspace. Lab teal with amber "noor" light. */
 :root{
-  --bg:#f3f6f5; --surface:#ffffff; --ink:#14211f; --muted:#5b6b68; --line:#d8e2df;
-  --teal:#0f6b62; --teal-soft:#e1efec; --amber:#c98a0c; --amber-soft:#fbf1dc;
-  --good:#1d7a45; --good-soft:#e2f3e8; --bad:#b4372f; --bad-soft:#f8e4e2;
-  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
-  --f-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --bg:#f2f5f4; --surface:#ffffff; --sunk:#e9efed; --ink:#14211f; --muted:#5a6a67; --line:#d6e0dd;
+  --teal:#0f6b62; --teal-soft:#dfeeea; --amber:#b97c06; --amber-soft:#fbf0d9;
+  --good:#1d7a45; --good-soft:#e1f2e7; --bad:#b4372f; --bad-soft:#f8e3e1;
+  --c1:#2f6fb5; --c2:#c2416b; --c3:#7a5bc4; --c4:#0f8a7c; --c5:#c46a1c;
+  --f-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --f-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0e1716; --surface:#152120; --ink:#e4eeec; --muted:#97aaa6; --line:#26403c;
-  --teal:#4fc1b2; --teal-soft:#16302d; --amber:#f0b53c; --amber-soft:#2e2511;
-  --good:#5fcf8c; --good-soft:#15301f; --bad:#f08a80; --bad-soft:#3a1c19; color-scheme:dark}}
+  --bg:#0d1615; --surface:#14201f; --sunk:#192826; --ink:#e3edeb; --muted:#93a7a3; --line:#253c38;
+  --teal:#4fc1b2; --teal-soft:#15302c; --amber:#f0b53c; --amber-soft:#2d2410;
+  --good:#5fcf8c; --good-soft:#132e1e; --bad:#f08a80; --bad-soft:#381b18;
+  --c1:#6aa6ea; --c2:#ec7fa2; --c3:#a991ea; --c4:#4fc1b2; --c5:#eb9b52; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0e1716; --surface:#152120; --ink:#e4eeec; --muted:#97aaa6; --line:#26403c;
-  --teal:#4fc1b2; --teal-soft:#16302d; --amber:#f0b53c; --amber-soft:#2e2511;
-  --good:#5fcf8c; --good-soft:#15301f; --bad:#f08a80; --bad-soft:#3a1c19; color-scheme:dark}
+  --bg:#0d1615; --surface:#14201f; --sunk:#192826; --ink:#e3edeb; --muted:#93a7a3; --line:#253c38;
+  --teal:#4fc1b2; --teal-soft:#15302c; --amber:#f0b53c; --amber-soft:#2d2410;
+  --good:#5fcf8c; --good-soft:#132e1e; --bad:#f08a80; --bad-soft:#381b18;
+  --c1:#6aa6ea; --c2:#ec7fa2; --c3:#a991ea; --c4:#4fc1b2; --c5:#eb9b52; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
-.wrap{max-width:1120px;margin:0 auto;display:grid;grid-template-columns:260px minmax(0,1fr);gap:28px;align-items:start}
-header.brand{grid-column:1/-1;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:16px;border-bottom:1px solid var(--line)}
-.logo{width:44px;height:44px;flex:none}
-.brand h1{font-family:var(--f-display);font-size:1.6rem;margin:0;line-height:1.1;letter-spacing:-.01em}
-.brand h1 span{color:var(--amber)}
-.brand p{margin:0;color:var(--muted);font-size:.9rem}
-.brand .stats{margin-left:auto;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 56px}
+.wrap{max-width:1080px;margin:0 auto}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 
-nav.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:flex;flex-direction:column;gap:8px}
-.rail .label{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:700}
-.mod{all:unset;cursor:pointer;display:block;padding:12px 14px;border-radius:10px;border:1px solid transparent;transition:background .15s}
-.mod:hover{background:var(--surface)}
-.mod:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-.mod[aria-current="true"]{background:var(--surface);border-color:var(--line)}
-.mod .code{font-family:var(--f-mono);font-size:.75rem;color:var(--teal)}
-.mod .name{font-family:var(--f-display);font-weight:700;font-size:1.05rem;display:block;line-height:1.25}
-.mod .best{font-size:.8rem;color:var(--muted)}
-.mod .best b{color:var(--good)}
-.soon{padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:.85rem}
+header.top{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:22px;flex-wrap:wrap}
+.logo{width:40px;height:40px;flex:none}
+.top .brand{font-family:var(--f-display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em;line-height:1;cursor:pointer;background:none;border:0;padding:0}
+.top .brand span{color:var(--amber)}
+.top .sub{color:var(--muted);font-size:.85rem;margin-left:auto}
 
-main{min-width:0}
-.mhead h2{font-family:var(--f-display);font-size:clamp(1.6rem,4vw,2.3rem);margin:0 0 4px;line-height:1.1;text-wrap:balance}
-.mhead p{margin:0;color:var(--muted);max-width:62ch}
-.tabs{display:flex;gap:6px;margin:20px 0;border-bottom:1px solid var(--line)}
+/* dashboard */
+.hello h1{font-family:var(--f-display);font-size:clamp(1.8rem,5vw,2.6rem);line-height:1.05;margin:0 0 6px;text-wrap:balance}
+.hello p{margin:0;color:var(--muted);max-width:60ch}
+.statrow{display:flex;gap:28px;flex-wrap:wrap;margin:20px 0 26px;font-variant-numeric:tabular-nums}
+.stat b{display:block;font-family:var(--f-display);font-size:1.7rem;line-height:1}
+.stat span{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.sec-label{font-size:.74rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:0 0 10px}
+.upcoming{display:flex;flex-direction:column;gap:8px;margin-bottom:30px}
+.up{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:14px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.up .d{font-family:var(--f-mono);font-size:.8rem;line-height:1.25;color:var(--muted)}
+.up .d b{display:block;font-family:var(--f-display);font-size:1.5rem;color:var(--ink)}
+.up .t{font-weight:700}
+.up .n{font-size:.85rem;color:var(--muted)}
+.chip{font-size:.78rem;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;background:var(--amber-soft);color:var(--amber)}
+.chip.soon{background:var(--bad-soft);color:var(--bad)}
+.chip.past{background:var(--sunk);color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{all:unset;box-sizing:border-box;cursor:pointer;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--hue);transform:translateY(-2px)}
+.card:focus-visible{outline:2px solid var(--hue);outline-offset:2px}
+.card .code{font-family:var(--f-mono);font-size:.78rem;color:var(--hue);font-weight:600}
+.card h3{font-family:var(--f-display);font-size:1.25rem;line-height:1.2;margin:0}
+.card .meta{font-size:.85rem;color:var(--muted)}
+.dots{display:flex;gap:4px;flex-wrap:wrap}
+.dots i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.dots i.on{background:var(--hue)}
+.card .foot{display:flex;justify-content:space-between;align-items:center;font-size:.85rem;font-variant-numeric:tabular-nums;margin-top:auto;padding-top:6px;border-top:1px dashed var(--line)}
+.card .foot b{color:var(--hue)}
+
+/* course view */
+.back{all:unset;cursor:pointer;color:var(--muted);font-size:.9rem;display:inline-flex;gap:6px;align-items:center;margin-bottom:10px}
+.back:hover{color:var(--teal)}
+.chead{border-left:5px solid var(--hue);padding-left:14px;margin-bottom:6px}
+.chead .code{font-family:var(--f-mono);font-size:.8rem;color:var(--hue);font-weight:600}
+.chead h2{font-family:var(--f-display);font-size:clamp(1.5rem,4vw,2.2rem);line-height:1.1;margin:2px 0 4px;text-wrap:balance}
+.chead p{margin:0;color:var(--muted);font-size:.9rem}
+.tabs{display:flex;gap:4px;margin:20px 0 18px;border-bottom:1px solid var(--line)}
 .tab{all:unset;cursor:pointer;padding:10px 16px;font-weight:700;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1px}
-.tab[aria-selected="true"]{color:var(--teal);border-color:var(--teal)}
-.tab:focus-visible{outline:2px solid var(--teal)}
-
-.lesson{display:flex;flex-direction:column;gap:28px}
-.sec h3{font-family:var(--f-display);font-size:1.3rem;margin:0 0 8px;display:flex;gap:10px;align-items:baseline}
-.sec h3 .n{font-family:var(--f-mono);font-size:.8rem;color:var(--teal)}
-.sec p{margin:0 0 10px;max-width:68ch}
-.sec ul{margin:0 0 10px;padding-left:20px;max-width:66ch}
-.formula{font-family:var(--f-mono);background:var(--teal-soft);color:var(--ink);padding:12px 16px;border-radius:8px;margin:10px 0;overflow-x:auto;white-space:nowrap}
-.formula small{display:block;font-family:var(--f-body);color:var(--muted);white-space:normal}
-.pearl{background:var(--amber-soft);border-left:4px solid var(--amber);padding:12px 16px;border-radius:0 8px 8px 0;max-width:68ch}
+.tab[aria-selected="true"]{color:var(--ink);border-color:var(--hue)}
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:24px;align-items:start}
+.lecnav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;gap:4px}
+.lecbtn{all:unset;cursor:pointer;display:grid;grid-template-columns:28px minmax(0,1fr) 16px;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;font-size:.9rem;line-height:1.3}
+.lecbtn:hover{background:var(--surface)}
+.lecbtn[aria-current="true"]{background:var(--surface);box-shadow:inset 3px 0 0 var(--hue)}
+.lecbtn .num{font-family:var(--f-mono);font-size:.8rem;color:var(--hue);font-weight:600}
+.lecbtn .ok{width:14px;height:14px;border-radius:50%;border:2px solid var(--line)}
+.lecbtn .ok.on{background:var(--good);border-color:var(--good)}
+article.lesson{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,30px);min-width:0}
+.lesson .ln{font-family:var(--f-mono);font-size:.8rem;color:var(--hue);font-weight:600}
+.lesson h3{font-family:var(--f-display);font-size:1.55rem;line-height:1.15;margin:4px 0 16px;text-wrap:balance}
+.lesson h4{font-family:var(--f-display);font-size:1.08rem;margin:22px 0 8px}
+.lesson p,.lesson ul,.lesson ol{max-width:70ch;margin:0 0 12px}
+.lesson ul,.lesson ol{padding-left:22px}
+.lesson li{margin-bottom:4px}
+.formula{font-family:var(--f-mono);font-size:.9rem;background:var(--teal-soft);padding:12px 16px;border-radius:8px;margin:12px 0;overflow-x:auto;line-height:1.7}
+.formula small{display:block;font-family:var(--f-body);color:var(--muted)}
+.pearl{background:var(--amber-soft);border-left:4px solid var(--amber);padding:12px 16px;border-radius:0 8px 8px 0;max-width:70ch;margin:14px 0}
 .pearl strong{color:var(--amber)}
-.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:8px}
-.term{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+.terms{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin:10px 0 14px}
+.term{background:var(--sunk);border-radius:8px;padding:10px 12px}
 .term b{display:block;font-family:var(--f-display)}
-.term span{font-size:.9rem;color:var(--muted)}
-table{border-collapse:collapse;width:100%;font-size:.92rem}
-.tblwrap{overflow-x:auto;margin:8px 0}
+.term span{font-size:.88rem;color:var(--muted)}
+.tblwrap{overflow-x:auto;margin:10px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-
-.sim{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px}
-.sim .row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
-.sim label{font-size:.9rem;font-weight:700}
-.sim input[type=range]{accent-color:var(--teal);width:180px}
-.sim output{font-family:var(--f-mono);color:var(--teal)}
-.sim svg{width:100%;height:auto;display:block}
-.sim .readout{font-size:.9rem;color:var(--muted)}
-
-.btn{all:unset;cursor:pointer;background:var(--teal);color:var(--surface);font-weight:700;padding:11px 20px;border-radius:8px;text-align:center}
-.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+th{font-size:.74rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.lessonfoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+.btn{all:unset;cursor:pointer;background:var(--teal);color:var(--surface);font-weight:700;padding:10px 18px;border-radius:8px;text-align:center}
 .btn.ghost{background:transparent;color:var(--teal);border:1px solid var(--teal)}
-.btn[disabled]{opacity:.45;cursor:not-allowed}
-.next-cta{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.btn.done{background:var(--good)}
+.btn:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 
-.quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(16px,3vw,28px);max-width:760px}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.fchip{all:unset;cursor:pointer;font-size:.85rem;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
+.fchip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:clamp(18px,3vw,28px);max-width:760px}
 .qtop{display:flex;justify-content:space-between;gap:12px;font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
-.bar{height:6px;background:var(--line);border-radius:3px;margin:8px 0 18px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--teal);transition:width .3s}
-.qtext{font-family:var(--f-display);font-size:1.25rem;line-height:1.35;margin:0 0 16px;text-wrap:balance}
+.bar{height:6px;background:var(--sunk);border-radius:3px;margin:8px 0 18px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--hue);transition:width .3s}
+.qlec{font-family:var(--f-mono);font-size:.75rem;color:var(--hue)}
+.qtext{font-family:var(--f-display);font-size:1.22rem;line-height:1.35;margin:4px 0 16px;text-wrap:balance}
 .opts{display:flex;flex-direction:column;gap:8px}
 .opt{all:unset;cursor:pointer;display:flex;gap:12px;align-items:flex-start;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg)}
-.opt:hover:not([disabled]){border-color:var(--teal)}
-.opt:focus-visible{outline:2px solid var(--teal)}
-.opt .k{font-family:var(--f-mono);font-weight:600;color:var(--teal);flex:none;width:1.4em}
+.opt:hover:not([disabled]){border-color:var(--hue)}
+.opt .k{font-family:var(--f-mono);font-weight:600;color:var(--hue);flex:none;width:1.3em}
 .opt.correct{border-color:var(--good);background:var(--good-soft)}
 .opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
 .opt[disabled]{cursor:default}
 .feedback{margin-top:14px;padding:12px 16px;border-radius:8px;font-size:.95rem}
-.feedback.ok{background:var(--good-soft)} .feedback.no{background:var(--bad-soft)}
+.feedback.ok{background:var(--good-soft)}.feedback.no{background:var(--bad-soft)}
 .feedback b{display:block}
 .qnav{display:flex;justify-content:flex-end;margin-top:16px}
-.result{text-align:center;padding:12px 0}
-.result .score{font-family:var(--f-display);font-size:3.2rem;font-weight:700;color:var(--teal);line-height:1}
-.result p{color:var(--muted)}
-.review{text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.result{text-align:center}
+.result .score{font-family:var(--f-display);font-size:3.4rem;font-weight:800;color:var(--hue);line-height:1}
+.result>p{color:var(--muted)}
+.review{text-align:left;margin-top:16px;display:flex;flex-direction:column;gap:6px}
 .review div{font-size:.9rem;padding:8px 12px;border-radius:8px;background:var(--bg)}
 .review .x{color:var(--bad);font-weight:700}.review .v{color:var(--good);font-weight:700}
-.result .actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+footer{margin-top:40px;color:var(--muted);font-size:.8rem;text-align:center}
 
-@media (max-width:800px){
-  .wrap{grid-template-columns:minmax(0,1fr)}
-  nav.rail{position:static;flex-direction:row;overflow-x:auto;padding-bottom:4px}
-  .rail .label,.soon{display:none}
-  .mod{flex:none;border-color:var(--line);background:var(--surface);max-width:230px}
-  .brand .stats{margin-left:0;width:100%}
+@media (max-width:760px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .lecnav{position:static;flex-direction:row;overflow-x:auto;padding-bottom:6px}
+  .lecbtn{grid-template-columns:auto;flex:none;padding:8px 12px;border:1px solid var(--line);background:var(--surface)}
+  .lecbtn .ttl,.lecbtn .ok{display:none}
+  .lecbtn[aria-current="true"]{box-shadow:inset 0 -3px 0 var(--hue)}
+  .top .sub{margin-left:0;width:100%}
+  .up{grid-template-columns:60px minmax(0,1fr)}
+  .up .chip{grid-column:2;justify-self:start}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="wrap">
-  <header class="brand">
-    <svg class="logo" viewBox="0 0 44 44" aria-hidden="true">
-      <rect x="2" y="2" width="40" height="40" rx="11" fill="var(--teal)"/>
-      <rect x="18" y="10" width="8" height="24" rx="2" fill="var(--surface)"/>
-      <rect x="10" y="18" width="24" height="8" rx="2" fill="var(--surface)"/>
-      <circle cx="22" cy="22" r="3.4" fill="var(--amber)"/>
-    </svg>
-    <div>
-      <h1>Noor <span>E-Learning</span></h1>
-      <p>Made for Noor · Pharmacy, Year 2 · MSA University</p>
-    </div>
-    <div class="stats" id="stats"></div>
+  <header class="top">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="10" fill="var(--teal)"/><rect x="16.5" y="8" width="7" height="24" rx="2" fill="var(--surface)"/><rect x="8" y="16.5" width="24" height="7" rx="2" fill="var(--surface)"/><circle cx="20" cy="20" r="3.2" fill="var(--amber)"/></svg>
+    <button class="brand" id="home">Noor <span>E-Learning</span></button>
+    <div class="sub">Pharmacy · Year 2 · MSA University · Fall 2026</div>
   </header>
-
-  <nav class="rail" aria-label="Modules">
-    <div class="label">Modules</div>
-    <div id="modlist" style="display:contents"></div>
-    <div class="soon">More modules coming: Autonomic pharmacology, Antimicrobials, Drug interactions.</div>
-  </nav>
-
-  <main>
-    <div class="mhead"><h2 id="mtitle"></h2><p id="msub"></p></div>
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" id="tab-learn" aria-selected="true">Explanation</button>
-      <button class="tab" role="tab" id="tab-quiz" aria-selected="false">Quiz</button>
-    </div>
-    <section id="view"></section>
-  </main>
+  <main id="view"></main>
+  <footer>Lessons and quizzes built from Noor's MSA e-learning lectures (Fall 2026). Progress is saved in this browser.</footer>
 </div>
 
 <script>
-const MODULES = [
+const COURSES = [
 {
-  id:"pk", code:"Pharmacology · Module 1", name:"Pharmacokinetics",
-  sub:"What the body does to the drug: absorption, distribution, metabolism and excretion (ADME), and the numbers that describe them.",
-  lesson:`
-  <div class="sec"><h3><span class="n">1</span>ADME at a glance</h3>
-    <p>Every drug travels the same route: it gets into the blood, spreads to tissues, is chemically changed, and leaves the body. Pharmacokinetics turns that journey into numbers you can use to choose a dose.</p>
-    <div class="terms">
-      <div class="term"><b>Absorption</b><span>Movement from the site of administration into the circulation.</span></div>
-      <div class="term"><b>Distribution</b><span>Reversible movement from blood into tissues and body fluids.</span></div>
-      <div class="term"><b>Metabolism</b><span>Chemical conversion, mainly in the liver, usually to more polar compounds.</span></div>
-      <div class="term"><b>Excretion</b><span>Removal from the body, mainly by the kidneys, also bile and lungs.</span></div>
-    </div>
-  </div>
-  <div class="sec"><h3><span class="n">2</span>Bioavailability (F)</h3>
-    <p>Bioavailability is the fraction of an administered dose that reaches the systemic circulation unchanged. An IV dose has F = 1 (100%) by definition. Oral doses are often lower because of incomplete absorption and <b>first-pass metabolism</b> in the gut wall and liver.</p>
-    <div class="formula">F = (AUC<sub>oral</sub> × Dose<sub>IV</sub>) / (AUC<sub>IV</sub> × Dose<sub>oral</sub>)<small>AUC = area under the plasma concentration–time curve</small></div>
-    <div class="pearl"><strong>Clinical pearl.</strong> Nitroglycerin has a very high first-pass effect, so for angina it is given sublingually, which drains into the systemic circulation and bypasses the liver.</div>
-  </div>
-  <div class="sec"><h3><span class="n">3</span>Volume of distribution (Vd)</h3>
-    <p>Vd is the apparent volume the drug would need to occupy to give the measured plasma concentration. It is not a real anatomical space. A large Vd means the drug leaves the plasma and binds tissues (for example lipophilic drugs); a small Vd means it stays mainly in the blood (for example highly protein-bound or large polar drugs).</p>
-    <div class="formula">Vd = Amount of drug in body / Plasma concentration (C₀)</div>
-  </div>
-  <div class="sec"><h3><span class="n">4</span>Metabolism</h3>
-    <div class="tblwrap"><table>
-      <tr><th>Phase</th><th>Reactions</th><th>Typical result</th></tr>
-      <tr><td><b>Phase I</b></td><td>Oxidation, reduction, hydrolysis, mostly by cytochrome P450 (CYP) enzymes</td><td>Adds or exposes a functional group; product may be active, inactive or toxic</td></tr>
-      <tr><td><b>Phase II</b></td><td>Conjugation: glucuronidation, sulfation, acetylation, glutathione conjugation</td><td>Larger, more water-soluble, usually inactive, easier to excrete</td></tr>
-    </table></div>
-    <div class="pearl"><strong>Clinical pearl.</strong> CYP3A4 metabolizes roughly half of marketed drugs. Inhibitors such as clarithromycin or grapefruit juice can raise levels of its substrates; inducers such as rifampicin can lower them.</div>
-  </div>
-  <div class="sec"><h3><span class="n">5</span>Clearance and half-life</h3>
-    <p><b>Clearance (CL)</b> is the volume of plasma cleared of drug per unit time. <b>Half-life (t½)</b> is the time for the plasma concentration to fall by 50%. Most drugs follow <b>first-order kinetics</b>: a constant <i>fraction</i> is eliminated per unit time. A few (ethanol, and phenytoin or aspirin at high doses) follow <b>zero-order kinetics</b>: a constant <i>amount</i> per unit time, because the enzymes are saturated.</p>
-    <div class="formula">t½ = 0.693 × Vd / CL &nbsp;&nbsp;|&nbsp;&nbsp; k<sub>e</sub> = 0.693 / t½ &nbsp;&nbsp;|&nbsp;&nbsp; CL = k<sub>e</sub> × Vd</div>
-    <div class="sim" id="sim">
-      <div class="row">
-        <label for="hl">Half-life</label><input type="range" id="hl" min="1" max="24" step="1" value="6"><output id="hlout">6 h</output>
-        <label for="dose">Dose</label><input type="range" id="dose" min="50" max="500" step="50" value="100"><output id="doseout">100 mg</output>
-      </div>
-      <svg id="chart" viewBox="0 0 640 230" role="img" aria-label="Amount of drug remaining over 48 hours"></svg>
-      <div class="readout" id="readout"></div>
-    </div>
-  </div>
-  <div class="sec"><h3><span class="n">6</span>Steady state and dosing</h3>
-    <p>With repeated dosing, a drug reaches steady state (intake = elimination) after about <b>4–5 half-lives</b>, whatever the dose. When that is too slow, a <b>loading dose</b> fills Vd quickly; the <b>maintenance dose</b> replaces what is cleared.</p>
-    <div class="formula">Loading dose = (C<sub>target</sub> × Vd) / F &nbsp;&nbsp;|&nbsp;&nbsp; Maintenance dose rate = (C<sub>target</sub> × CL) / F</div>
-    <div class="pearl"><strong>Remember.</strong> Loading dose depends on Vd. Maintenance dose depends on clearance. In renal impairment, reduce the maintenance dose of renally cleared drugs; the loading dose usually stays the same.</div>
-  </div>`,
-  quiz:[
-    {q:"A drug has a half-life of 6 hours. After 18 hours, how much of a 100 mg dose remains in the body (first-order kinetics)?", o:["50 mg","33 mg","25 mg","12.5 mg"], a:3, e:"18 h is three half-lives: 100 → 50 → 25 → 12.5 mg."},
-    {q:"A 500 mg IV bolus gives an initial plasma concentration of 10 mg/L. What is the volume of distribution?", o:["5 L","50 L","500 L","5000 L"], a:1, e:"Vd = Dose / C₀ = 500 mg ÷ 10 mg/L = 50 L."},
-    {q:"Which route has a bioavailability of 100% by definition?", o:["Oral","Sublingual","Intravenous","Transdermal"], a:2, e:"An IV dose enters the systemic circulation directly, so F = 1."},
-    {q:"Approximately how long does it take to reach steady state with repeated dosing?", o:["1 half-life","2 half-lives","4–5 half-lives","10 half-lives"], a:2, e:"After 4–5 half-lives about 94–97% of steady state is reached, regardless of dose size."},
-    {q:"Which reaction is a Phase II metabolic reaction?", o:["Oxidation by CYP450","Hydrolysis","Glucuronidation","Reduction"], a:2, e:"Glucuronidation is a conjugation reaction, which defines Phase II. The others are Phase I."},
-    {q:"Ethanol is eliminated at a roughly constant amount per hour. This is described as:", o:["First-order kinetics","Zero-order kinetics","Second-order kinetics","Non-linear distribution"], a:1, e:"A constant amount per unit time, due to enzyme saturation, is zero-order elimination."},
-    {q:"A drug has Vd = 40 L and elimination rate constant kₑ = 0.1 h⁻¹. What is its clearance?", o:["0.4 L/h","4 L/h","40 L/h","400 L/h"], a:1, e:"CL = kₑ × Vd = 0.1 h⁻¹ × 40 L = 4 L/h."},
-    {q:"Rifampicin is given to a patient stable on a CYP3A4 substrate. What is the expected effect on the substrate's plasma level?", o:["Increase","Decrease","No change","Doubling of half-life"], a:1, e:"Rifampicin is a strong CYP3A4 inducer, so the substrate is metabolized faster and its level falls."},
-    {q:"In a patient with reduced renal function, which dose of a renally cleared drug usually needs reducing?", o:["Loading dose","Maintenance dose","Both equally","Neither"], a:1, e:"Maintenance dose depends on clearance, which falls in renal impairment. Loading dose depends on Vd."},
-    {q:"Why is nitroglycerin given sublingually for acute angina?", o:["It is destroyed by stomach acid only","To avoid extensive first-pass hepatic metabolism","Because it is too large to be absorbed orally","To prolong its half-life"], a:1, e:"Sublingual absorption bypasses the portal circulation, avoiding the liver's high first-pass extraction."}
-  ]
+ id:"genetics", code:"PHB221", name:"Molecular Genetics", hue:"var(--c1)",
+ staff:"Assoc. Prof. Amr Abdelhamid · Dr. Mohamed Abdelghany",
+ lectures:[
+ {n:1,t:"DNA structure and replication",h:`
+ <p>DNA is a <b>double helix</b> of two <b>antiparallel</b> strands (one runs 5'→3', the other 3'→5'). The sugar–phosphate backbone is outside; the bases are inside.</p>
+ <ul>
+ <li><b>Franklin</b> (X-ray crystallography): backbone outside, bases inside, helical, two strands.</li>
+ <li><b>Chargaff's rules</b>: A = T and G = C, so purines (A+G) = pyrimidines (T+C). A=T has <b>2</b> H-bonds; G≡C has <b>3</b> (about 50% stronger).</li>
+ <li><b>Watson & Crick (1953)</b>: double helix, antiparallel, read 5'→3'.</li>
+ <li>Nucleotides are linked by <b>phosphodiester bonds</b> (3'-OH of one sugar to 5' of the next). Base–sugar link = <b>N-glycosidic bond</b>.</li>
+ </ul>
+ <div class="terms"><div class="term"><b>Nucleobase</b><span>Base only</span></div><div class="term"><b>Nucleoside</b><span>Base + pentose</span></div><div class="term"><b>Nucleotide</b><span>Base + pentose + phosphate</span></div></div>
+ <p><b>DNA forms:</b> B (right-handed, common in cells, high water), A (right-handed, dehydrated), Z (left-handed, rare, narrow and elongated).</p>
+ <p><b>Packing:</b> DNA wraps ~<b>146 bp</b> around a histone octamer = one <b>nucleosome</b> → chromatin fibre → chromosome.</p>
+ <h4>Replication is semiconservative</h4>
+ <ol>
+ <li><b>Origin</b>: AT-rich consensus sequence (one in prokaryotes, many in eukaryotes). DnaA binds (needs ATP).</li>
+ <li><b>Helicase</b> unwinds (ATP); <b>SSB proteins</b> keep strands apart; <b>topoisomerase</b> relieves supercoils ahead of the fork.</li>
+ <li><b>Primase</b> makes a short RNA <b>primer</b> (~10 nt).</li>
+ <li><b>DNA pol III</b> adds dNTPs to the free 3'-OH: reads template 3'→5', builds new strand 5'→3'. <b>Leading strand</b> = continuous (1 primer). <b>Lagging strand</b> = discontinuous <b>Okazaki fragments</b> (many primers).</li>
+ <li><b>DNA pol I</b> removes primers (5'→3' exonuclease) and fills gaps.</li>
+ <li><b>Ligase</b> seals nicks with a phosphodiester bond (ATP → AMP + PPi).</li>
+ </ol>
+ <div class="tblwrap"><table><tr><th>DNA pol III</th><th>DNA pol I</th></tr><tr><td>5'→3' polymerase (main synthesis)<br>3'→5' exonuclease = proofreading</td><td>5'→3' exonuclease removes primers<br>5'→3' polymerase fills gaps<br>3'→5' proofreading</td></tr></table></div>
+ <div class="pearl"><strong>Exam order:</strong> Helicase → Topoisomerase → Primase → Pol III → Pol I → Ligase.</div>`},
+ {n:2,t:"End replication problem and transcription",h:`
+ <p>DNA polymerases only build 5'→3' and cannot start without a primer, so the extreme 3' end of the lagging strand is not copied: the <b>end replication problem</b>.</p>
+ <ul>
+ <li><b>Telomeres</b> cap chromosome ends: tandem <b>TTAGGG</b> repeats + a 12–16 nt 3' overhang. Humans: 46 chromosomes = <b>92 telomeres</b>.</li>
+ <li><b>Telomerase</b> = protein + its own RNA template; it works as a <b>reverse transcriptase</b> (binding → polymerization → translocation).</li>
+ <li>Low telomerase in normal cells → telomeres shorten with age (~10,000 bp at birth → ~5,000 bp late in life). <b>Cancer cells often have high telomerase</b>, a drug target. Nobel 2009: Blackburn, Greider, Szostak.</li>
+ </ul>
+ <h4>Transcription (DNA → RNA)</h4>
+ <ul>
+ <li><b>Template (antisense) strand</b> is read; <b>coding (sense) strand</b> has the same sequence as the mRNA (T instead of U).</li>
+ <li>RNA pol slides 3'→5' on the template and synthesizes RNA 5'→3'.</li>
+ </ul>
+ <div class="tblwrap"><table><tr><th>Enzyme</th><th>Transcribes</th></tr><tr><td>RNA pol I</td><td>rRNA (except 5S)</td></tr><tr><td>RNA pol II</td><td>All mRNA (structural genes), some snRNA</td></tr><tr><td>RNA pol III</td><td>tRNA and 5S rRNA</td></tr></table></div>
+ <p><b>Eukaryotic gene parts:</b> exons (coding), introns (non-coding, start GT and end AG), promoter with <b>TATA box</b> (~25 bp upstream, binds TFs + RNA pol II) and <b>CAAT box</b> (sets how often transcription starts), <b>enhancers</b> (activators bind, ↑ rate) and <b>silencers</b> (repressors bind, ↓ rate).</p>
+ <p><b>Cis-acting</b> = DNA sequences (TATA, enhancers, silencers). <b>Trans-acting</b> = proteins that bind them.</p>
+ <h4>Stages</h4>
+ <ul><li><b>Initiation:</b> TFIID (TBP + TAFs) recognizes the promoter; TFIIB bridges to RNA pol II; <b>TFIIH</b> acts as helicase (open complex) and phosphorylates the CTD of pol II; TFIIE helps the move into elongation.</li>
+ <li><b>Elongation:</b> pol II unwinds 10–20 bases at a time.</li>
+ <li><b>Termination:</b> poly-A signal <b>AAUAAA</b>; transcript cut 10–35 nt downstream.</li></ul>`},
+ {n:3,t:"RNA processing and translation",h:`
+ <p><b>Chromatin remodeling:</b> tight histone–DNA blocks RNA pol. Activators recruit <b>histone acetyltransferase (HAT)</b>; acetylation lowers histone basicity → DNA loosens → promoter exposed. <b>Histone deacetylase (HDAC)</b> reverses this.</p>
+ <h4>Post-transcriptional modification</h4>
+ <ul>
+ <li><b>Splicing</b> by the <b>spliceosome</b> (snRNPs, "snurps"): introns removed from pre-mRNA (hnRNA), exons joined. Also group I and group II self-splicing.</li>
+ <li><b>Alternative splicing</b>: one gene → several proteins.</li>
+ <li><b>5' cap</b>: 7-methylguanosine, added when the transcript is only 20–25 nt long. Protects from nucleases, helps export and ribosome binding.</li>
+ <li><b>3' poly-A tail</b>: not encoded in the gene; added after transcription. Stability and translation.</li>
+ <li>Trimming of rRNA and tRNA; editing and base modification of tRNA.</li>
+ </ul>
+ <h4>Translation (mRNA → protein)</h4>
+ <ul>
+ <li><b>tRNA</b>: L-shaped, ~80 nt; carries an amino acid and an <b>anticodon</b>. <b>Aminoacyl-tRNA synthetase</b> attaches the right amino acid.</li>
+ <li><b>Wobble</b>: flexible pairing at the <b>third</b> codon base only (G pairs C or U).</li>
+ <li><b>Ribosome</b>: rRNA 40% + protein 60%. Sites: <b>A</b> (new aminoacyl-tRNA), <b>P</b> (growing peptide), <b>E</b> (exit).</li>
+ <li><b>Initiation:</b> small 40S subunit binds the 5' cap, finds <b>AUG</b> (Met); 60S joins.</li>
+ <li><b>Elongation:</b> codon recognition (GTP) → peptide bond → translocation (GTP). Chain grows N-terminus → C-terminus.</li>
+ <li><b>Termination:</b> stop codon in A site, no tRNA binds, peptide released.</li>
+ <li><b>Polysome</b>: many ribosomes on one mRNA.</li>
+ </ul>`},
+ {n:4,t:"Post-translational modifications and the genetic code",h:`
+ <p>PTMs are chemical changes after a protein is made. ~20,000–25,000 genes give a proteome of over 1 million proteins, mainly through alternative splicing plus PTMs.</p>
+ <div class="tblwrap"><table><tr><th>PTM</th><th>Key facts</th></tr>
+ <tr><td>Phosphorylation</td><td>On Ser, Thr, Tyr. Kinases add, phosphatases remove. Adds negative charge. Activates p53. <b>Inhibits</b> acetyl-CoA carboxylase (activated by dephosphorylation).</td></tr>
+ <tr><td>Hydroxylation</td><td>Hydroxylases; Pro and Lys in collagen.</td></tr>
+ <tr><td>Acetylation</td><td>Histone acetylation reduces positive charge → DNA looser → transcription.</td></tr>
+ <tr><td>Methylation</td><td>Methyltransferases on Lys (up to 3×) or Arg (up to 2×). On histones can activate or repress.</td></tr>
+ <tr><td>Ubiquitination</td><td>Ubiquitin (8.6 kDa) tags proteins, often for <b>proteasome</b> degradation.</td></tr>
+ <tr><td>Proteolysis</td><td>Cleavage, e.g. removal of N-terminal Met, activation of inactive precursors.</td></tr>
+ <tr><td>Carboxylation</td><td>γ-glutamyl carboxylase; needs <b>vitamin K</b> (clotting factors).</td></tr></table></div>
+ <div class="pearl"><strong>Nobel 2019 (HIF-1α):</strong> at normal O₂, HIF-1α is <b>prolyl-hydroxylated</b> → recognized by <b>VHL</b> → ubiquitinated → degraded in the proteasome. At low O₂, HIF-1α builds up and switches on genes such as EPO.</div>
+ <h4>Genetic code</h4>
+ <ul><li>Codon = 3 bases. 4×4×4 = <b>64 codons</b>: 61 code amino acids, 3 are stop codons.</li>
+ <li><b>AUG</b> = Met and the start codon. Several codons can code the same amino acid (redundancy).</li>
+ <li>Example: AUG-GUG-CCA-CGA-AGG-UGA = Met-Val-Pro-Arg-Arg-Stop.</li></ul>`},
+ {n:5,t:"Regulation of gene expression I",h:`
+ <ul><li><b>Constitutive</b> genes: always on, constant level (survival, metabolic enzymes). <b>Facultative</b>: on only under certain conditions.</li>
+ <li><b>Epigenetics</b>: changes in gene expression without changing the DNA sequence. Three tools: cis/trans elements, ncRNAs, histone modifications.</li></ul>
+ <h4>Proteins and DNA elements</h4>
+ <ul><li><b>C/EBPs</b>: family of 6 TFs that recruit co-activators.</li>
+ <li><b>Sp1</b> binds <b>GC boxes</b> and recruits TFIID and RNA pol II.</li>
+ <li>Activators have a <b>DNA-binding domain</b> and a <b>regulatory domain</b>; at enhancers they recruit HAT. <b>Coactivators</b> pass the signal to the basal factors.</li>
+ <li>Thymidine kinase promoter: GC, CAAT, GC, TATA (at about −25).</li></ul>
+ <h4>DNA methylation</h4>
+ <p>DNA methylase adds −CH₃ at <b>CpG islands</b> near promoters → <b>represses</b> transcription by (1) blocking Sp1 binding to the GC box and (2) recruiting <b>methyl-CpG binding protein</b> + HDAC → closed chromatin. Unmethylated CpG islands = active genes.</p>
+ <h4>Non-coding RNAs</h4>
+ <ul><li>Transcribed but not translated; include miRNA, lncRNA, circRNA.</li>
+ <li><b>miRNA</b>: ~22 nt single strand; made by RNA pol II as hairpin, cut by <b>Dicer</b>, works inside <b>RISC</b>; binds the <b>3'UTR</b> of target mRNA → degradation or translational block.</li>
+ <li>Nobel 2024: Ambros & Ruvkun, discovery of microRNA.</li></ul>
+ <div class="pearl"><strong>Case logic:</strong> more miRNA-181 → less telomerase (its mRNA is silenced).</div>`},
+ {n:6,t:"Regulation of gene expression II",h:`
+ <ul><li><b>circRNA</b>: made by <b>back-splicing</b> (5' end joins 3' end). Half-life ~48 h, about 5× more stable than linear mRNA. Acts as a <b>miRNA sponge</b>.</li>
+ <li><b>lncRNA</b>: &gt;200 nt (usually 1,000–10,000), made by pol II, capped and polyadenylated. Works as <b>guide</b>, <b>scaffold</b>, <b>decoy</b> for TFs, or binds miRNA.</li></ul>
+ <div class="pearl"><strong>Case logic:</strong> a circRNA that sponges miRNA-181 goes down → more free miRNA-181 → less telomerase.</div>
+ <h4>Histones and chromatin</h4>
+ <ul><li>Octamer = 2 × (H2A, H2B, H3, H4). <b>H1</b> is the linker histone → 30 nm fibre.</li>
+ <li><b>CENP-A</b> replaces H3 at centromeres (kinetochore attachment).</li>
+ <li>Remodeling complexes use ATP to <b>slide</b>, <b>transfer</b> or <b>remodel</b> nucleosomes.</li>
+ <li>Positioning: A:T-rich DNA bends easily toward the minor groove facing the octamer.</li></ul>
+ <div class="tblwrap"><table><tr><th>Histone tail change</th><th>Effect</th></tr><tr><td>Lysine acetylation</td><td>Active chromatin</td></tr><tr><td>Deacetylation</td><td>Repressed chromatin</td></tr><tr><td>Methylation</td><td>Active or repressed (depends on residue)</td></tr><tr><td>Serine phosphorylation</td><td>Active chromatin</td></tr></table></div>
+ <p><b>Bromodomains</b> read acetylated tails; <b>chromodomains</b> read methylated tails.</p>
+ <h4>Examples and motifs</h4>
+ <ul><li>Cell differentiation: same genome, different proteome.</li>
+ <li>Globin switching from embryo → fetus → adult changes oxygen affinity (highest in embryo).</li>
+ <li>DNA-binding proteins read the <b>major groove</b>. Motifs: <b>helix-turn-helix</b> (most common), <b>zinc finger</b> (more fingers = tighter binding), <b>leucine zipper</b> (Y-shaped dimer joined by leucines).</li></ul>`},
+ {n:7,t:"Genetic variation and the Human Genome Project",h:`
+ <ul><li><b>HGP</b>: launched Oct 1990, completed Apr 2003; international consortium of 20 centres in 6 countries; used and improved <b>Sanger sequencing</b>.</li>
+ <li>Draft (June 2000) covered ~90%; 2003 version ~<b>92%</b> with &lt;400 gaps. Hard regions: telomeres and centromeres (highly repetitive).</li>
+ <li><b>T2T consortium, March 2022</b>: first truly complete human genome.</li>
+ <li>Impact: genetic testing, ancestry, <b>precision medicine</b>.</li>
+ <li><b>Egyptian Genome Project</b> (March 2021): a reference Egyptian genome, genes of common diseases, ancient Egyptian genomes, personalized medicine.</li>
+ <li>Humans are <b>99.9%</b> identical at the base-pair level; the 0.1% (e.g. SNPs) shapes traits and disease risk.</li></ul>`}
+ ],
+ quiz:[
+ {l:1,q:"How many hydrogen bonds hold a G–C base pair together?",o:["1","2","3","4"],a:2,e:"G≡C has 3 hydrogen bonds, which makes it about 50% stronger than A=T (2 bonds)."},
+ {l:1,q:"Which enzyme removes the RNA primers during DNA replication?",o:["DNA polymerase III","DNA polymerase I","Primase","Ligase"],a:1,e:"Pol I uses its 5'→3' exonuclease activity to remove primers, then fills the gaps."},
+ {l:1,q:"Okazaki fragments are formed on the:",o:["Leading strand","Lagging strand","Template strand of RNA","Coding strand"],a:1,e:"The lagging strand grows away from the fork, so it is made discontinuously in short fragments."},
+ {l:1,q:"A nucleoside consists of:",o:["Base only","Base + pentose","Base + pentose + phosphate","Pentose + phosphate"],a:1,e:"Nucleoside = base + sugar. Add a phosphate and it becomes a nucleotide."},
+ {l:1,q:"Which DNA form is left-handed?",o:["A-DNA","B-DNA","Z-DNA","All of them"],a:2,e:"Z-DNA is the rare left-handed form. A and B are right-handed."},
+ {l:1,q:"Which protein relieves the supercoils that form ahead of the replication fork?",o:["SSB proteins","Topoisomerase","DnaA","Primase"],a:1,e:"Topoisomerases relieve supercoiling caused by unwinding."},
+ {l:2,q:"Telomerase extends telomeres because it acts as a:",o:["DNA-dependent RNA polymerase","Reverse transcriptase with its own RNA template","Ligase","Restriction enzyme"],a:1,e:"Telomerase carries an RNA template and synthesizes DNA from it, which is reverse transcription."},
+ {l:2,q:"RNA polymerase III transcribes:",o:["All mRNA","rRNA except 5S","tRNA and 5S rRNA","Mitochondrial DNA only"],a:2,e:"Pol I: rRNA (except 5S). Pol II: mRNA. Pol III: tRNA + 5S rRNA."},
+ {l:2,q:"The coding (sense) strand of DNA:",o:["Is used as the template","Has the same sequence as the mRNA (T for U)","Is complementary to the mRNA","Is always on the 3' side"],a:1,e:"The template (antisense) strand is read; the coding strand matches the mRNA sequence."},
+ {l:2,q:"Which general transcription factor has helicase activity and phosphorylates the CTD of RNA pol II?",o:["TFIIB","TFIID","TFIIE","TFIIH"],a:3,e:"TFIIH opens the DNA (helicase) and phosphorylates the CTD, releasing pol II into elongation."},
+ {l:3,q:"The 5' cap of eukaryotic mRNA is:",o:["A poly-A sequence","7-methylguanosine","A TATA box","An anticodon loop"],a:1,e:"A 7-methylguanosine cap is added early, when the transcript is 20–25 nt long."},
+ {l:3,q:"Which ribosomal site holds the tRNA carrying the growing polypeptide?",o:["A site","P site","E site","Exit tunnel"],a:1,e:"A = incoming aminoacyl-tRNA, P = peptidyl-tRNA, E = empty tRNA leaving."},
+ {l:3,q:"Wobble pairing happens at which position of the codon?",o:["First base","Second base","Third base","Any base"],a:2,e:"Only the third base is flexible; the first two must pair exactly."},
+ {l:4,q:"At normal oxygen levels, HIF-1α is degraded because it is first:",o:["Phosphorylated on tyrosine","Prolyl-hydroxylated, then recognized by VHL and ubiquitinated","Acetylated by HAT","Glycosylated in the Golgi"],a:1,e:"Prolyl hydroxylation lets VHL bind, ubiquitin is added, and the proteasome destroys HIF-1α (Nobel 2019)."},
+ {l:4,q:"Protein phosphorylation occurs on which residues?",o:["Lys and Arg","Ser, Thr and Tyr","Pro and Lys","Gly and Ala"],a:1,e:"Kinases add phosphate to serine, threonine or tyrosine."},
+ {l:4,q:"How many of the 64 codons specify amino acids?",o:["20","60","61","64"],a:2,e:"61 code amino acids; 3 are stop codons."},
+ {l:5,q:"A microRNA silences its target by binding to the:",o:["Promoter","5' cap","3'UTR of the mRNA","TATA box"],a:2,e:"miRNA, inside RISC, pairs with the 3'UTR and causes degradation or blocks translation."},
+ {l:5,q:"Methylation of CpG islands near a promoter usually:",o:["Activates transcription","Represses transcription","Has no effect","Causes alternative splicing"],a:1,e:"It blocks Sp1 binding and recruits methyl-CpG binding protein + HDAC, closing chromatin."},
+ {l:6,q:"Bromodomains recognize:",o:["Methylated histone tails","Acetylated histone tails","Phosphorylated DNA","CpG islands"],a:1,e:"Bromodomains read acetylation; chromodomains read methylation."},
+ {l:6,q:"Circular RNAs commonly regulate gene expression by:",o:["Coding for proteins","Acting as miRNA sponges","Adding the 5' cap","Replacing histone H3"],a:1,e:"circRNAs bind and sequester miRNAs, freeing those miRNAs' target mRNAs."},
+ {l:6,q:"Which histone variant replaces H3 at centromeres?",o:["H1","H2A.Z","CENP-A","H4"],a:2,e:"CENP-A nucleosomes are built into the kinetochore that attaches to the spindle."},
+ {l:7,q:"When was the first truly complete (telomere-to-telomere) human genome announced?",o:["2000","2003","2013","2022"],a:3,e:"The T2T consortium filled the last gaps in March 2022."}
+ ]
 },
 {
-  id:"pd", code:"Pharmacology · Module 2", name:"Pharmacodynamics",
-  sub:"What the drug does to the body: receptors, dose–response curves, potency, efficacy and safety margins.",
-  lesson:`
-  <div class="sec"><h3><span class="n">1</span>Drugs and receptors</h3>
-    <p>Most drugs act by binding to a target protein, usually a receptor. Binding strength is <b>affinity</b>; the ability to activate the receptor once bound is <b>intrinsic activity</b>.</p>
-    <div class="terms">
-      <div class="term"><b>Full agonist</b><span>Binds and produces the maximal response (e.g. morphine at μ-opioid receptors).</span></div>
-      <div class="term"><b>Partial agonist</b><span>Binds but gives a submaximal response, even at full occupancy (e.g. buprenorphine).</span></div>
-      <div class="term"><b>Antagonist</b><span>Binds without activating; blocks the agonist (e.g. naloxone).</span></div>
-      <div class="term"><b>Inverse agonist</b><span>Reduces constitutive receptor activity below baseline.</span></div>
-    </div>
-  </div>
-  <div class="sec"><h3><span class="n">2</span>Four receptor families</h3>
-    <div class="tblwrap"><table>
-      <tr><th>Family</th><th>Speed</th><th>Example</th></tr>
-      <tr><td>Ligand-gated ion channels</td><td>Milliseconds</td><td>Nicotinic ACh receptor, GABA<sub>A</sub></td></tr>
-      <tr><td>G protein-coupled receptors</td><td>Seconds</td><td>β-adrenoceptors, muscarinic receptors</td></tr>
-      <tr><td>Enzyme-linked (kinase) receptors</td><td>Minutes to hours</td><td>Insulin receptor (tyrosine kinase)</td></tr>
-      <tr><td>Nuclear (intracellular) receptors</td><td>Hours to days</td><td>Glucocorticoid, thyroid hormone receptors</td></tr>
-    </table></div>
-  </div>
-  <div class="sec"><h3><span class="n">3</span>Potency vs efficacy</h3>
-    <p><b>Potency</b> is how much drug is needed for a given effect, measured by EC<sub>50</sub> (the concentration giving 50% of maximal effect). Lower EC<sub>50</sub> means higher potency. <b>Efficacy</b> is the maximum effect a drug can produce (E<sub>max</sub>). Clinically, efficacy usually matters more than potency.</p>
-    <div class="pearl"><strong>Exam tip.</strong> On a log dose–response curve, a curve further to the <i>left</i> is more potent; a <i>taller</i> curve is more efficacious.</div>
-  </div>
-  <div class="sec"><h3><span class="n">4</span>Types of antagonism</h3>
-    <div class="tblwrap"><table>
-      <tr><th>Type</th><th>Effect on agonist curve</th><th>Overcome by more agonist?</th></tr>
-      <tr><td>Competitive (reversible)</td><td>Shifts right; E<sub>max</sub> unchanged; EC<sub>50</sub> increased</td><td>Yes</td></tr>
-      <tr><td>Irreversible / non-competitive</td><td>E<sub>max</sub> reduced</td><td>No</td></tr>
-      <tr><td>Physiological</td><td>Opposing effect through a different receptor (e.g. adrenaline vs histamine in anaphylaxis)</td><td>Not applicable</td></tr>
-      <tr><td>Chemical</td><td>Antagonist binds the drug itself (e.g. protamine neutralizes heparin)</td><td>Not applicable</td></tr>
-    </table></div>
-  </div>
-  <div class="sec"><h3><span class="n">5</span>Safety margin</h3>
-    <div class="formula">Therapeutic index (TI) = TD<sub>50</sub> / ED<sub>50</sub><small>TD₅₀: dose toxic in 50% of subjects · ED₅₀: dose effective in 50% of subjects</small></div>
-    <p>A narrow TI means toxic doses are close to effective ones, so plasma levels are often monitored.</p>
-    <div class="pearl"><strong>Narrow TI drugs to know:</strong> digoxin, lithium, warfarin, phenytoin, theophylline, aminoglycosides.</div>
-  </div>`,
-  quiz:[
-    {q:"Drug A has an EC₅₀ of 2 nM and Drug B an EC₅₀ of 20 nM, with the same Eₘₐₓ. Which statement is correct?", o:["A is more efficacious","A is more potent","B is more potent","They are equally potent"], a:1, e:"Lower EC₅₀ means less drug is needed: A is ten times more potent. Equal Eₘₐₓ means equal efficacy."},
-    {q:"A competitive reversible antagonist affects the agonist dose–response curve by:", o:["Lowering Eₘₐₓ","Shifting it to the right with Eₘₐₓ unchanged","Shifting it to the left","Making it steeper"], a:1, e:"More agonist can outcompete the antagonist, so maximum effect is still reached at higher concentrations."},
-    {q:"Buprenorphine produces a submaximal response even at full receptor occupancy. It is a:", o:["Full agonist","Partial agonist","Competitive antagonist","Inverse agonist"], a:1, e:"Submaximal intrinsic activity at full occupancy defines a partial agonist."},
-    {q:"The therapeutic index is calculated as:", o:["ED₅₀ / TD₅₀","TD₅₀ / ED₅₀","EC₅₀ × Eₘₐₓ","LD₅₀ − ED₅₀"], a:1, e:"TI = TD₅₀ / ED₅₀. A larger TI means a wider safety margin."},
-    {q:"Which receptor type produces the slowest response?", o:["Ligand-gated ion channel","G protein-coupled receptor","Tyrosine kinase receptor","Nuclear receptor"], a:3, e:"Nuclear receptors change gene transcription and protein synthesis, which takes hours to days."},
-    {q:"Protamine reverses heparin by binding to it directly. This is:", o:["Competitive antagonism","Physiological antagonism","Chemical antagonism","Irreversible antagonism"], a:2, e:"The antagonist combines with the drug itself rather than acting at a receptor."},
-    {q:"Which drug has a narrow therapeutic index?", o:["Amoxicillin","Paracetamol at normal doses","Lithium","Omeprazole"], a:2, e:"Lithium's toxic levels are close to therapeutic ones, so serum levels are routinely monitored."},
-    {q:"Adrenaline treats bronchospasm in anaphylaxis by acting on β₂ receptors, opposing histamine. This is:", o:["Chemical antagonism","Physiological antagonism","Competitive antagonism","Pharmacokinetic antagonism"], a:1, e:"Two agonists acting on different receptors produce opposite effects: physiological antagonism."}
-  ]
+ id:"physio", code:"PHO221", name:"Physiology & Pathophysiology", hue:"var(--c2)",
+ staff:"Assoc. Prof. Sameh Shaaban · Dr. Omnia Farouk · Dr. Nada Ezz",
+ lectures:[
+ {n:1,t:"Body fluids, membrane transport and water balance",h:`
+ <p><b>Physiology</b> = normal function. <b>Pathophysiology</b> = the deranged function that occurs in disease. Organization: cell → tissue → organ → system → organism.</p>
+ <div class="tblwrap"><table><tr><th>Transport</th><th>Energy</th><th>Example</th></tr>
+ <tr><td>Simple diffusion</td><td>None, down gradient, no protein</td><td>O₂, CO₂, lipid-soluble molecules</td></tr>
+ <tr><td>Facilitated diffusion</td><td>None, down gradient, via channel/carrier</td><td>Glucose by GLUT carriers</td></tr>
+ <tr><td>Primary active</td><td>ATP directly, against gradient</td><td>Na⁺/K⁺-ATPase (3 Na⁺ out, 2 K⁺ in)</td></tr>
+ <tr><td>Secondary active (co-transport)</td><td>Uses an existing Na⁺ gradient</td><td>Na⁺–glucose co-transport in gut</td></tr></table></div>
+ <ul><li><b>Water balance:</b> high blood solute (dehydration) → hypothalamic osmoreceptors → <b>ADH</b> from the <b>posterior pituitary</b> → kidneys reabsorb water.</li>
+ <li><b>Dehydration</b> signs: low BP, high heart rate, dry skin/mucosa, no sweating; severe (10–15% water loss): lethargy, delirium. The elderly have less body water and dehydrate easily.</li>
+ <li><b>Hyponatremia</b> (e.g. after vomiting/diarrhoea): water moves into brain cells → <b>cerebral oedema</b> → confusion, lethargy, seizures.</li>
+ <li><b>Hyperkalemia</b>: changes the resting membrane potential → life-threatening <b>arrhythmias</b>.</li>
+ <li><b>Tonicity:</b> hypotonic solution → RBCs swell and lyse; hypertonic → they shrink.</li></ul>`},
+ {n:2,t:"Blood and blood disorders",h:`
+ <p>Blood = plasma + formed elements (RBCs, WBCs, platelets). pH <b>7.35–7.45</b>. Plasma proteins: albumins, globulins, fibrinogen.</p>
+ <div class="pearl"><strong>Albumin and oedema:</strong> albumin is too large to leave capillaries and makes ~<b>80%</b> of colloid osmotic pressure (COP). Low albumin (e.g. liver failure) → low COP → fluid stays in tissues → <b>oedema</b>.</div>
+ <h4>Red blood cells</h4>
+ <ul><li>Biconcave, <b>no nucleus</b>, spectrin makes the membrane flexible. Life span <b>100–120 days</b>.</li>
+ <li>Count: males 5–5.5 ×10⁶/mm³, females 4.5–5 ×10⁶/mm³.</li>
+ <li>Hb = 2α + 2β globins + 4 heme (Fe²⁺) → binds 4 O₂. With CO₂ → carbaminohemoglobin; with CO → carboxyhemoglobin; oxidizing drugs turn Fe²⁺ to Fe³⁺ → <b>methemoglobin</b>.</li>
+ <li><b>Erythropoiesis</b> ↑ by hypoxia (→ erythropoietin), needs healthy marrow, liver (stores iron and B12), diet (iron, B12, folate, protein), thyroxine and androgens.</li></ul>
+ <p><b>Terms:</b> leukopenia (↓WBC), thrombocytopenia (↓platelets), pancytopenia (all ↓), thrombus (clot in an intact vessel), embolus (floating clot). Platelets live ~6–10 days. In secondary hemostasis, <b>thrombin</b> turns fibrinogen into a fibrin mesh.</p>
+ <h4>Anemias</h4>
+ <div class="tblwrap"><table><tr><th>Type</th><th>Cause / key point</th></tr>
+ <tr><td>Microcytic</td><td>Hb synthesis problem: <b>iron deficiency</b> (most common), thalassemia</td></tr>
+ <tr><td>Macrocytic (megaloblastic)</td><td>DNA synthesis problem: <b>B12 or folate</b> deficiency</td></tr>
+ <tr><td>Pernicious</td><td>No <b>intrinsic factor</b> (parietal cells) → no B12 absorption</td></tr>
+ <tr><td>Hemolytic</td><td>RBCs destroyed faster than made</td></tr>
+ <tr><td>Aplastic</td><td>Marrow failure (radiation, drugs, toxins)</td></tr></table></div>
+ <ul><li><b>Ferritin</b> = iron storage (low in iron deficiency). <b>Transferrin</b> = transport (high in iron deficiency). Iron is absorbed as Fe²⁺ in the <b>duodenum</b>.</li>
+ <li>B12 path: freed by acid/pepsin → R-binder → freed in duodenum → binds intrinsic factor → absorbed in <b>terminal ileum</b> → transcobalamin II.</li></ul>
+ <div class="tblwrap"><table><tr><th>Hereditary</th><th>Defect</th><th>Inheritance</th></tr>
+ <tr><td>Sickle cell</td><td>HbS → sickling, pain crises</td><td>Autosomal recessive</td></tr>
+ <tr><td>G6PD deficiency (favism)</td><td>No NADPH → RBCs damaged by oxidants. Triggers: fava beans, sulfa drugs, antimalarials, infections</td><td>X-linked</td></tr>
+ <tr><td>Thalassemia</td><td>Reduced globin chain production</td><td>Autosomal recessive</td></tr></table></div>`},
+ {n:3,t:"Nervous system I: neurons and action potentials",h:`
+ <ul><li><b>Hippocampus</b>: memory, learning. <b>Hypothalamus</b>: homeostasis (temperature, hunger, sleep, hormones). <b>Medulla</b>: heartbeat, breathing. <b>Cerebellum</b>: balance, movement.</li>
+ <li>Lobes: occipital = vision, temporal = hearing, frontal = critical thinking, parietal = body orientation.</li>
+ <li>12 cranial nerves; <b>vagus (X)</b> is the main parasympathetic nerve.</li></ul>
+ <h4>Neuron</h4>
+ <ul><li>Dendrites receive; axon transmits; <b>axon hillock</b> generates the impulse; Schwann cells make myelin in the PNS.</li>
+ <li>Properties: excitability, conductivity, secretion, <b>all-or-none law</b>.</li>
+ <li>Myelin: faster <b>saltatory</b> conduction (node to node of Ranvier), protection, insulation.</li></ul>
+ <div class="tblwrap"><table><tr><th>Glial cell</th><th>Role</th></tr><tr><td>Astrocytes</td><td>Blood-brain barrier</td></tr><tr><td>Ependymal cells</td><td>CSF</td></tr><tr><td>Oligodendrocytes</td><td>CNS myelin</td></tr><tr><td>Microglia</td><td>Brain immune cells</td></tr><tr><td>Satellite cells</td><td>Regulate neurotransmitters (PNS)</td></tr><tr><td>Schwann cells</td><td>PNS myelin, regeneration</td></tr></table></div>
+ <h4>Membrane potentials</h4>
+ <ul><li><b>Resting potential</b> (~−70 mV) comes from: K⁺ leaking out more than Na⁺ leaks in, Na⁺/K⁺ pump (3 Na⁺ out / 2 K⁺ in), and negative intracellular proteins.</li>
+ <li><b>Depolarization</b>: voltage-gated Na⁺ channels open → Na⁺ influx.</li>
+ <li><b>Repolarization</b>: K⁺ channels open → K⁺ efflux.</li>
+ <li><b>Hyperpolarization</b> (undershoot): K⁺ channels close slowly → extra K⁺ efflux.</li>
+ <li><b>Absolute refractory</b>: no new AP possible (Na⁺ channels inactivated). <b>Relative refractory</b>: needs a stronger stimulus.</li></ul>
+ <p><b>Reflex arc:</b> receptor → sensory (afferent) neuron → relay neuron in spinal cord → motor (efferent) neuron → effector. It works before the signal reaches the brain.</p>`},
+ {n:4,t:"Autonomic nervous system and muscle",h:`
+ <div class="tblwrap"><table><tr><th></th><th>Sympathetic</th><th>Parasympathetic</th></tr>
+ <tr><td>Role</td><td>Fear, fight, flight</td><td>Rest and digest</td></tr>
+ <tr><td>Origin</td><td>Thoracolumbar</td><td>Craniosacral</td></tr>
+ <tr><td>Ganglia</td><td>Close to spinal cord</td><td>Near or in target organ</td></tr>
+ <tr><td>Postganglionic transmitter</td><td>Noradrenaline → α/β (sweat glands: ACh → M3)</td><td>ACh → muscarinic (M1–M5)</td></tr>
+ <tr><td>Eye</td><td>Dilator pupillae → <b>mydriasis</b>; far vision</td><td>Sphincter pupillae → <b>miosis</b>; ciliary contraction for near vision</td></tr>
+ <tr><td>Heart / bronchi</td><td>↑ heart rate, bronchodilation</td><td>↓ heart rate, ↑ salivation</td></tr></table></div>
+ <p>All preganglionic fibres release <b>ACh</b> onto <b>nicotinic (Nn)</b> receptors. Drug links: salbutamol (↑ sympathetic β₂, bronchodilator), epinephrine.</p>
+ <h4>Muscle contraction</h4>
+ <ul><li><b>Smooth muscle:</b> ↑Ca²⁺ → Ca²⁺–<b>calmodulin</b> → activates <b>myosin light-chain kinase</b> → phosphorylates myosin → ↑ATPase → cross-bridges.</li>
+ <li><b>Skeletal muscle:</b> AP at nerve → ACh at NMJ → Na⁺ influx → AP along T-tubules → SR releases Ca²⁺ → actin–myosin sliding; Ca²⁺ pumped back to relax.</li></ul>
+ <h4>Pathophysiology</h4>
+ <ul><li><b>Myasthenia gravis</b>: autoantibodies against <b>nicotinic ACh receptors</b> → weakness. Treat with anticholinesterases + immunosuppressants.</li>
+ <li><b>Alzheimer's</b>: loss of cholinergic transmission + glutamate excitotoxicity.</li>
+ <li><b>Parkinson's</b>: death of <b>dopaminergic</b> neurons → tremor, bradykinesia.</li>
+ <li><b>Epilepsy</b>: excessive neuronal firing. <b>Stroke</b>: cut blood supply (bleed or thrombus). <b>MS</b>: inflammatory demyelination.</li></ul>`},
+ {n:5,t:"Cardiovascular system I: cardiac muscle and potentials",h:`
+ <ul><li>Valves open and close passively by pressure → one-way flow.</li>
+ <li>Coronaries: <b>left main</b> → LAD + left circumflex; and the <b>right coronary artery</b>.</li>
+ <li>Conducting cells (SAN, AVN, Purkinje) start and spread impulses; contractile cells pump.</li>
+ <li>Properties: <b>rhythmicity</b> (automaticity), <b>excitability</b>, <b>conductivity</b>, <b>contractility</b>.</li></ul>
+ <div class="tblwrap"><table><tr><th>Pacemaker</th><th>Intrinsic rate (/min)</th></tr><tr><td>SAN</td><td>90–105 (vagal tone slows it to ~75)</td></tr><tr><td>AVN</td><td>40–60</td></tr><tr><td>Purkinje</td><td>15–40</td></tr></table></div>
+ <p><b>Chronotropic drugs</b> change SAN rate: adrenaline is positive; digitalis is negative.</p>
+ <h4>Nodal (pacemaker) potential, no true resting level</h4>
+ <ul><li><b>Phase 4</b>: slow Na⁺ influx (<b>funny current, If</b>) from ~−60 mV; T-type Ca²⁺ opens near −50 mV.</li>
+ <li><b>Phase 0</b>: L-type Ca²⁺ influx; threshold −40 to −30 mV.</li>
+ <li><b>Phase 3</b>: K⁺ efflux.</li></ul>
+ <h4>Ventricular muscle potential (rest ≈ −90 mV)</h4>
+ <ul><li>0: fast Na⁺ influx. 1: brief K⁺ efflux. 2: <b>plateau</b>, L-type Ca²⁺ influx. 3: K⁺ efflux. 4: rest (Na⁺/K⁺-ATPase).</li></ul>
+ <div class="pearl"><strong>Why no tetanus in the heart?</strong> The absolute refractory period is long (phases 0–2 and half of 3), so the heart must relax and refill before it can fire again. Skeletal muscle can be tetanized.</div>
+ <p>Hypoxic or ischemic ventricular cells can become pacemaker-like (Ca²⁺-driven) → ectopic beats and arrhythmias.</p>`},
+ {n:6,t:"Cardiovascular system II: conduction, cycle and blood pressure",h:`
+ <p><b>Conduction path:</b> SAN → atria → <b>AVN</b> → bundle of His → right/left bundle branches → <b>Purkinje</b> fibres.</p>
+ <ul><li>Slowest at AVN (<b>0.05 m/s</b>) → delay lets ventricles fill.</li>
+ <li>Fastest in Purkinje (<b>4 m/s</b>) → both ventricles contract together.</li></ul>
+ <h4>Excitation–contraction coupling</h4>
+ <ol><li>AP travels along sarcolemma and T-tubules.</li><li>L-type Ca²⁺ (DHP) channels let a little Ca²⁺ in.</li><li>That Ca²⁺ opens <b>ryanodine receptors</b> on the SR: <b>calcium-induced calcium release</b>.</li><li>Ca²⁺ binds <b>troponin C</b> → tropomyosin moves → cross-bridges → contraction.</li><li><b>SERCA</b> pumps Ca²⁺ back into the SR → relaxation.</li></ol>
+ <h4>Cardiac cycle and pressure</h4>
+ <div class="formula">SV = EDV − ESV &nbsp;|&nbsp; CO = SV × HR &nbsp;|&nbsp; EF = SV / EDV<small>EDV: end-diastolic volume · ESV: end-systolic volume</small></div>
+ <div class="formula">Pulse pressure = SBP − DBP (120 − 80 = 40 mmHg) &nbsp;|&nbsp; Mean ABP = DBP + ⅓ PP (≈ 93 mmHg)</div>
+ <ul><li>Vasoconstrictors: angiotensin II, adrenaline, noradrenaline. Vasodilators: NO, prostacyclin (PGI₂), histamine, bradykinin.</li>
+ <li>Total peripheral resistance depends on vessel diameter.</li>
+ <li>Sympathetic: +ve chronotropic and +ve inotropic. Parasympathetic (vagus, ACh): −ve chronotropic.</li>
+ <li><b>Baroreceptors</b> give minute-to-minute neural control; low BP → ↑CO₂/↓O₂ stimulates <b>chemoreceptors</b>; the <b>medulla</b> integrates the signals.</li></ul>`}
+ ],
+ quiz:[
+ {l:1,q:"Intestinal cells take up glucose against its gradient by coupling it to Na⁺ moving down its gradient. This is:",o:["Simple diffusion","Facilitated diffusion","Primary active transport","Secondary active transport"],a:3,e:"The energy comes from the Na⁺ gradient (made by the Na⁺/K⁺ pump), not ATP directly: secondary active co-transport."},
+ {l:1,q:"A patient receives a large volume of a hypotonic solution. What happens to the RBCs?",o:["They shrink","They swell and may lyse","No change","They become sickle-shaped"],a:1,e:"Water enters cells in a hypotonic solution, so RBCs swell and can burst."},
+ {l:1,q:"After heavy sweating, how does the body restore water balance?",o:["↓ ADH, more water excreted","↑ ADH from the posterior pituitary, more water reabsorbed","Kidneys release erythropoietin","Thirst is suppressed"],a:1,e:"High solute concentration is detected by the hypothalamus → ADH release → renal water reabsorption."},
+ {l:1,q:"Why is severe hyperkalemia life-threatening?",o:["It causes kidney stones","It alters the resting membrane potential, causing arrhythmias","It stops ADH release","It lowers COP"],a:1,e:"K⁺ sets the resting potential; disturbing it disrupts cardiac excitability."},
+ {l:2,q:"In liver failure, low albumin causes oedema because:",o:["Albumin blocks lymphatics","Colloid osmotic pressure falls, so less fluid returns to capillaries","Sodium is pumped into tissues","Hydrostatic pressure falls"],a:1,e:"Albumin provides ~80% of COP, the force pulling water back into vessels."},
+ {l:2,q:"An oxidizing drug converts heme iron from Fe²⁺ to Fe³⁺. This forms:",o:["Oxyhemoglobin","Carboxyhemoglobin","Methemoglobin","Carbaminohemoglobin"],a:2,e:"Fe³⁺ hemoglobin is methemoglobin, which cannot carry O₂ properly."},
+ {l:2,q:"Pernicious anemia is caused by:",o:["Iron deficiency","Lack of intrinsic factor","Globin chain defect","Bone marrow aplasia"],a:1,e:"Without intrinsic factor from parietal cells, B12 is not absorbed in the ileum → megaloblastic anemia."},
+ {l:2,q:"Low ferritin with high transferrin and small RBCs suggests:",o:["B12 deficiency","Iron deficiency anemia","G6PD deficiency","Aplastic anemia"],a:1,e:"Iron stores (ferritin) are depleted; transferrin rises to grab more iron. Microcytic picture."},
+ {l:2,q:"G6PD deficiency (favism) is inherited as:",o:["Autosomal dominant","Autosomal recessive","X-linked","Mitochondrial"],a:2,e:"It is X-linked. Fava beans, sulfa drugs and antimalarials trigger hemolysis."},
+ {l:2,q:"Normal RBC life span is:",o:["6–10 days","30–45 days","100–120 days","1 year"],a:2,e:"RBCs live 100–120 days; platelets only about 6–10 days."},
+ {l:3,q:"Where is the action potential initiated in a neuron?",o:["Dendrites","Axon hillock","Node of Ranvier","Synaptic terminal"],a:1,e:"The axon hillock has the lowest threshold and generates the impulse."},
+ {l:3,q:"Which glial cell forms myelin in the CNS?",o:["Schwann cells","Oligodendrocytes","Astrocytes","Microglia"],a:1,e:"Oligodendrocytes myelinate CNS axons; Schwann cells do it in the PNS."},
+ {l:3,q:"The hyperpolarization (undershoot) after an action potential is due to:",o:["Na⁺/K⁺ pump reversal","Slow closure of voltage-gated K⁺ channels","Na⁺ influx","Cl⁻ efflux"],a:1,e:"K⁺ keeps leaving while K⁺ channels close slowly, so the membrane dips below rest."},
+ {l:3,q:"During the absolute refractory period no new AP can fire because:",o:["K⁺ channels are closed","Voltage-gated Na⁺ channels are inactivated","The pump has stopped","The cell is at −90 mV"],a:1,e:"Inactivated Na⁺ channels cannot reopen until the membrane repolarizes."},
+ {l:3,q:"Correct order in a spinal reflex arc:",o:["Receptor → motor → relay → sensory → effector","Receptor → sensory → relay → motor → effector","Effector → sensory → relay → motor → receptor","Receptor → brain → motor → effector"],a:1,e:"Sensory (afferent) in, relay neuron in the cord, motor (efferent) out to the muscle."},
+ {l:4,q:"Postganglionic sympathetic fibres to sweat glands release:",o:["Noradrenaline on β₂","ACh on muscarinic (M3)","Dopamine","ACh on nicotinic"],a:1,e:"Sweat glands are the exception: sympathetic but cholinergic (ACh → M3)."},
+ {l:4,q:"Parasympathetic stimulation of the eye causes:",o:["Mydriasis","Miosis","Relaxed ciliary muscle","Dry eye"],a:1,e:"It contracts the sphincter pupillae (miosis) and the ciliary muscle for near vision."},
+ {l:4,q:"In myasthenia gravis, antibodies are directed against:",o:["Muscarinic receptors","Nicotinic ACh receptors at the NMJ","Acetylcholinesterase","Dopamine receptors"],a:1,e:"Blocked nicotinic receptors stop transmission → muscle weakness; anticholinesterases help."},
+ {l:4,q:"In smooth muscle, Ca²⁺ triggers contraction by binding:",o:["Troponin C","Calmodulin, which activates myosin light-chain kinase","Tropomyosin","Ryanodine receptors only"],a:1,e:"Ca²⁺–calmodulin activates MLCK, which phosphorylates myosin light chains."},
+ {l:4,q:"Parkinson's disease is caused by loss of:",o:["Cholinergic neurons","Dopaminergic neurons","Myelin","Glutamate receptors"],a:1,e:"Death of dopaminergic neurons controlling movement → tremor, bradykinesia."},
+ {l:5,q:"The intrinsic firing rate of the SA node is about:",o:["15–40/min","40–60/min","90–105/min","150–200/min"],a:2,e:"Vagal tone slows it to around 75/min at rest."},
+ {l:5,q:"Phase 4 of the SA nodal potential is mainly due to:",o:["Fast Na⁺ influx","Slow Na⁺ influx (funny current)","K⁺ efflux","Cl⁻ influx"],a:1,e:"The funny current (If) slowly depolarizes the membrane toward threshold."},
+ {l:5,q:"The plateau (phase 2) of the ventricular action potential is due to:",o:["Na⁺ influx","L-type Ca²⁺ influx","K⁺ influx","Na⁺/K⁺ pump"],a:1,e:"Ca²⁺ entry through L-type channels balances K⁺ efflux and holds the plateau."},
+ {l:5,q:"Cardiac muscle cannot be tetanized because:",o:["It has no Ca²⁺","Its absolute refractory period is long","It is voluntary","It lacks gap junctions"],a:1,e:"The long absolute refractory period lasts through systole and early diastole."},
+ {l:6,q:"Where is conduction slowest in the heart?",o:["SA node","AV node","Bundle of His","Purkinje fibres"],a:1,e:"About 0.05 m/s at the AVN, giving the ventricles time to fill."},
+ {l:6,q:"EDV = 120 mL and ESV = 50 mL. What is the stroke volume?",o:["50 mL","70 mL","120 mL","170 mL"],a:1,e:"SV = EDV − ESV = 120 − 50 = 70 mL."},
+ {l:6,q:"Blood pressure is 120/80 mmHg. The mean arterial pressure is about:",o:["80 mmHg","93 mmHg","100 mmHg","40 mmHg"],a:1,e:"MAP = DBP + ⅓ pulse pressure = 80 + 40/3 ≈ 93 mmHg."},
+ {l:6,q:"In cardiac muscle, the small Ca²⁺ influx triggers a large release from the SR through:",o:["SERCA","Ryanodine receptors","Calmodulin","Na⁺/Ca²⁺ exchanger"],a:1,e:"Calcium-induced calcium release via ryanodine receptors. SERCA pumps it back for relaxation."}
+ ]
+},
+{
+ id:"analytical", code:"PHC223", name:"Pharmaceutical Analytical Chemistry 3", hue:"var(--c3)",
+ staff:"Assoc. Prof. Sarah Salah · Assoc. Prof. Omnia Ali · Assoc. Prof. Heba Tarek",
+ lectures:[
+ {n:1,t:"Introduction to redox reactions",h:`
+ <div class="tblwrap"><table><tr><th>Oxidizing agent</th><th>Reducing agent</th></tr>
+ <tr><td>Is <b>reduced</b></td><td>Is <b>oxidized</b></td></tr><tr><td>Gains electrons (acceptor)</td><td>Loses electrons (donor)</td></tr><tr><td>Oxidation number ↓</td><td>Oxidation number ↑</td></tr><tr><td>KMnO₄, K₂Cr₂O₇, I₂, KIO₃, KBrO₃, Ce⁴⁺</td><td>Na₂S₂O₃, oxalate, Fe²⁺, metallic iron</td></tr></table></div>
+ <p><b>Oxidation number rules:</b> free element = 0; H = +1 (not hydrides); O = −2 (not peroxides); ion = its charge; neutral compound sums to 0. Example: Mn in KMnO₄ = +7; S in H₂SO₄ = +6.</p>
+ <div class="formula">Equivalent weight = Molecular weight / change in oxidation number</div>
+ <ul><li>KMnO₄ (M = 158) in <b>acid</b>: Mn +7 → +2 (5 e) → Eq. wt = 158/5 = <b>31.6</b></li>
+ <li>KMnO₄ in <b>alkaline</b>: Mn +7 → +4 (MnO₂, 3 e) → Eq. wt = 158/3 = <b>52.67</b></li></ul>
+ <h4>Balancing by half-equations</h4>
+ <ol><li>Split into oxidant and reductant half-equations.</li><li>Balance ionically (O with H₂O, H with H⁺), then electronically (add e⁻).</li><li>Multiply so electrons lost = electrons gained, then add.</li></ol>
+ <div class="formula">MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 5Fe³⁺ + 4H₂O<br>Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 6Fe³⁺ + 7H₂O</div>`},
+ {n:2,t:"Electrode potential",h:`
+ <div class="tblwrap"><table><tr><th>Solution pressure &gt; ionic pressure</th><th>Ionic pressure &gt; solution pressure</th></tr>
+ <tr><td>Metal dissolves (is oxidized), e.g. Zn⁰ → Zn²⁺ + 2e</td><td>Ions deposit (are reduced), e.g. Cu²⁺ + 2e → Cu⁰</td></tr>
+ <tr><td>Electrode becomes <b>negative</b>; loses weight</td><td>Electrode becomes <b>positive</b>; gains weight</td></tr></table></div>
+ <ul><li>Standard potentials are measured against the <b>standard hydrogen electrode</b> (E⁰ = 0).</li>
+ <li>An electrode has the same sign as its E⁰. Current flows from the more negative to the more positive E⁰ (e.g. Mg −2.36 → Ag +0.80).</li></ul>
+ <div class="formula">Electrode potential: E = E⁰ + (0.059/n) log [Mⁿ⁺] &nbsp;→ E = E⁰ when [Mⁿ⁺] = 1 M</div>
+ <p><b>Electrochemical series:</b> metals with more negative potential are reducing agents and displace metals below them from solution.</p>`},
+ {n:3,t:"Electrochemical cells",h:`
+ <ul><li><b>Galvanic (voltaic) cell</b>: a spontaneous redox reaction produces current. Oxidation at the anode, reduction at the cathode.</li>
+ <li><b>Electrolytic cell</b>: an external current drives a non-spontaneous reaction.</li>
+ <li><b>Salt bridge</b>: connects the two half-cells, completes the circuit and keeps each solution electrically neutral by letting ions migrate.</li></ul>
+ <div class="pearl"><strong>Tip:</strong> cell EMF = E⁰(cathode) − E⁰(anode). A positive EMF means the reaction runs spontaneously.</div>`},
+ {n:4,t:"Oxidation potential and the factors that change it",h:`
+ <div class="formula">For a redox couple on an inert Pt electrode: E = E⁰ + (0.059/n) log [Ox]/[Red] &nbsp;→ E = E⁰ when [Ox] = [Red]</div>
+ <ul><li><b>SOP series</b>: large positive E⁰ = strong oxidizing agent (top); negative E⁰ = strong reducing agent.</li>
+ <li>For a reaction to go to completion, the two systems should differ by about <b>0.4 V</b>.</li>
+ <li>Remove the <b>oxidized</b> form (precipitate or complex it) → E falls. Remove the <b>reduced</b> form → E rises. Adding a common ion shifts it the same way.</li></ul>
+ <div class="tblwrap"><table><tr><th>System</th><th>E⁰ (V)</th></tr><tr><td>MnO₄⁻/Mn²⁺</td><td>1.51</td></tr><tr><td>Ce⁴⁺/Ce³⁺</td><td>1.44</td></tr><tr><td>Cl₂/Cl⁻</td><td>1.36</td></tr><tr><td>Cr₂O₇²⁻/Cr³⁺</td><td>1.36</td></tr><tr><td>Fe³⁺/Fe²⁺</td><td>0.77</td></tr><tr><td>I₂/I⁻</td><td>0.54</td></tr></table></div>
+ <p>So MnO₄⁻ can oxidize Cl⁻, Br⁻, I⁻ and Fe²⁺, but Fe³⁺ can oxidize only I⁻.</p>
+ <h4>Applied problems</h4>
+ <ul><li><b>FeCl₂ by KMnO₄:</b> Cl⁻ would also be oxidized. Add <b>Zimmermann–Reinhardt reagent</b>: MnSO₄ (Mn²⁺ lowers MnO₄⁻/Mn²⁺ potential below Cl₂/Cl⁻ but above Fe), H₃PO₄ (complexes yellow Fe³⁺ to a colourless complex and lowers Fe³⁺/Fe²⁺), H₂SO₄ (acidity).</li>
+ <li><b>FeCl₂ by iodine:</b> I₂ (0.54) is too weak for Fe²⁺ (0.77). Add HgCl₂ (removes I⁻ as [HgI₄]²⁻, raising the I₂/I⁻ potential) + H₃PO₄ (lowers Fe³⁺/Fe²⁺).</li></ul>`},
+ {n:5,t:"Redox indicators, titrants and titration curves",h:`
+ <div class="tblwrap"><table><tr><th>Indicator type</th><th>Example</th></tr><tr><td>Self</td><td>KMnO₄ (first permanent pink), I₂</td></tr><tr><td>External</td><td>K-ferricyanide spot test for Fe²⁺ (no blue colour at end point)</td></tr><tr><td>Internal</td><td>Diphenylamine, ferroin, N-phenylanthranilic acid</td></tr><tr><td>Irreversible</td><td>Methyl orange / methyl red (destroyed by excess oxidant)</td></tr><tr><td>Specific</td><td>Starch (I₂), SCN⁻ (Fe³⁺)</td></tr><tr><td>Instrumental</td><td>Potentiometric</td></tr></table></div>
+ <div class="tblwrap"><table><tr><th>Internal indicator</th><th>E⁰ (V)</th><th>Colour change</th></tr><tr><td>Diphenylamine</td><td>0.76</td><td>Colourless → violet</td></tr><tr><td>Ferroin</td><td>1.06</td><td>Red → blue</td></tr><tr><td>N-Phenylanthranilic acid</td><td>1.08</td><td>Colourless → pinkish violet</td></tr></table></div>
+ <div class="pearl"><strong>Memorize:</strong> diphenylamine (0.76) is too close to Fe³⁺/Fe²⁺ (0.77) for Fe²⁺/dichromate, so add PO₄³⁻ (or F⁻) to lower the iron potential. Phenylanthranilic acid (1.08) works directly because it lies between 0.77 and 1.36.</div>
+ <div class="tblwrap"><table><tr><th></th><th>KMnO₄</th><th>Ce⁴⁺</th><th>K₂Cr₂O₇</th></tr>
+ <tr><td>Self indicator</td><td>Yes (purple → colourless; first pink)</td><td>Yes, weak (yellow → colourless)</td><td>No (orange → green)</td></tr>
+ <tr><td>Primary standard</td><td>No (standardize vs sodium oxalate or As₂O₃)</td><td>No</td><td><b>Yes</b></td></tr>
+ <tr><td>Strength</td><td>Strongest</td><td>2nd</td><td>3rd</td></tr>
+ <tr><td>Indicator used</td><td>Self</td><td>Ferroin</td><td>Ferroin / diphenylamine</td></tr>
+ <tr><td>Medium</td><td>Acidic</td><td>Any</td><td>Acidic</td></tr></table></div>
+ <p>Ferric samples are first reduced to Fe²⁺ (SnCl₂ or amalgamated zinc), then titrated.</p>
+ <h4>Titration curve</h4>
+ <div class="formula">At the equivalence point: E = (n₁E₁⁰ + n₂E₂⁰) / (n₁ + n₂)<small>I⁻ with Ce⁴⁺: (2×0.54 + 1×1.44)/3 = 0.84 V</small></div>
+ <p>Potential changes slowly before the end point and jumps sharply at the equivalence point.</p>`},
+ {n:6,t:"Iodimetry, iodometry, KIO₃ and KBrO₃",h:`
+ <div class="tblwrap"><table><tr><th>Iodimetry (direct)</th><th>Iodometry (indirect)</th></tr>
+ <tr><td>Titrant = standard I₂</td><td>Excess KI added; liberated I₂ titrated with Na₂S₂O₃</td></tr>
+ <tr><td>Determines <b>reducing</b> agents</td><td>Determines <b>oxidizing</b> agents</td></tr>
+ <tr><td>E.g. thiosulfate, ascorbic acid</td><td>E.g. H₂O₂, Cu²⁺</td></tr></table></div>
+ <div class="formula">I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻ (tetrathionate) &nbsp;|&nbsp; H₂O₂ + 2H⁺ + 2I⁻ → I₂ + 2H₂O</div>
+ <ul><li>Indicator: <b>starch</b> (specific for I₂). I₂ is ~90× more soluble in CHCl₃ or CCl₄ than in water.</li>
+ <li><b>KIO₃</b> is a powerful oxidant; its product depends on acidity:</li></ul>
+ <div class="tblwrap"><table><tr><th>Medium</th><th>Half-reaction</th><th>e⁻</th></tr><tr><td>Neutral</td><td>IO₃⁻ + 3H₂O + 6e → I⁻ + 6OH⁻</td><td>6</td></tr><tr><td>Slightly acidic</td><td>IO₃⁻ + 6H⁺ + 5e → ½I₂ + 3H₂O</td><td>5</td></tr><tr><td>Strongly acidic</td><td>IO₃⁻ + 6H⁺ + 4e → I⁺ + 3H₂O</td><td>4</td></tr></table></div>`},
+ {n:7,t:"Midterm revision",h:`<p>Lecture 7 is a revision of lectures 1–6. Use it with the quiz: balancing equations, electrode vs oxidation potential, factors affecting potential, Zimmermann's reagent, indicator choice, the three oxidizing titrants and the titration curve.</p>
+ <div class="tblwrap"><table><tr><th>Reducing sample</th><th>Oxidized to</th><th>Can be titrated by</th></tr>
+ <tr><td>Oxalate</td><td>CO₂</td><td>MnO₄⁻, Ce⁴⁺</td></tr><tr><td>Fe²⁺</td><td>Fe³⁺</td><td>MnO₄⁻, Ce⁴⁺, Cr₂O₇²⁻</td></tr><tr><td>Ferrocyanide</td><td>Ferricyanide</td><td>MnO₄⁻, Ce⁴⁺</td></tr><tr><td>H₂O₂</td><td>O₂</td><td>MnO₄⁻, Ce⁴⁺</td></tr><tr><td>As³⁺, Sb³⁺, SO₃²⁻, NO₂⁻</td><td>As⁵⁺, Sb⁵⁺, SO₄²⁻, NO₃⁻</td><td>MnO₄⁻</td></tr></table></div>`}
+ ],
+ quiz:[
+ {l:1,q:"What is the equivalent weight of KMnO₄ (M = 158) in acid medium?",o:["158","52.67","31.6","79"],a:2,e:"Mn goes from +7 to +2: a change of 5. 158 ÷ 5 = 31.6."},
+ {l:1,q:"And in alkaline medium (forming MnO₂)?",o:["31.6","52.67","39.5","158"],a:1,e:"Mn goes from +7 to +4: a change of 3. 158 ÷ 3 = 52.67."},
+ {l:1,q:"An oxidizing agent:",o:["Loses electrons","Gains electrons and its oxidation number decreases","Is oxidized","Has a low oxidation number"],a:1,e:"The oxidant accepts electrons, so it is itself reduced."},
+ {l:1,q:"In the balanced reaction of MnO₄⁻ with Fe²⁺ in acid, the mole ratio MnO₄⁻ : Fe²⁺ is:",o:["1 : 1","1 : 3","1 : 5","2 : 5"],a:2,e:"MnO₄⁻ gains 5 electrons and each Fe²⁺ gives 1, so 1 : 5."},
+ {l:1,q:"How many H⁺ appear in the balanced dichromate–ferrous equation?",o:["6","8","14","7"],a:2,e:"Cr₂O₇²⁻ + 14H⁺ + 6Fe²⁺ → 2Cr³⁺ + 6Fe³⁺ + 7H₂O."},
+ {l:2,q:"When solution pressure is greater than ionic pressure, the metal electrode:",o:["Becomes positive and gains weight","Becomes negative and loses weight","Is unaffected","Plates out ions"],a:1,e:"The metal dissolves as ions, leaving electrons behind: negative charge, weight loss."},
+ {l:2,q:"According to E = E⁰ + (0.059/n) log[Mⁿ⁺], E equals E⁰ when:",o:["[Mⁿ⁺] = 0","[Mⁿ⁺] = 1 M","n = 1","The temperature is 0 °C"],a:1,e:"log 1 = 0, so E = E⁰ at unit ion concentration."},
+ {l:3,q:"The main role of a salt bridge is to:",o:["Supply electrons","Complete the circuit and keep the half-cells electrically neutral","Raise the EMF","Act as the cathode"],a:1,e:"Ions migrate through the bridge, balancing the charge build-up in each half-cell."},
+ {l:4,q:"Adding a complexing agent that removes the oxidized form of a couple will:",o:["Raise its potential","Lower its potential","Not change it","Double it"],a:1,e:"E = E⁰ + (0.059/n) log [Ox]/[Red]. Less [Ox] → lower E."},
+ {l:4,q:"Fe³⁺ (E⁰ 0.77 V) can oxidize which halide?",o:["Cl⁻","Br⁻","I⁻ only","All halides"],a:2,e:"Only I₂/I⁻ (0.54 V) lies below Fe³⁺/Fe²⁺."},
+ {l:4,q:"In Zimmermann–Reinhardt reagent, the role of MnSO₄ is to:",o:["Complex Fe³⁺","Lower the MnO₄⁻/Mn²⁺ potential below that of Cl₂/Cl⁻","Act as indicator","Provide acidity"],a:1,e:"Extra Mn²⁺ lowers the permanganate potential so chloride is no longer oxidized."},
+ {l:4,q:"For a redox reaction to be complete, the two systems' potentials should differ by about:",o:["0.04 V","0.1 V","0.4 V","1.5 V"],a:2,e:"A difference of about 0.4 V is needed for quantitative reaction."},
+ {l:5,q:"Why is diphenylamine unsuitable for Fe²⁺ with dichromate unless phosphate is added?",o:["It is too strong","Its E⁰ (0.76) is too close to Fe³⁺/Fe²⁺ (0.77)","It reacts with Cl⁻","It is a self-indicator"],a:1,e:"Phosphate complexes Fe³⁺, lowering the iron potential so the indicator changes after the end point."},
+ {l:5,q:"Which oxidizing titrant is a primary standard?",o:["KMnO₄","Ceric sulfate","Potassium dichromate","Iodine"],a:2,e:"K₂Cr₂O₇ is a primary standard. KMnO₄ must be standardized against sodium oxalate or As₂O₃."},
+ {l:5,q:"Ferroin changes colour at the end point from:",o:["Colourless to violet","Red to blue","Blue to red","Yellow to green"],a:1,e:"Ferroin (E⁰ 1.06): red (reduced) → blue (oxidized)."},
+ {l:5,q:"100 mL of 0.1 N KI is titrated with 0.1 N Ce⁴⁺ (E⁰: I₂/I⁻ 0.54, n=2; Ce⁴⁺/Ce³⁺ 1.44, n=1). Potential at equivalence?",o:["0.54 V","0.84 V","0.99 V","1.44 V"],a:1,e:"E = (2×0.54 + 1×1.44)/(2+1) = 2.52/3 = 0.84 V."},
+ {l:5,q:"Starch is classified as which type of redox indicator?",o:["Self","External","Irreversible","Specific"],a:3,e:"Starch reacts specifically with iodine (blue complex)."},
+ {l:6,q:"H₂O₂ is determined by adding excess KI and titrating the liberated I₂ with thiosulfate. This is:",o:["Iodimetry","Iodometry","Cerimetry","Permanganometry"],a:1,e:"Indirect method for an oxidizing sample = iodometry."},
+ {l:6,q:"Thiosulfate is oxidized by iodine to:",o:["Sulfate","Sulfite","Tetrathionate","Sulfur"],a:2,e:"I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻."},
+ {l:6,q:"In strongly acidic medium, how many electrons does each IO₃⁻ gain?",o:["6","5","4","2"],a:2,e:"IO₃⁻ + 6H⁺ + 4e → I⁺ + 3H₂O. Neutral: 6 e; slightly acidic: 5 e."}
+ ]
+},
+{
+ id:"dosage", code:"PHT231", name:"Pharmaceutical Dosage Forms 1", hue:"var(--c4)",
+ staff:"Prof. Amal Makhlouf · Assoc. Prof. Nabila Sweed",
+ lectures:[
+ {n:1,t:"Liquid dosage forms and solubilization",h:`
+ <p>A <b>dosage form</b> is the physical form in which a drug is delivered to its site of action. A <b>solution</b> is a homogeneous mixture of solute in solvent. Exception to "solvent is the larger part": <b>Syrup BP</b> = 66.7% w/w sucrose in 33.3% w/w water.</p>
+ <div class="tblwrap"><table><tr><th>Advantages of solutions</th><th>Disadvantages</th></tr><tr><td>Easy to swallow (children, elderly)<br>Fast absorption and response<br>Less GIT irritation (aspirin, KCl diluted)<br>Homogeneous, uniform dose<br>Many routes</td><td>Bulky to carry and store<br>Less stable (hydrolysis)<br>Microbial growth (needs preservative)<br>Taste more obvious<br>Dose depends on patient measuring</td></tr></table></div>
+ <p><b>Solubilization</b> = increasing the solubility of a poorly water-soluble drug. ~40% of lipophilic drug candidates fail because of poor bioavailability.</p>
+ <div class="tblwrap"><table><tr><th>BCS</th><th>Solubility</th><th>Permeability</th></tr><tr><td>I</td><td>High</td><td>High</td></tr><tr><td>II</td><td>Low</td><td>High</td></tr><tr><td>III</td><td>High</td><td>Low</td></tr><tr><td>IV</td><td>Low</td><td>Low</td></tr></table></div>
+ <h4>Methods</h4>
+ <ol><li><b>pH change / salt formation</b>: simplest for ionizable drugs. Helps BCS II; may hurt BCS III (more polar → less permeation).</li>
+ <li><b>Chemical modification</b>: soluble derivative, e.g. hydrocortisone sodium phosphate; chloramphenicol sodium succinate (inactive itself, for injection).</li>
+ <li><b>Co-solvency</b>: water-miscible solvents (glycerol, ethanol, propylene glycol), e.g. <b>paracetamol elixir</b>.</li>
+ <li><b>Micellar solubilization</b>: surfactant above its <b>CMC</b> (0.05–0.1%) traps drug in micelles, e.g. Tweens for vitamins A, D, E, K; soaps for cresol and chloroxylenol (Lysol, Dettol). Amphiphilic polymers (PEG–PLA) form polymeric micelles.</li>
+ <li><b>Hydrotropy</b>: large amount of a second solute (sodium benzoate, sodium salicylate, urea). Hydrophobic part too small to self-aggregate, so <b>no CMC</b>.</li>
+ <li><b>Complexation</b>: <b>cyclodextrins</b> (α = 6, β = 7, γ = 8 glucose units) with a hydrophilic outside and hydrophobic cavity form inclusion complexes.</li>
+ <li><b>Particle size reduction</b> (lecture 2).</li>
+ <li><b>Solid dispersion</b>: drug dispersed molecularly in a hydrophilic polymer (PVP, HPMC, PEG 6000) by melting or kneading.</li></ol>`},
+ {n:2,t:"Particle size reduction: micronization, nanocrystals, cocrystals",h:`
+ <div class="formula">Noyes–Whitney: dm/dt = D·A·(Cs − C)/h<small>Dissolution rate is directly proportional to surface area A</small></div>
+ <div class="tblwrap"><table><tr><th></th><th>Micronization</th><th>Nanocrystals</th></tr>
+ <tr><td>Size</td><td>1–10 µm</td><td>100–1000 nm</td></tr><tr><td>Methods</td><td>Jet milling, ball milling</td><td>Top-down: high-pressure homogenization. Bottom-up: solvent–antisolvent precipitation</td></tr>
+ <tr><td>Stability</td><td>More stable</td><td>Aggregate; need <b>stabilizers</b></td></tr><tr><td>Products</td><td>Griseofulvin, spironolactone</td><td>Tricor® (fenofibrate), Rapamune® (sirolimus), Emend® (aprepitant)</td></tr></table></div>
+ <p>Micronization helps BCS II drugs but may not be enough when log P &gt; 4. Top-down is scalable but uses high energy and heat; bottom-up is gentler but has solvent residue and scale-up problems.</p>
+ <p><b>Stabilizers:</b> steric (polymers PVP, HPMC, PEG), electrostatic (charged, e.g. SDS → zeta potential), or both (ionic surfactants). Surfactants also include Tween 80 and Spans.</p>
+ <h4>Cocrystals</h4>
+ <ul><li>Drug + <b>coformer</b> in one crystal, held by non-covalent bonds (H-bonds, van der Waals, π–π). Changes physical properties, not pharmacology. Example: <b>carbamazepine–saccharin 1:1</b>.</li>
+ <li>Why solubility rises: weaker crystal lattice, better wetting (hydrophilic coformers such as nicotinamide, caffeine, saccharin), thermodynamic driving force.</li>
+ <li>Coformer criteria: can H-bond, <b>GRAS</b> and safe, improves properties, does not react with the drug.</li>
+ <li><b>Multidrug cocrystals</b>: two APIs in one lattice, e.g. <b>Entresto®</b> (sacubitril + valsartan) for heart failure; meloxicam–aspirin raised bioavailability from 16% to 69%.</li>
+ <li>Uses: solubility and faster onset (naproxen–L-alanine), bioavailability (baicalein–caffeine), stability and less hygroscopicity (caffeine–oxalic acid), taste masking.</li>
+ <li>Preparation: neat (dry) grinding, liquid-assisted grinding, solvent evaporation, ultrasound- or microwave-assisted.</li></ul>`},
+ {n:3,t:"Pharmaceutical waters and aromatic waters",h:`
+ <div class="tblwrap"><table><tr><th>Water</th><th>Key points</th></tr>
+ <tr><td>Potable (tap)</td><td>Not for dispensing: microbes and dissolved salts (precipitation, discoloration, effervescence)</td></tr>
+ <tr><td>Freshly boiled & cooled</td><td>Kills vegetative bacteria; spores and salts remain</td></tr>
+ <tr><td>Purified Water USP</td><td>Free of ions and microbes; for all dosage forms and tests <b>except injections and eye preparations</b></td></tr>
+ <tr><td>Water for Injection (WFI)</td><td><b>Pyrogen-free</b>, sterilized; single-dose containers ≤ 1 L; <b>no antimicrobial</b></td></tr>
+ <tr><td>Bacteriostatic WFI</td><td>Contains antimicrobial (label must state it); multi-dose vials. If &gt; 5 mL is needed, use sterile WFI instead</td></tr></table></div>
+ <h4>Making purified water</h4>
+ <ul><li><b>Distillation</b>: discard the first 10–20% (volatile impurities) and the last 10–20% (decomposition products).</li>
+ <li><b>Ion exchange</b>: cation resin swaps Ca²⁺/Mg²⁺ for H⁺; anion resin swaps Cl⁻/SO₄²⁻ for OH⁻ → H₂O. One- or two-column. No heat, cheap, simple, mobile.</li>
+ <li><b>Reverse osmosis</b>: pressure pushes water through a semipermeable membrane against osmosis; removes pyrogens, organics and 90–99% of ions.</li></ul>
+ <h4>Aromatic waters</h4>
+ <p>Nearly saturated clear aqueous solutions of volatile oils (peppermint, rose, anise, camphor, chloroform). Used as pleasant flavoured vehicles. Must smell like the source, be clear, fresh (few weeks) and free of foreign odours.</p>
+ <ul><li>Problems: salting out with soluble salts; cloudy with time; sensitive to light and heat → small batches, airtight light-resistant containers, cool dark place.</li>
+ <li>Preparation: <b>distillation</b> (best, slow, costly; repeated distillation = <b>cohobation</b>, e.g. rose water); <b>simple solution</b> (2 g or 2 mL oil + 1000 mL water, stand 12 h, filter, make to volume, e.g. peppermint and chloroform water); <b>solubilizing agent</b> (Tween 20, Span 60; mould-prone, taste above 2%).</li>
+ <li>Uses: camphor water (carminative, eye lotions), chloroform water (expectorant, carminative, <b>preservative</b>), peppermint water (carminative), anise water (carminative).</li></ul>`},
+ {n:4,t:"Excipients in liquids, oral solutions and syrups",h:`
+ <div class="tblwrap"><table><tr><th>Additive</th><th>Key points</th></tr>
+ <tr><td>Buffers</td><td>Carbonates, citrates, phosphates, tartrates. <b>Borate: external only</b>. Injections and eye drops ~7.4; nasal 5.3–7.0. Benzylpenicillin injection buffered to 6–7 with sodium citrate.</td></tr>
+ <tr><td>Isotonicity modifiers</td><td>NaCl and dextrose; isotonic = 0.9% NaCl. Needed for injections, eye and nasal drops.</td></tr>
+ <tr><td>Viscosity enhancers</td><td>Povidone, hydroxyethylcellulose, carbomer: longer contact on skin or eye.</td></tr>
+ <tr><td>Preservatives</td><td>Benzoic acid 0.1–0.2%, parabens 0.1%, alcohol &gt; 20%. Parabens get trapped in non-ionic surfactant micelles and lose activity.</td></tr>
+ <tr><td>Antioxidants</td><td>Chelators (EDTA); oils: tocopherol, BHA, BHT; aqueous: ascorbic acid. Also N₂ headspace, cool storage, light-resistant packs.</td></tr>
+ <tr><td>Sweeteners</td><td>Sucrose (stable pH 4–8); sorbitol, mannitol, glycerol; saccharin &lt; 0.2% (bitter/metallic aftertaste), aspartame.</td></tr>
+ <tr><td>Flavours</td><td>Bitter: anise, chocolate, mint, wild cherry. Salty: apricot, liquorice, peach, vanilla. Sour: citrus, liquorice, raspberry. Menthol numbs taste buds.</td></tr>
+ <tr><td>Colours</td><td>Match flavour, identify products (poisons, antiseptics), hide degradation colour.</td></tr></table></div>
+ <h4>Oral solutions</h4>
+ <ul><li>Doses: 5 mL (teaspoon), 10 mL (dessertspoon), 15 mL (tablespoon), or calibrated drops.</li>
+ <li><b>ORS</b> per litre: 45 mEq Na⁺, 20 mEq K⁺, 35 mEq Cl⁻, 30 mEq citrate, 25 g dextrose.</li>
+ <li>Magnesium citrate: saline cathartic (200 mL). Sodium citrate–citric acid: alkalinizes urine (renal stones, gout).</li></ul>
+ <h4>Syrups and linctuses</h4>
+ <ul><li>Syrups: concentrated sugar solutions. For diabetics: non-glycogenic, e.g. <b>artificial syrup</b> = sodium CMC 1.5% + saccharin sodium 0.6%.</li>
+ <li>Nearly saturated sucrose syrups need no preservative (no free water). Alcohol below 15–20% does not preserve.</li>
+ <li><b>Linctus</b>: viscous cough preparation; sip slowly, <b>do not dilute</b> (demulcent on the throat).</li></ul>`},
+ {n:5,t:"External aqueous and non-aqueous solutions",h:`
+ <h4>Aqueous, external</h4>
+ <ul><li><b>Lotions</b>: low viscosity, applied without friction (e.g. calamine). May contain glycerin (humectant) or alcohol (cooling).</li>
+ <li><b>Douches</b>: stream into a cavity for cleansing (eye, pharyngeal, vaginal). Vaginal douches may contain astringents (alum), antimicrobials (povidone-iodine), menthol, buffers.</li>
+ <li><b>Enemas</b>: evacuation (0.5–1 L water, or ~130 mL phosphate/MgSO₄); retention for local or systemic effect (hydrocortisone for ulcerative colitis; aminophylline, chloral hydrate), <b>≤ 150 mL</b> in adults; diagnostic (<b>barium sulfate</b>).</li>
+ <li><b>Nasal</b>: isotonic, buffered pH 5.5–6.5 to protect cilia. Local (ephedrine) or systemic (calcitonin). Decongestants max 3–5 days: risk of <b>rhinitis medicamentosa</b>.</li>
+ <li><b>Otic</b>: remove wax, treat infection or pain. Glycerin or propylene glycol vehicles are viscous (longer contact) and hygroscopic (less microbial growth, less swelling).</li></ul>
+ <h4>Non-aqueous</h4>
+ <ul><li>Good for water-insoluble or hydrolysis-prone drugs; oily IM <b>depots</b> (testosterone, estradiol esters).</li>
+ <li><b>Ethanol</b>: extracts resins, oils, alkaloids, glycosides (not gums, starch); co-solvent; preservative above 15–20%; cooling on skin. Toxic: OTC oral limits are <b>0.5%</b> under 6 years, 5% for 6–12, 10% over 12.</li>
+ <li>Alcohol precipitates tragacanth, acacia, agar and salts; diluting alcoholic solutions with water may precipitate drug.</li>
+ <li><b>Glycerin</b> (3 OH) and <b>propylene glycol</b> (2 OH): solvents, preservatives, viscosity; glycerin is not selective and very viscous.</li>
+ <li><b>Fixed oils</b>: almond oil (oily phenol injection), sesame, olive, castor (parenteral depots), coconut (oral antibiotics, vitamins A and D).</li>
+ <li>Internal non-aqueous: elixirs, spirits, tinctures, glycerites (covered in labs).</li></ul>
+ <h4>External non-aqueous</h4>
+ <ul><li><b>Liniments</b>: applied with rubbing; alcoholic (rubefacient, counter-irritant) or oily (massage). <b>Not on broken skin.</b></li>
+ <li><b>Collodion</b>: 4% pyroxylin in alcohol/ether; dries to a protective film. <b>Flexible collodion</b> = + 2% camphor (waterproof) + 3% castor oil (flexible). <b>Salicylic acid collodion</b> 10% removes corns.</li></ul>`},
+ {n:6,t:"Colloids: classes, preparation and purification",h:`
+ <div class="tblwrap"><table><tr><th></th><th>Molecular</th><th>Colloidal</th><th>Coarse</th></tr><tr><td>Size</td><td>&lt; 1 nm</td><td>1–500 nm</td><td>&gt; 500 nm</td></tr><tr><td>Seen by</td><td>Not even EM</td><td>Ultramicroscope / EM</td><td>Light microscope</td></tr><tr><td>Filter paper</td><td>Passes</td><td>Passes</td><td>Retained</td></tr><tr><td>Semipermeable membrane</td><td>Passes</td><td>Retained</td><td>Retained</td></tr><tr><td>Diffusion</td><td>Rapid</td><td>Very slow</td><td>None</td></tr></table></div>
+ <p>Colloids have a huge <b>specific surface area</b>: platinum black as catalyst, kaolin adsorbing toxins, Al(OH)₃ antacid. Uses: silver germicides, plasma substitutes (dextran, PVP, gelatin), iron–dextran for anemia.</p>
+ <div class="tblwrap"><table><tr><th>Lyophilic</th><th>Lyophobic</th><th>Association</th></tr>
+ <tr><td>Organic polymers (gelatin, acacia, HPMC)</td><td>Inorganic (gold, silver, sulfur, AgI)</td><td>Surfactant micelles</td></tr>
+ <tr><td>Form spontaneously; solvated</td><td>Need special methods; not solvated</td><td>Form spontaneously above CMC</td></tr>
+ <tr><td>Viscosity ↑ greatly</td><td>Viscosity hardly changes</td><td>Viscosity ↑ with concentration</td></tr>
+ <tr><td>Stable with electrolytes; salted out at high conc.</td><td><b>Unstable</b> with small amounts of electrolyte (charge neutralized)</td><td>Electrolytes lower CMC</td></tr></table></div>
+ <p><b>Lyophobic preparation:</b> dispersion (large → small: ultrasonic generator &gt; 20,000 cycles/s, electric arc, colloid mill) or condensation (small → large: supersaturation, e.g. sulfur sol; chemical reactions: oxidation of H₂S, hydrolysis of FeCl₃).</p>
+ <h4>Purification</h4>
+ <ul><li><b>Dialysis</b>: semipermeable membrane lets small ions and molecules out, keeps colloids.</li>
+ <li><b>Electrodialysis</b>: electric field speeds ion removal (3-compartment cell).</li>
+ <li><b>Ultrafiltration</b>: suction through a fine membrane.</li>
+ <li><b>Artificial kidney</b>: cellophane passes urea, glucose and electrolytes, not proteins or cells. Urea leaves blood; bicarbonate enters from the dialysate.</li></ul>`},
+ {n:7,t:"Properties of colloids",h:`
+ <h4>Optical</h4>
+ <ul><li><b>Faraday–Tyndall effect</b>: colloids scatter light (visible cone); true solutions don't. Turbidity, measured at 90°, relates to molecular weight.</li>
+ <li><b>Ultramicroscope</b>: particles appear as bright spots (counting). <b>Electron microscope</b>: real size and shape, but samples must be dried.</li></ul>
+ <h4>Kinetic</h4>
+ <ul><li><b>Brownian motion</b>: random movement from solvent bombardment; faster with smaller particles and lower viscosity.</li>
+ <li><b>Diffusion</b> (Fick's first law): dm/dt = −D·A·dC/dx.</li>
+ <li><b>Osmosis</b> and osmotic pressure.</li>
+ <li><b>Sedimentation</b> (Stokes): v = 2r²(ρ − ρ₀)g / 9η. Below 0.5 µm Brownian motion opposes settling, so an <b>ultracentrifuge</b> is used (molecular weight, homogeneity).</li>
+ <li><b>Viscosity</b>: η<sub>int</sub> = K·Mᵃ. Spherical lyophobic particles → low viscosity; linear solvated lyophilic particles → high viscosity.</li></ul>`}
+ ],
+ quiz:[
+ {l:1,q:"Syrup BP is an exception to the usual solute/solvent rule because it contains:",o:["33.3% w/w sucrose","66.7% w/w sucrose","50% w/v sucrose","85% w/v sucrose"],a:1,e:"The sucrose (solute) is the larger part: 66.7% w/w in 33.3% w/w water."},
+ {l:1,q:"Paracetamol elixir is solubilized mainly by:",o:["Hydrotropy","Co-solvency (alcohol + propylene glycol)","Complexation","Micellization"],a:1,e:"Water-miscible co-solvents in which paracetamol is soluble."},
+ {l:1,q:"Which statement about hydrotropes is correct?",o:["They have a CMC","Their hydrophobic part is too small to self-aggregate, so no CMC","They are cyclodextrins","They work at 0.05%"],a:1,e:"Unlike surfactants, hydrotropes (e.g. sodium benzoate, urea) don't form micelles."},
+ {l:1,q:"β-cyclodextrin is made of how many glucose units?",o:["6","7","8","9"],a:1,e:"α = 6, β = 7, γ = 8."},
+ {l:1,q:"A BCS class II drug has:",o:["High solubility, high permeability","Low solubility, high permeability","High solubility, low permeability","Low solubility, low permeability"],a:1,e:"Dissolution limits absorption, so solubilization helps these most."},
+ {l:2,q:"According to Noyes–Whitney, dissolution rate is directly proportional to:",o:["Particle size","Surface area","Diffusion layer thickness h","Drug concentration in the bulk C"],a:1,e:"dm/dt = D·A·(Cs − C)/h; smaller particles → larger A → faster dissolution."},
+ {l:2,q:"Drug nanocrystals are in the size range:",o:["1–10 µm","100–1000 nm","1–10 nm","10–100 µm"],a:1,e:"Micronized = 1–10 µm; nanocrystals = 100–1000 nm."},
+ {l:2,q:"Why do nanocrystal formulations need stabilizers?",o:["To raise the dose","Their high surface energy makes them aggregate","To mask taste","To lower pH"],a:1,e:"Polymers (steric) or charged surfactants (electrostatic) keep particles apart."},
+ {l:2,q:"Entresto® (sacubitril + valsartan) is an example of a:",o:["Nanocrystal","Single-drug cocrystal","Multidrug cocrystal","Solid dispersion"],a:2,e:"Two APIs in one crystal lattice, held by non-covalent bonds."},
+ {l:3,q:"Which water must be used for injections?",o:["Purified water","Freshly boiled water","Water for injection (pyrogen-free)","Potable water"],a:2,e:"Purified water is not allowed for parenteral or ophthalmic products."},
+ {l:3,q:"Water for injection is packed in single-dose containers of no more than:",o:["100 mL","500 mL","1 L","5 L"],a:2,e:"≤ 1 L and with no antimicrobial agent."},
+ {l:3,q:"In distillation of purified water, which portions are discarded?",o:["Only the last 50%","First 10–20% and last 10–20%","Only the first 5%","None"],a:1,e:"The first part carries volatile impurities; the last carries decomposition products."},
+ {l:3,q:"Repeated redistillation of the distillate with fresh drug (e.g. rose water) is called:",o:["Cohobation","Percolation","Maceration","Trituration"],a:0,e:"Cohobation is used when the volatile oil content is small."},
+ {l:4,q:"Borate buffers can be used:",o:["Orally","Parenterally","For external application only","In all routes"],a:2,e:"Borates are for skin lotions, mouthwash, eyewash, not oral or parenteral use."},
+ {l:4,q:"Which antioxidant suits an oily (non-aqueous) preparation?",o:["Ascorbic acid","BHA / BHT","Sodium citrate","EDTA only"],a:1,e:"Tocopherol, BHA and BHT for oils; ascorbic acid for aqueous systems."},
+ {l:4,q:"Why do nearly saturated sucrose syrups not need a preservative?",o:["Sucrose is antibacterial","There is no free water for microbes","They are sterile","They contain alcohol"],a:1,e:"Microbes need free water; saturated syrup is effectively anhydrous for them."},
+ {l:4,q:"A bitter drug is best masked with:",o:["Apricot or peach","Anise, chocolate, mint or wild cherry","Citrus or raspberry","Vanilla only"],a:1,e:"Salty → apricot/peach; sour → citrus/raspberry; bitter → anise, chocolate, mint, wild cherry."},
+ {l:5,q:"Retention enemas in adults should not exceed:",o:["50 mL","150 mL","500 mL","1 L"],a:1,e:"Larger volumes stimulate evacuation, so the drug would not be retained."},
+ {l:5,q:"Nasal decongestant solutions should be used for no more than 3–5 days to avoid:",o:["Rhinitis medicamentosa","Hypertension only","Loss of smell","Nose bleeds"],a:0,e:"Rebound congestion (rhinitis medicamentosa) worsens the original symptom."},
+ {l:5,q:"Flexible collodion contains, besides pyroxylin:",o:["10% salicylic acid","2% camphor + 3% castor oil","Glycerin + alcohol","Starch"],a:1,e:"Castor oil adds flexibility; camphor makes it waterproof."},
+ {l:5,q:"The FDA-proposed alcohol limit in OTC oral products for children under 6 is:",o:["0.5%","5%","10%","20%"],a:0,e:"Under 6: 0.5%; 6–12: 5%; over 12 and adults: 10%."},
+ {l:6,q:"Colloidal particles are in the size range:",o:["< 1 nm","1–500 nm","> 500 nm","1–10 µm"],a:1,e:"They pass filter paper but not semipermeable membranes."},
+ {l:6,q:"Lyophobic sols are unstable in the presence of small amounts of electrolytes because:",o:["They lose their solvent sheath","The charge on their particles is neutralized","They form micelles","They become viscous"],a:1,e:"They depend on surface charge only; lyophilic colloids also have a solvent sheath."},
+ {l:6,q:"Dialysis separates colloids from impurities based on:",o:["Charge","Particle size, using a semipermeable membrane","Density","Colour"],a:1,e:"Small ions and molecules pass the membrane; colloidal particles stay."},
+ {l:7,q:"The visible cone of light through a colloidal dispersion is the:",o:["Brownian effect","Faraday–Tyndall effect","Donnan effect","Doppler effect"],a:1,e:"Colloidal particles scatter light; true solutions appear clear."},
+ {l:7,q:"Brownian motion increases when:",o:["Particle size and viscosity increase","Particle size and viscosity decrease","Glycerin is added","The particles are > 5 µm"],a:1,e:"Smaller particles in a less viscous medium move faster."},
+ {l:7,q:"By Stokes' law, doubling the particle radius makes sedimentation velocity:",o:["Double","Four times faster","Half","Unchanged"],a:1,e:"v ∝ r², so 2² = 4 times faster."}
+ ]
+},
+{
+ id:"organic", code:"PHC213", name:"Pharmaceutical Organic Chemistry 3", hue:"var(--c5)",
+ staff:"Dr. Heba Elsayed · Dr. Amal Elsayed · Dr. Sandra",
+ lectures:[
+ {n:1,t:"Aldehydes and ketones: names, properties, preparation",h:`
+ <ul><li>Aliphatic aldehydes: suffix <b>-al</b>, carbonyl carbon = C1 (methanal, ethanal). Ring + CHO: <b>carbaldehyde</b>; lower-priority CHO: <b>formyl</b>.</li>
+ <li>Ketones: suffix <b>-one</b>, lowest number to C=O (propanone). Common names: alkyl groups alphabetically + "ketone" (ethyl methyl ketone). Ring-C=O: <b>-phenone</b> (acetophenone).</li></ul>
+ <div class="formula">Priority: −COOH &gt; −COOR &gt; −COCl &gt; −CONH₂ &gt; −CN &gt; −CHO &gt; C=O &gt; −OH &gt; −NH₂</div>
+ <p><b>Uses:</b> formaldehyde (preservative, disinfectant, vaccines), benzaldehyde (flavour, API precursor), acetone (solvent, recrystallization), acetophenone (ibuprofen precursor).</p>
+ <p><b>Properties:</b> polar (dipole–dipole); bp higher than alkanes but lower than alcohols; &lt; 6 C soluble in water; H-bond with water but <b>not with each other</b>.</p>
+ <div class="tblwrap"><table><tr><th>Method</th><th>Gives</th></tr>
+ <tr><td>Hot KMnO₄ oxidative cleavage of alkenes</td><td>Aldehydes/ketones</td></tr>
+ <tr><td><b>PCC</b> oxidation of alcohols</td><td>1° → aldehyde (stops there), 2° → ketone</td></tr>
+ <tr><td>Nitrile + Grignard (RMgX)</td><td>Ketones only</td></tr>
+ <tr><td><b>Friedel–Crafts acylation</b> (benzene + RCOCl / AlCl₃)</td><td>Aromatic ketones only</td></tr>
+ <tr><td>Acyl chloride + dialkylcadmium (R₂Cd)</td><td>Ketones only</td></tr>
+ <tr><td><b>Rosenmund</b>: RCOCl + H₂/Pd–BaSO₄ (poisoned)</td><td>Aldehydes only (BaSO₄ stops reduction to alcohol)</td></tr>
+ <tr><td>Partial oxidation of toluene (CrO₃)</td><td>Benzaldehyde</td></tr>
+ <tr><td><b>Reimer–Tiemann</b></td><td>Phenolic aldehydes (salicylaldehyde)</td></tr></table></div>
+ <p><b>Keto–enol tautomerism:</b> equilibrium lies toward the <b>keto</b> form because C=O is much stronger than C=C.</p>`},
+ {n:2,t:"Nucleophilic addition, stereochemistry and reduction",h:`
+ <ul><li>Reactivity: <b>aldehydes &gt; ketones</b> (less steric hindrance, less stabilized C⁺); <b>aliphatic &gt; aromatic</b> (resonance makes aromatic C=O less electrophilic).</li></ul>
+ <div class="tblwrap"><table><tr><th>Nucleophile</th><th>Product</th></tr>
+ <tr><td>2 ROH, dry HCl</td><td>Hemiacetal/hemiketal → <b>acetal/ketal</b> (reversible with water). Diols give cyclic acetals: <b>protecting groups</b>.</td></tr>
+ <tr><td>HCN</td><td><b>Cyanohydrin</b> → α-hydroxy acids (e.g. mandelic acid, skin exfoliant)</td></tr>
+ <tr><td>Grignard RMgX</td><td>Alcohols</td></tr>
+ <tr><td>NH₃ derivatives (condensation)</td><td>Imines, <b>oximes</b> (antidotes for organophosphate poisoning), hydrazones, semicarbazones</td></tr></table></div>
+ <h4>Stereochemistry</h4>
+ <ul><li><b>Prochiral</b>: achiral but becomes chiral after one change. Attack on a prochiral carbonyl with no other stereocentre → 50:50 <b>racemic mixture</b> (optically inactive).</li>
+ <li>If a chiral α-carbon already exists → <b>stereoselective</b> reaction → unequal diastereomers. <b>Cram & Abdel-Hafez rule</b>: the nucleophile attacks from the side of the <b>small</b> group → <b>threo (major)</b>; from the medium side → erythro (minor).</li>
+ <li><b>R/S in Fischer</b>: priority by atomic number (I &gt; Br &gt; Cl &gt; S &gt; F &gt; O &gt; N &gt; C &gt; H). Lowest priority <b>vertical</b>: clockwise = R. Lowest priority <b>horizontal</b>: reverse it (clockwise = S).</li>
+ <li><b>Erythro</b>: like groups on the same side; <b>threo</b>: opposite sides.</li>
+ <li><b>Enantiomers</b>: mirror images, same properties except optical rotation. <b>Diastereomers</b>: not mirror images, ≥ 2 stereocentres, different physical properties.</li></ul>
+ <h4>Reduction</h4>
+ <ul><li>To alkanes: <b>Clemmensen</b> (Zn(Hg)/HCl) or <b>Wolff–Kishner</b> (N₂H₄/KOH).</li>
+ <li>To alcohols: <b>NaBH₄ or LiAlH₄</b>: aldehyde → 1° alcohol, ketone → 2° alcohol. Creates a new sp³ stereocentre.</li></ul>`},
+ {n:3,t:"α-Hydrogen reactions and carboxylic acids",h:`
+ <p>α-H is acidic because the carbonyl stabilizes the carbanion (−I and resonance).</p>
+ <ul><li><b>Aldol condensation</b>: needs α-H + strong base (NaOH/NaOEt). Enolate attacks a second carbonyl → dehydration → <b>α,β-unsaturated</b> carbonyl.</li>
+ <li><b>Cannizzaro</b>: aldehydes with <b>no α-H</b> (HCHO, benzaldehyde) + hot strong alkali → one molecule reduced to alcohol, one oxidized to acid (self oxidation–reduction).</li>
+ <li><b>Haloform (iodoform)</b>: any CH₃CO− group + I₂/NaOH → CHI₃ (yellow) + acid salt with <b>one carbon fewer</b>.</li>
+ <li>SEAr: −CHO and −COR are <b>deactivating, meta-directing</b> (−I, −M).</li></ul>
+ <h4>Carboxylic acids</h4>
+ <ul><li>IUPAC: <b>-oic acid</b>, C=O carbon = C1 (e.g. CH₃CH(Cl)CH₂CH₂COOH = 4-chloropentanoic acid). Ring-COOH: "-carboxylic acid".</li>
+ <li><b>Esters</b>: alkyl + acid name with "-ate" (propyl hexanoate).</li>
+ <li>High bp because two molecules form <b>H-bonded dimers</b>. First four acids are fully miscible with water; solubility falls as chains lengthen.</li></ul>`},
+ {n:4,t:"Acidity, preparation and reactions of carboxylic acids",h:`
+ <p>Acidity depends on the stability of the <b>carboxylate</b> ion (−I of C=O and charge delocalized over 2 O).</p>
+ <ul><li>More <b>s-character</b> → more acidic (sp &gt; sp² &gt; sp³).</li>
+ <li><b>+I</b> alkyl groups decrease acidity. <b>−I</b> groups increase it: more of them, more electronegative (F &gt; Cl &gt; Br &gt; I), and closer to COOH = stronger.</li>
+ <li>Benzoic acid (pKa 4.2) is stronger than acetic acid: the −I effect of the sp² ring wins.</li>
+ <li>Para-EWG (NO₂) acts by −M → stronger than meta (−I only). Para-EDG (OH, OCH₃) +M weakens acid; meta-EDG acts by −I only.</li>
+ <li><b>Ortho effect</b>: any ortho group twists COOH out of the ring plane, removing resonance donation → stronger acid (o-toluic pKa 3.9), even for donating groups.</li></ul>
+ <h4>Preparation</h4>
+ <ul><li>Oxidation of 1° alcohols or aldehydes (KMnO₄).</li><li><b>Grignard + CO₂</b> → acid with <b>one more carbon</b>.</li><li>Acid hydrolysis of nitriles.</li>
+ <li>Products: benzoic acid (preservative, antifungal), phenylacetic acid (diclofenac precursor), salicylic acid (BHA), salol (analgesic, antiseptic).</li></ul>
+ <h4>Reactions</h4>
+ <ul><li><b>HVZ</b> (X₂/P): α-halogenation → then OH or NH₂ substitution gives α-hydroxy or α-amino acids.</li>
+ <li>With NaOH → carboxylate salts. <b>Diclofenac potassium</b> is more soluble → faster onset (acute pain); diclofenac sodium → slower, delayed release (chronic arthritis).</li>
+ <li><b>Nucleophilic acyl substitution</b> (addition → elimination). Acid chlorides are the most reactive derivatives (Cl⁻ = weak base, good leaving group). Acid chloride + alcohol → ester; + amine → <b>amide</b> (best route to amides).</li>
+ <li>Fischer esterification is reversible: use excess alcohol or acid.</li>
+ <li>COOH is meta-directing and deactivating.</li></ul>`},
+ {n:5,t:"Conformations and cyclohexane",h:`
+ <ul><li><b>Conformers</b>: same molecule, interconverted by rotation about single bonds or ring flipping; low energy barrier.</li>
+ <li>Energy factors: <b>torsional</b> (eclipsing) strain, <b>steric</b> strain, dipole–dipole, H-bonding.</li>
+ <li>Butane stability: anti (staggered) &gt; gauche &gt; partially eclipsed &gt; fully eclipsed.</li>
+ <li>Ethylene glycol, ethanolamine, ethylenediamine: <b>gauche</b> is most stable because of an intramolecular H-bond.</li></ul>
+ <div class="tblwrap"><table><tr><th></th><th>Chair</th><th>Boat</th></tr><tr><td>Angle strain</td><td>None (109.5°)</td><td>None</td></tr><tr><td>Torsional strain</td><td>None (staggered)</td><td>Eclipsed H at C2–C3 and C5–C6</td></tr><tr><td>Steric strain</td><td>None</td><td><b>Flagpole</b> H at C1 and C4</td></tr><tr><td>Stability</td><td><b>Most stable</b></td><td>Less stable</td></tr></table></div>
+ <p>A planar ring would need 120° angles, so cyclohexane puckers. Each carbon has one <b>axial</b> and one <b>equatorial</b> bond; ring flip swaps them. Substituents prefer <b>equatorial</b> (avoids 1,3-diaxial clashes); the bulkier group takes equatorial in disubstituted rings.</p>`},
+ {n:6,t:"Nomenclature of heterocycles",h:`
+ <p>A <b>heterocycle</b> has at least one non-carbon ring atom (N, O, S…). About <b>59%</b> of US FDA-approved drugs contain nitrogen heterocycles. Nucleic acids are heterocycles too.</p>
+ <ul><li><b>Trivial names</b>: 5-membered: pyrrole, furan, thiophene, imidazole, pyrazole, oxazole, thiazole. 6-membered: pyridine, pyrimidine, pyrazine, pyridazine.</li>
+ <li><b>IUPAC (Hantzsch–Widman)</b> = <b>prefix</b> (heteroatom: oxa &gt; thia &gt; aza…, with di-, tri- and position numbers) + <b>stem</b> (ring size) + <b>suffix</b> (saturated or not; N present or not).</li></ul>
+ <div class="tblwrap"><table><tr><th>3-membered</th><th>With N</th><th>Without N</th></tr><tr><td>Unsaturated</td><td>-irine</td><td>-irene</td></tr><tr><td>Saturated</td><td>-iridine</td><td>-irane</td></tr></table></div>
+ <p>Examples: aziridine (saturated, N), oxirane (saturated, O), thiirane (saturated, S).</p>`}
+ ],
+ quiz:[
+ {l:1,q:"Oxidizing a primary alcohol with PCC gives:",o:["A carboxylic acid","An aldehyde","A ketone","An alkene"],a:1,e:"PCC is mild: 1° alcohol stops at the aldehyde; 2° alcohol gives a ketone."},
+ {l:1,q:"In the Rosenmund reduction, BaSO₄ is used to:",o:["Speed up the reaction","Poison the Pd catalyst so the aldehyde is not reduced further","Provide acidity","Remove water"],a:1,e:"Without poisoning, the aldehyde would be reduced on to the alcohol."},
+ {l:1,q:"Friedel–Crafts acylation of benzene with RCOCl/AlCl₃ prepares:",o:["Aromatic aldehydes","Aromatic ketones","Phenols","Carboxylic acids"],a:1,e:"It is used for aromatic ketones only."},
+ {l:1,q:"Which functional group has the highest IUPAC priority?",o:["−CHO","−COOR","−COOH","−OH"],a:2,e:"COOH > COOR > COCl > CONH₂ > CN > CHO > C=O > OH > NH₂."},
+ {l:1,q:"Aldehydes and ketones have lower boiling points than alcohols because they:",o:["Are non-polar","Cannot H-bond with each other","Have lower molecular weight","Are ionic"],a:1,e:"They are polar but have no O–H, so no intermolecular H-bonding."},
+ {l:2,q:"Which is most reactive toward nucleophilic addition?",o:["Acetone","Benzaldehyde","Acetaldehyde","Acetophenone"],a:2,e:"Aliphatic aldehyde: least hindered and no resonance stabilization of C=O."},
+ {l:2,q:"An acetal is formed from an aldehyde and:",o:["One equivalent of alcohol, base","Two equivalents of alcohol, dry HCl","HCN","Hydrazine"],a:1,e:"Via a hemiacetal; reversible by adding water."},
+ {l:2,q:"By the Cram & Abdel-Hafez rule, the major product forms when the nucleophile attacks from the side of the:",o:["Large group, giving erythro","Small group, giving threo","Medium group, giving threo","Either side equally"],a:1,e:"Least steric hindrance: small-group side → threo (major)."},
+ {l:2,q:"Reducing a ketone with NaBH₄ gives:",o:["A primary alcohol","A secondary alcohol","An alkane","A carboxylic acid"],a:1,e:"Aldehyde → 1° alcohol; ketone → 2° alcohol."},
+ {l:2,q:"Which converts C=O directly to CH₂?",o:["NaBH₄","Clemmensen reduction","PCC","Cannizzaro"],a:1,e:"Clemmensen (Zn(Hg)/HCl) and Wolff–Kishner (N₂H₄/KOH) give alkanes."},
+ {l:2,q:"In a Fischer projection the lowest-priority group is horizontal and 1→2→3 runs clockwise. The configuration is:",o:["R","S","Erythro","Cannot tell"],a:1,e:"With the lowest-priority group horizontal, reverse the apparent direction: clockwise → S."},
+ {l:3,q:"Which aldehyde undergoes the Cannizzaro reaction?",o:["Acetaldehyde","Propanal","Benzaldehyde","Butanal"],a:2,e:"Cannizzaro needs an aldehyde without α-hydrogens (benzaldehyde, formaldehyde)."},
+ {l:3,q:"A positive iodoform test needs which group?",o:["−CHO","CH₃CO−","−COOH","−OH on a ring"],a:1,e:"Methyl ketones (and compounds that give them) form yellow CHI₃; the product has one carbon fewer."},
+ {l:3,q:"The aldol condensation requires:",o:["No α-hydrogen","An α-hydrogen and a strong base","An acid catalyst and no water","A Grignard reagent"],a:1,e:"Base removes the α-H to make an enolate, which attacks a second carbonyl."},
+ {l:3,q:"The IUPAC name of CH₃CH(Cl)CH₂CH₂COOH is:",o:["2-chloropentanoic acid","4-chloropentanoic acid","4-chlorobutanoic acid","1-chloropentanoic acid"],a:1,e:"Five-carbon chain, COOH is C1, Cl on C4."},
+ {l:4,q:"Which acid is strongest?",o:["ICH₂COOH","BrCH₂COOH","ClCH₂COOH","FCH₂COOH"],a:3,e:"F is the most electronegative, giving the strongest −I effect."},
+ {l:4,q:"o-Toluic acid is stronger than benzoic acid even though CH₃ donates electrons because of:",o:["Hydrogen bonding","The ortho effect (steric inhibition of resonance)","Hyperconjugation","The +M effect"],a:1,e:"The ortho group twists COOH out of the ring plane, removing destabilizing resonance."},
+ {l:4,q:"Reacting a Grignard reagent with CO₂ gives a carboxylic acid with:",o:["The same number of carbons","One more carbon","One fewer carbon","Two more carbons"],a:1,e:"CO₂ adds one carbon as the COOH group."},
+ {l:4,q:"The Hell–Volhard–Zelinsky reaction:",o:["Reduces acids to alcohols","Halogenates the α-carbon of acids (X₂/P)","Makes esters","Nitrates benzoic acid"],a:1,e:"The α-halo acid can then become an α-hydroxy or α-amino acid."},
+ {l:4,q:"Why is diclofenac potassium preferred for acute pain over diclofenac sodium?",o:["It is a different drug","It is more water-soluble, so absorbed faster","It lasts longer","It has fewer side effects"],a:1,e:"Higher solubility → faster absorption → quicker onset."},
+ {l:4,q:"Which carboxylic acid derivative is the most reactive?",o:["Amide","Ester","Acid chloride","Carboxylate"],a:2,e:"Cl⁻ is a weak base and an excellent leaving group."},
+ {l:5,q:"The most stable conformation of cyclohexane is the:",o:["Planar form","Boat","Chair","Half-chair"],a:2,e:"Chair: 109.5° angles and all C–H bonds staggered."},
+ {l:5,q:"The flagpole interaction in boat cyclohexane is between hydrogens on:",o:["C1 and C2","C1 and C4","C2 and C3","C1 and C3"],a:1,e:"The two 'flagpole' H on C1 and C4 point toward each other (steric strain)."},
+ {l:5,q:"For ethylene glycol, the most stable conformer is gauche because of:",o:["Torsional strain","An intramolecular hydrogen bond","Steric repulsion","Angle strain"],a:1,e:"The two OH groups H-bond when 60° apart, outweighing the anti preference."},
+ {l:6,q:"A saturated 3-membered ring containing one nitrogen is called:",o:["Azirine","Aziridine","Oxirane","Azetidine"],a:1,e:"3-membered + N: unsaturated -irine, saturated -iridine."},
+ {l:6,q:"About what share of US FDA-approved drugs contain nitrogen heterocycles?",o:["10%","25%","59%","90%"],a:2,e:"About 59%, partly because N-heterocycles improve solubility and selectivity."}
+ ]
 }];
 
-/* ---------- state ---------- */
-let cur = MODULES[0], tab = "learn", qs = null;
-const $ = s => document.querySelector(s);
-const store = {
-  get(k){try{return JSON.parse(localStorage.getItem("noor:"+k))}catch(e){return null}},
-  set(k,v){try{localStorage.setItem("noor:"+k,JSON.stringify(v))}catch(e){}}
-};
+const COMING_UP = [
+ {date:"2026-11-04", title:"Dosage Forms 1 assignment due", course:"dosage"},
+ {date:"2026-11-17", end:"2026-11-19", title:"Genetics Theoretical Practical Exam 1", note:"DNA extraction, PCR & gel electrophoresis, qPCR, northern and southern blotting", course:"genetics"}
+];
 
-function renderRail(){
-  $("#modlist").innerHTML = MODULES.map(m=>{
-    const b = store.get("best:"+m.id);
-    return `<button class="mod" data-id="${m.id}" aria-current="${m===cur}">
-      <span class="code">${m.code}</span><span class="name">${m.name}</span>
-      <span class="best">${b!=null?`Best quiz score <b>${b}/${m.quiz.length}</b>`:`${m.quiz.length} quiz questions`}</span></button>`;
-  }).join("");
-  document.querySelectorAll(".mod").forEach(b=>b.onclick=()=>{cur=MODULES.find(m=>m.id===b.dataset.id);tab="learn";render();scrollTo({top:0})});
-  const done = MODULES.filter(m=>store.get("best:"+m.id)!=null).length;
-  $("#stats").textContent = `${done} of ${MODULES.length} quizzes completed`;
+const $=s=>document.querySelector(s);
+const store={get(k){try{return JSON.parse(localStorage.getItem("noor2:"+k))}catch(e){return null}},set(k,v){try{localStorage.setItem("noor2:"+k,JSON.stringify(v))}catch(e){}}};
+const studied=id=>store.get("studied:"+id)||[];
+const best=id=>store.get("best:"+id);
+let state={view:"home",course:null,tab:"learn",lec:1,filter:"all",qs:null};
+
+function go(view,id){
+  state.view=view; if(id){state.course=COURSES.find(c=>c.id===id);state.tab="learn";state.lec=1;state.filter="all";state.qs=null}
+  try{history.replaceState(null,"",view==="home"?"#home":"#"+state.course.id)}catch(e){}
+  render(); scrollTo({top:0});
+}
+$("#home").onclick=()=>go("home");
+
+function today(){const d=new Date();d.setHours(0,0,0,0);return d}
+function fmtDay(s){const d=new Date(s+"T00:00:00");return {day:d.getDate(),mon:d.toLocaleString("en",{month:"short"}),wd:d.toLocaleString("en",{weekday:"short"})}}
+
+function renderHome(){
+  const totalLec=COURSES.reduce((a,c)=>a+c.lectures.length,0);
+  const totalQ=COURSES.reduce((a,c)=>a+c.quiz.length,0);
+  const doneLec=COURSES.reduce((a,c)=>a+studied(c.id).length,0);
+  const scores=COURSES.map(c=>best(c.id)).filter(b=>b);
+  const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b.pct,0)/scores.length)+"%":"–";
+  const h=new Date().getHours();
+  const greet=h<12?"Good morning":h<18?"Good afternoon":"Good evening";
+  const t=today();
+  const ups=COMING_UP.map(u=>{
+    const s=new Date(u.date+"T00:00:00"), e=new Date((u.end||u.date)+"T00:00:00");
+    const days=Math.round((s-t)/864e5), past=e<t;
+    const c=COURSES.find(x=>x.id===u.course), f=fmtDay(u.date);
+    const chip=past?`<span class="chip past">Done</span>`:days<=0?`<span class="chip soon">Today</span>`:days<=3?`<span class="chip soon">In ${days} day${days>1?"s":""}</span>`:`<span class="chip">In ${days} days</span>`;
+    return {past,html:`<div class="up" style="--hue:${c.hue}"><div class="d"><b>${f.day}</b>${f.mon}${u.end?" – "+fmtDay(u.end).day:""}</div><div><div class="t">${u.title}</div><div class="n">${u.note||c.name}</div></div>${chip}</div>`};
+  }).filter(u=>!u.past).map(u=>u.html).join("");
+  $("#view").innerHTML=`
+  <section class="hello"><h1>${greet}, Noor</h1><p>Your five Fall 2026 courses, lecture by lecture, with a quiz for each. Read a lecture, mark it studied, then test yourself.</p></section>
+  <div class="statrow">
+    <div class="stat"><b>${COURSES.length}</b><span>Courses</span></div>
+    <div class="stat"><b>${doneLec}/${totalLec}</b><span>Lectures studied</span></div>
+    <div class="stat"><b>${totalQ}</b><span>Quiz questions</span></div>
+    <div class="stat"><b>${avg}</b><span>Average best score</span></div>
+  </div>
+  ${ups?`<p class="sec-label">Coming up</p><div class="upcoming">${ups}</div>`:""}
+  <p class="sec-label">Courses</p>
+  <div class="grid">${COURSES.map(c=>{
+    const s=studied(c.id), b=best(c.id);
+    return `<button class="card" style="--hue:${c.hue}" data-id="${c.id}">
+      <span class="code">${c.code}</span><h3>${c.name}</h3>
+      <span class="meta">${c.lectures.length} lectures · ${c.quiz.length} questions</span>
+      <span class="dots">${c.lectures.map(l=>`<i class="${s.includes(l.n)?"on":""}" title="Lecture ${l.n}"></i>`).join("")}</span>
+      <span class="foot"><span>${s.length} of ${c.lectures.length} studied</span><span>${b?`Best quiz <b>${b.pct}%</b>`:"Quiz not taken"}</span></span>
+    </button>`}).join("")}</div>`;
+  document.querySelectorAll(".card").forEach(b=>b.onclick=()=>go("course",b.dataset.id));
 }
 
-function render(){
-  renderRail();
-  $("#mtitle").textContent = cur.name; $("#msub").textContent = cur.sub;
-  $("#tab-learn").setAttribute("aria-selected",tab==="learn");
-  $("#tab-quiz").setAttribute("aria-selected",tab==="quiz");
-  if(tab==="learn"){
-    $("#view").innerHTML = `<div class="lesson">${cur.lesson}
-      <div class="next-cta"><button class="btn" id="go">Start the ${cur.name} quiz</button><span style="color:var(--muted)">${cur.quiz.length} questions with explanations</span></div></div>`;
-    $("#go").onclick=()=>{tab="quiz";startQuiz();render();scrollTo({top:0})};
-    if($("#sim")) initSim();
-  } else {
-    if(!qs || qs.mod!==cur.id) startQuiz();
-    renderQuiz();
-  }
+function renderCourse(){
+  const c=state.course;
+  $("#view").innerHTML=`<div style="--hue:${c.hue}">
+    <button class="back" id="bk">← All courses</button>
+    <div class="chead"><span class="code">${c.code}</span><h2>${c.name}</h2><p>${c.staff}</p></div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" id="t-learn" aria-selected="${state.tab==="learn"}">Lectures</button>
+      <button class="tab" role="tab" id="t-quiz" aria-selected="${state.tab==="quiz"}">Quiz</button>
+    </div><div id="pane"></div></div>`;
+  $("#bk").onclick=()=>go("home");
+  $("#t-learn").onclick=()=>{state.tab="learn";renderCourse()};
+  $("#t-quiz").onclick=()=>{state.tab="quiz";renderCourse()};
+  state.tab==="learn"?renderLecture():renderQuiz();
 }
-$("#tab-learn").onclick=()=>{tab="learn";render()};
-$("#tab-quiz").onclick=()=>{tab="quiz";render()};
 
-/* ---------- quiz ---------- */
-function startQuiz(){ qs = {mod:cur.id, i:0, picked:null, answers:[]}; }
+function renderLecture(){
+  const c=state.course, s=studied(c.id), L=c.lectures.find(l=>l.n===state.lec)||c.lectures[0];
+  const nq=c.quiz.filter(q=>q.l===L.n).length;
+  $("#pane").innerHTML=`<div class="layout">
+    <nav class="lecnav" aria-label="Lectures">${c.lectures.map(l=>`<button class="lecbtn" data-n="${l.n}" aria-current="${l.n===L.n}"><span class="num">L${l.n}</span><span class="ttl">${l.t}</span><span class="ok ${s.includes(l.n)?"on":""}"></span></button>`).join("")}</nav>
+    <article class="lesson"><span class="ln">Lecture ${L.n}</span><h3>${L.t}</h3>${L.h}
+      <div class="lessonfoot">
+        <button class="btn ${s.includes(L.n)?"done":"ghost"}" id="mark">${s.includes(L.n)?"✓ Studied":"Mark as studied"}</button>
+        ${nq?`<button class="btn" id="qz">Quiz on lecture ${L.n} (${nq})</button>`:""}
+      </div></article></div>`;
+  document.querySelectorAll(".lecbtn").forEach(b=>b.onclick=()=>{state.lec=+b.dataset.n;renderLecture();if(innerWidth>760)scrollTo({top:0})});
+  $("#mark").onclick=()=>{let a=studied(c.id);a=a.includes(L.n)?a.filter(x=>x!==L.n):[...a,L.n];store.set("studied:"+c.id,a);renderLecture()};
+  if($("#qz"))$("#qz").onclick=()=>{state.tab="quiz";state.filter=L.n;state.qs=null;renderCourse();scrollTo({top:0})};
+}
+
+function pool(){const c=state.course;return state.filter==="all"?c.quiz:c.quiz.filter(q=>q.l===state.filter)}
+function startQuiz(){state.qs={i:0,picked:null,answers:[],set:pool()}}
 function renderQuiz(){
-  const Q = cur.quiz, n = Q.length;
+  const c=state.course;
+  if(!state.qs) startQuiz();
+  const lecs=[...new Set(c.quiz.map(q=>q.l))];
+  const chips=`<div class="filters" role="group" aria-label="Choose lectures"><button class="fchip" data-f="all" aria-pressed="${state.filter==="all"}">All lectures (${c.quiz.length})</button>${lecs.map(n=>`<button class="fchip" data-f="${n}" aria-pressed="${state.filter===n}">L${n}</button>`).join("")}</div>`;
+  const Q=state.qs.set, n=Q.length, qs=state.qs;
+  let body;
   if(qs.i>=n){
-    const score = qs.answers.filter((a,i)=>a===Q[i].a).length;
-    const best = store.get("best:"+cur.id); if(best==null||score>best) store.set("best:"+cur.id,score);
-    renderRail();
-    const pct = Math.round(score/n*100);
-    const msg = pct>=80?"Excellent work. You're ready for the next module.":pct>=60?"Good effort. Review the questions you missed below.":"Go back to the explanation, then try again.";
-    $("#view").innerHTML = `<div class="quiz"><div class="result">
-      <div class="score">${score}/${n}</div><p>${pct}% · ${msg}</p>
-      <div class="review">${Q.map((q,i)=>`<div><span class="${qs.answers[i]===q.a?"v":"x"}">${qs.answers[i]===q.a?"✓":"✗"}</span> ${q.q}<br><small>Answer: <b>${q.o[q.a]}</b></small></div>`).join("")}</div>
-      <div class="actions"><button class="btn" id="retry">Retake quiz</button><button class="btn ghost" id="back">Back to explanation</button></div>
-    </div></div>`;
-    $("#retry").onclick=()=>{startQuiz();renderQuiz()};
-    $("#back").onclick=()=>{tab="learn";render()};
-    return;
+    const score=qs.answers.filter((a,i)=>a===Q[i].a).length, pct=Math.round(score/n*100);
+    if(state.filter==="all"){const b=best(c.id);if(!b||pct>b.pct)store.set("best:"+c.id,{pct,score,n})}
+    const msg=pct>=85?"Excellent. You're ready for this material.":pct>=65?"Good work. Review the ones you missed below.":"Go back over the lectures, then try again.";
+    body=`<div class="quiz result"><div class="score">${score}/${n}</div><p>${pct}% · ${msg}</p>
+      <div class="review">${Q.map((q,i)=>`<div><span class="${qs.answers[i]===q.a?"v":"x"}">${qs.answers[i]===q.a?"✓":"✗"}</span> <span class="qlec">L${q.l}</span> ${q.q}<br><small>Answer: <b>${q.o[q.a]}</b></small></div>`).join("")}</div>
+      <div class="actions"><button class="btn" id="retry">Retake</button><button class="btn ghost" id="tolec">Back to lectures</button></div></div>`;
+  } else {
+    const q=Q[qs.i], p=qs.picked, sc=qs.answers.filter((a,i)=>a===Q[i].a).length;
+    body=`<div class="quiz"><div class="qtop"><span>Question ${qs.i+1} of ${n}</span><span>Score ${sc}</span></div>
+      <div class="bar"><i style="width:${qs.i/n*100}%"></i></div>
+      <span class="qlec">Lecture ${q.l}</span><p class="qtext">${q.q}</p>
+      <div class="opts">${q.o.map((o,j)=>{let k="";if(p!=null){if(j===q.a)k="correct";else if(j===p)k="wrong"}return `<button class="opt ${k}" data-j="${j}" ${p!=null?"disabled":""}><span class="k">${"ABCD"[j]}</span><span>${o}</span></button>`}).join("")}</div>
+      ${p!=null?`<div class="feedback ${p===q.a?"ok":"no"}"><b>${p===q.a?"Correct.":"Not quite."}</b>${q.e}</div><div class="qnav"><button class="btn" id="nx">${qs.i+1<n?"Next question":"See results"}</button></div>`:""}</div>`;
   }
-  const q = Q[qs.i], p = qs.picked;
-  $("#view").innerHTML = `<div class="quiz">
-    <div class="qtop"><span>Question ${qs.i+1} of ${n}</span><span>Score ${qs.answers.filter((a,i)=>a===Q[i].a).length}</span></div>
-    <div class="bar"><i style="width:${qs.i/n*100}%"></i></div>
-    <p class="qtext">${q.q}</p>
-    <div class="opts">${q.o.map((o,j)=>{
-      let c=""; if(p!=null){ if(j===q.a)c="correct"; else if(j===p)c="wrong"; }
-      return `<button class="opt ${c}" data-j="${j}" ${p!=null?"disabled":""}><span class="k">${"ABCD"[j]}</span><span>${o}</span></button>`}).join("")}</div>
-    ${p!=null?`<div class="feedback ${p===q.a?"ok":"no"}"><b>${p===q.a?"Correct.":"Not quite."}</b>${q.e}</div>
-      <div class="qnav"><button class="btn" id="nextq">${qs.i+1<n?"Next question":"See results"}</button></div>`:""}
-  </div>`;
-  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{qs.picked=+b.dataset.j;qs.answers[qs.i]=qs.picked;renderQuiz();$("#nextq").focus()});
-  if(p!=null) $("#nextq").onclick=()=>{qs.i++;qs.picked=null;renderQuiz()};
+  $("#pane").innerHTML=chips+body;
+  document.querySelectorAll(".fchip").forEach(b=>b.onclick=()=>{state.filter=b.dataset.f==="all"?"all":+b.dataset.f;startQuiz();renderQuiz()});
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{qs.picked=+b.dataset.j;qs.answers[qs.i]=qs.picked;renderQuiz();$("#nx").focus({preventScroll:true})});
+  if($("#nx"))$("#nx").onclick=()=>{qs.i++;qs.picked=null;renderQuiz()};
+  if($("#retry"))$("#retry").onclick=()=>{startQuiz();renderQuiz()};
+  if($("#tolec"))$("#tolec").onclick=()=>{state.tab="learn";renderCourse()};
 }
 
-/* ---------- half-life simulator ---------- */
-function initSim(){
-  const hl=$("#hl"), dose=$("#dose");
-  const draw=()=>{
-    const t=+hl.value, D=+dose.value;
-    $("#hlout").textContent=t+" h"; $("#doseout").textContent=D+" mg";
-    const W=640,H=230,L=52,R=16,T=14,B=34, pw=W-L-R, ph=H-T-B, tmax=48;
-    const x=h=>L+h/tmax*pw, y=a=>T+ph-(a/D)*ph;
-    let g="";
-    [0,.25,.5,.75,1].forEach(f=>{g+=`<line x1="${L}" x2="${W-R}" y1="${y(D*f)}" y2="${y(D*f)}" stroke="var(--line)"/><text x="${L-8}" y="${y(D*f)+4}" text-anchor="end" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${Math.round(D*f)}</text>`});
-    for(let h=0;h<=48;h+=12) g+=`<text x="${x(h)}" y="${H-12}" text-anchor="middle" font-size="11" fill="var(--muted)" font-family="var(--f-mono)">${h} h</text>`;
-    let pts=[]; for(let h=0;h<=tmax;h+=.5) pts.push(`${x(h).toFixed(1)},${y(D*Math.pow(.5,h/t)).toFixed(1)}`);
-    g+=`<polygon points="${x(0)},${y(0)} ${pts.join(" ")} ${x(tmax)},${y(0)}" fill="var(--teal-soft)"/>`;
-    g+=`<polyline points="${pts.join(" ")}" fill="none" stroke="var(--teal)" stroke-width="2.5"/>`;
-    for(let k=1;k*t<=tmax&&k<=5;k++){const a=D*Math.pow(.5,k);g+=`<circle cx="${x(k*t)}" cy="${y(a)}" r="4.5" fill="var(--amber)"/><text x="${x(k*t)+7}" y="${y(a)-7}" font-size="11" fill="var(--ink)" font-family="var(--f-mono)">${+a.toFixed(1)}</text>`}
-    $("#chart").innerHTML=g;
-    const left24=D*Math.pow(.5,24/t);
-    $("#readout").innerHTML=`Amber points mark each half-life. After 24 h, <b>${left24.toFixed(1)} mg</b> remains (${(left24/D*100).toFixed(1)}%). k<sub>e</sub> = ${(0.693/t).toFixed(3)} h⁻¹.`;
-  };
-  hl.oninput=draw; dose.oninput=draw; draw();
-}
-
-render();
+function render(){state.view==="home"?renderHome():renderCourse()}
+function fromHash(){const h=location.hash.slice(1);const c=COURSES.find(x=>x.id===h);if(c){state.view="course";state.course=c;state.tab="learn";state.lec=1;state.qs=null}else state.view="home";render()}
+addEventListener("hashchange",fromHash);
+fromHash();
 </script>
