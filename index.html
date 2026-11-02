@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Noor E-Learning</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Cairo:wght@400;700&display=swap">
 <style>
 /* Layout: a study desk. Dashboard = greeting, exam countdown strip, course cards; course view = lecture list + quiz workspace. Lab teal with amber "noor" light. */
 :root{
@@ -152,6 +152,20 @@ footer{margin-top:40px;color:var(--muted);font-size:.8rem;text-align:center}
   .up{grid-template-columns:60px minmax(0,1fr)}
   .up .chip{grid-column:2;justify-self:start}
 }
+
+/* lecture tools: four generate buttons */
+.tools{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 18px}
+.tool{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-width:0}
+.tool:hover:not([disabled]){border-color:var(--hue)}
+.tool:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.tool b{font-family:var(--f-display);font-size:.98rem;line-height:1.2}
+.tool span{font-size:.78rem;color:var(--muted);line-height:1.3}
+.tool .ic{font-family:var(--f-mono);font-size:.7rem;font-weight:600;color:var(--hue);letter-spacing:.06em}
+.tool[disabled]{opacity:.6;cursor:progress}
+.tool .ar{font-family:"Cairo",var(--f-body)}
+.toolmsg{font-size:.85rem;color:var(--muted);margin:-10px 0 16px;min-height:1.2em}
+.toolmsg.err{color:var(--bad)}
+@media (max-width:760px){.tools{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -774,6 +788,581 @@ const COURSES = [
  ]
 }];
 
+const AR = {
+genetics:{
+1:{t:"تركيب الـ DNA وتضاعفه",h:`
+<p>الـ <b>DNA</b> عبارة عن <b>حلزون مزدوج (double helix)</b> مكوَّن من شريطين <b>متعاكسين في الاتجاه (antiparallel)</b>: واحد من <bdi>5'→3'</bdi> والتاني من <bdi>3'→5'</bdi>. الهيكل (sugar–phosphate backbone) بيكون برّه، والقواعد النيتروجينية جوّه.</p>
+<ul>
+<li><b>Franklin</b> بالـ X-ray أثبتت إن الهيكل برّه والقواعد جوّه وإن الشكل حلزوني من شريطين.</li>
+<li><b>قواعد Chargaff</b>: <bdi>A = T</bdi> و <bdi>G = C</bdi>، يعني الـ purines تساوي الـ pyrimidines. الزوج A=T بينهم <b>رابطتين هيدروجين</b>، والزوج G≡C بينهم <b>3 روابط</b> فهو أقوى بحوالي 50%.</li>
+<li><b>Watson & Crick (1953)</b>: الحلزون المزدوج والشريطين المتعاكسين، والقراءة من <bdi>5'→3'</bdi>.</li>
+<li>النيوكليوتيدات بتترابط بـ <b>phosphodiester bonds</b>، والقاعدة بترتبط بالسكر بـ <b>N-glycosidic bond</b>.</li>
+</ul>
+<p><b>الفرق في المصطلحات:</b> Nucleobase = قاعدة بس · Nucleoside = قاعدة + سكر خماسي · Nucleotide = قاعدة + سكر + فوسفات.</p>
+<p><b>أشكال الـ DNA:</b> شكل B (يميني، الأشهر في الخلية)، شكل A (يميني، في حالة الجفاف)، شكل Z (يساري ونادر).</p>
+<p><b>التعبئة:</b> حوالي <b>146 bp</b> بتلف حوالين 8 هستونات (histone octamer) وده اسمه <b>nucleosome</b>، وبعدين chromatin ثم chromosome.</p>
+<h4>التضاعف (Replication) نصف محافظ – semiconservative</h4>
+<ol>
+<li><b>Origin</b>: منطقة غنية بـ AT (واحدة في البكتيريا وكتير في الـ eukaryotes)، وبيرتبط بيها DnaA ومحتاج ATP.</li>
+<li><b>Helicase</b> بيفك الشريطين، و<b>SSB proteins</b> بتمنعهم يرجعوا يلزقوا، و<b>Topoisomerase</b> بيشيل الالتواء (supercoils) قدام الـ fork.</li>
+<li><b>Primase</b> بيعمل <b>RNA primer</b> قصير (حوالي 10 نيوكليوتيدات).</li>
+<li><b>DNA pol III</b> بيبني الشريط الجديد من <bdi>5'→3'</bdi>. الـ <b>Leading strand</b> مستمر بـ primer واحد، والـ <b>Lagging strand</b> متقطع على شكل <b>Okazaki fragments</b>.</li>
+<li><b>DNA pol I</b> بيشيل الـ primers ويملا الفراغات.</li>
+<li><b>Ligase</b> بيقفل الفتحات (nicks) برابطة phosphodiester.</li>
+</ol>
+<div class="pearl"><strong>ترتيب الامتحان:</strong> Helicase → Topoisomerase → Primase → Pol III → Pol I → Ligase</div>`},
+2:{t:"مشكلة نهاية التضاعف والنسخ (Transcription)",h:`
+<p>الـ DNA polymerase بيشتغل في اتجاه <bdi>5'→3'</bdi> بس ومحتاج primer، فالطرف الأخير من الـ lagging strand مش بيتنسخ. ده اسمه <b>end replication problem</b>.</p>
+<ul>
+<li><b>Telomeres</b> بتحمي أطراف الكروموسومات: تكرارات <bdi>TTAGGG</bdi> مع طرف بارز <bdi>3'</bdi> طوله 12–16 نيوكليوتيد. الإنسان عنده 46 كروموسوم يعني 92 تيلومير.</li>
+<li><b>Telomerase</b> = بروتين + قالب RNA خاص بيه، وبيشتغل كـ <b>reverse transcriptase</b>.</li>
+<li>في الخلايا العادية التيلوميراز قليل فالتيلوميرات بتقصر مع السن. في السرطان بيكون عالي، عشان كده هو هدف للأدوية. (نوبل 2009).</li>
+</ul>
+<h4>النسخ: من DNA إلى RNA</h4>
+<p>الإنزيم بيقرا الـ <b>template (antisense) strand</b>، والـ <b>coding (sense) strand</b> نفس تسلسل الـ mRNA بس فيه T بدل U.</p>
+<ul>
+<li><b>RNA pol I</b>: بيعمل rRNA (ما عدا 5S).</li>
+<li><b>RNA pol II</b>: بيعمل كل الـ mRNA.</li>
+<li><b>RNA pol III</b>: بيعمل tRNA و 5S rRNA.</li>
+</ul>
+<p><b>أجزاء الجين:</b> exons (بتتترجم)، introns (مش بتتترجم، بتبدأ بـ GT وتنتهي بـ AG)، promoter فيه <b>TATA box</b> (قبل الجين بحوالي 25 bp) و <b>CAAT box</b>، و enhancers بتزوّد معدل النسخ و silencers بتقلله.</p>
+<p><b>Cis-acting</b> = تسلسلات في الـ DNA نفسه. <b>Trans-acting</b> = بروتينات بترتبط بيها.</p>
+<h4>المراحل</h4>
+<ul>
+<li><b>Initiation</b>: TFIID بيتعرف على الـ promoter، TFIIB بيوصّل لـ RNA pol II، TFIIH بيفك الشريطين ويعمل phosphorylation للـ CTD.</li>
+<li><b>Elongation</b>: الإنزيم بيفك 10–20 قاعدة كل مرة.</li>
+<li><b>Termination</b>: إشارة <bdi>AAUAAA</bdi> والقطع بعدها بـ 10–35 نيوكليوتيد.</li>
+</ul>`},
+3:{t:"معالجة الـ RNA والترجمة (Translation)",h:`
+<p><b>Chromatin remodeling:</b> لما الهستونات تكون لازقة في الـ DNA الإنزيم مش بيوصل. الـ activators بتجيب <b>HAT</b> اللي بيعمل acetylation فالـ DNA يرتخي، و<b>HDAC</b> بيعكس ده.</p>
+<h4>التعديلات بعد النسخ</h4>
+<ul>
+<li><b>Splicing</b> بالـ spliceosome (snRNPs): بيشيل الـ introns ويوصل الـ exons.</li>
+<li><b>Alternative splicing</b>: جين واحد يدي أكتر من بروتين.</li>
+<li><b>5' cap</b> (7-methylguanosine): بيحمي من الـ nucleases ويساعد في الخروج من النواة وارتباط الريبوسوم.</li>
+<li><b>Poly-A tail</b> عند الطرف <bdi>3'</bdi>: مش موجود في الجين، بيتضاف بعد النسخ، ومسؤول عن الثبات والترجمة.</li>
+</ul>
+<h4>الترجمة: من mRNA إلى بروتين</h4>
+<ul>
+<li><b>tRNA</b> شكله L وحوالي 80 نيوكليوتيد، شايل حمض أميني و anticodon. إنزيم <b>aminoacyl-tRNA synthetase</b> بيركّب الحمض الأميني الصح.</li>
+<li><b>Wobble</b>: مرونة في التزاوج في القاعدة التالتة من الكودون بس.</li>
+<li><b>الريبوسوم</b>: 40% rRNA و 60% بروتين. أماكنه: A (الـ tRNA الجديد)، P (السلسلة اللي بتكبر)، E (الخروج).</li>
+<li><b>البداية</b>: الوحدة الصغيرة 40S بترتبط بالـ cap وتدور على <b>AUG</b> (Met)، وبعدين 60S تنضم.</li>
+<li><b>الاستطالة</b>: التعرف على الكودون ← رابطة ببتيدية ← انتقال، وبتستهلك GTP. السلسلة بتكبر من N إلى C.</li>
+<li><b>النهاية</b>: stop codon في الـ A site، مفيش tRNA بيرتبط، فالببتيد بيتحرر.</li>
+<li><b>Polysome</b>: ريبوسومات كتير على نفس الـ mRNA.</li>
+</ul>`},
+4:{t:"التعديلات بعد الترجمة والشفرة الوراثية",h:`
+<p>الـ <b>PTMs</b> هي تغييرات كيميائية بتحصل للبروتين بعد ما يتصنع. عندنا حوالي 20–25 ألف جين بس بيدّوا أكتر من مليون بروتين، بسبب الـ alternative splicing والـ PTMs.</p>
+<ul>
+<li><b>Phosphorylation</b>: على Ser و Thr و Tyr. الـ kinases بتضيف والـ phosphatases بتشيل. بتنشّط p53 وبتثبّط acetyl-CoA carboxylase.</li>
+<li><b>Hydroxylation</b>: على Pro و Lys في الكولاجين.</li>
+<li><b>Acetylation</b>: على الهستونات بتقلل الشحنة الموجبة فالـ DNA يرتخي والنسخ يزيد.</li>
+<li><b>Methylation</b>: على Lys (لحد 3 مرات) أو Arg (لحد مرتين)، ممكن تنشّط أو تثبّط.</li>
+<li><b>Ubiquitination</b>: بتعلّم البروتين عشان يتكسر في الـ proteasome.</li>
+<li><b>Proteolysis</b>: قطع، زي شيل الـ Met الأولاني أو تنشيط الـ precursors.</li>
+<li><b>Carboxylation</b>: محتاجة <b>فيتامين K</b> (عوامل التجلط).</li>
+</ul>
+<div class="pearl"><strong>نوبل 2019 (HIF-1α):</strong> في الأكسجين الطبيعي بيحصل له hydroxylation ← VHL يتعرف عليه ← ubiquitination ← يتكسر. في نقص الأكسجين بيتراكم ويشغّل جينات زي EPO.</div>
+<h4>الشفرة الوراثية</h4>
+<ul>
+<li>الكودون = 3 قواعد، يعني <bdi>4×4×4 = 64</bdi> كودون: 61 بيدّوا أحماض أمينية و 3 stop codons.</li>
+<li><b>AUG</b> = Met وهو كودون البداية. أكتر من كودون ممكن يدّوا نفس الحمض الأميني (redundancy).</li>
+<li>مثال: <bdi>AUG-GUG-CCA-CGA-AGG-UGA = Met-Val-Pro-Arg-Arg-Stop</bdi>.</li>
+</ul>`},
+5:{t:"تنظيم التعبير الجيني – الجزء الأول",h:`
+<p><b>Constitutive genes</b>: شغالة دايمًا بمستوى ثابت. <b>Facultative genes</b>: بتشتغل في ظروف معينة بس.</p>
+<p><b>Epigenetics</b>: تغيير في التعبير الجيني من غير ما تسلسل الـ DNA يتغير، وأدواته: العناصر الـ cis/trans، الـ ncRNAs، وتعديلات الهستونات.</p>
+<h4>البروتينات وعناصر الـ DNA</h4>
+<ul>
+<li><b>C/EBPs</b>: عيلة من 6 transcription factors.</li>
+<li><b>Sp1</b> بيرتبط بالـ GC box وبيجيب TFIID و RNA pol II.</li>
+<li>الـ activator ليه جزء بيرتبط بالـ DNA وجزء تنظيمي، وبيجيب HAT عند الـ enhancers.</li>
+</ul>
+<h4>DNA methylation</h4>
+<p>إضافة مجموعة ميثيل عند <b>CpG islands</b> جنب الـ promoter بتوقف النسخ بطريقتين: (1) بتمنع Sp1 يرتبط بالـ GC box، (2) بتجيب methyl-CpG binding protein + HDAC فالكروماتين يقفل. الـ CpG غير الممثيلة = جينات شغالة.</p>
+<h4>Non-coding RNAs</h4>
+<ul>
+<li>بتتنسخ بس مش بتتترجم: miRNA و lncRNA و circRNA.</li>
+<li><b>miRNA</b>: حوالي 22 نيوكليوتيد، بيتعمل كـ hairpin ويقطعه <b>Dicer</b> ويشتغل جوه <b>RISC</b>، وبيرتبط بالـ <bdi>3'UTR</bdi> فيكسّر الـ mRNA أو يوقف ترجمته.</li>
+<li>نوبل 2024: Ambros و Ruvkun لاكتشاف الـ microRNA.</li>
+</ul>
+<div class="pearl"><strong>منطق الحالات:</strong> زيادة miRNA-181 ← نقص التيلوميراز (لأن الـ mRNA بتاعه بيتقفل).</div>`},
+6:{t:"تنظيم التعبير الجيني – الجزء الثاني",h:`
+<ul>
+<li><b>circRNA</b>: بيتعمل بالـ back-splicing، عمره حوالي 48 ساعة (أثبت 5 مرات من الـ mRNA العادي)، وبيشتغل كـ <b>miRNA sponge</b>.</li>
+<li><b>lncRNA</b>: أطول من 200 نيوكليوتيد، بيشتغل كـ guide أو scaffold أو decoy.</li>
+</ul>
+<div class="pearl"><strong>منطق الحالات:</strong> لو circRNA اللي بيمسك miRNA-181 قلّ ← miRNA-181 الحر يزيد ← التيلوميراز يقل.</div>
+<h4>الهستونات والكروماتين</h4>
+<ul>
+<li>الـ octamer = 2 من كل واحد (H2A, H2B, H3, H4). الـ <b>H1</b> هو الـ linker ويدي ألياف 30 nm.</li>
+<li><b>CENP-A</b> بيحل محل H3 عند الـ centromere.</li>
+<li>الـ remodeling complexes بتستخدم ATP لتحريك الـ nucleosomes.</li>
+<li>Acetylation للـ Lys = كروماتين نشط، deacetylation = مقفول، methylation = حسب المكان، phosphorylation للـ Ser = نشط.</li>
+<li><b>Bromodomains</b> بتقرا الـ acetylation، و<b>chromodomains</b> بتقرا الـ methylation.</li>
+</ul>
+<h4>أمثلة وموتيفات</h4>
+<ul>
+<li>تمايز الخلايا: نفس الجينوم بس بروتيوم مختلف.</li>
+<li>تغيير الجلوبين من الجنين للبالغ بيغيّر الألفة للأكسجين (الأعلى في الـ embryo).</li>
+<li>البروتينات بتقرا الـ <b>major groove</b>. الموتيفات: helix-turn-helix (الأشهر)، zinc finger (كل ما الصوابع زادت الارتباط أقوى)، leucine zipper.</li>
+</ul>`},
+7:{t:"التنوع الوراثي ومشروع الجينوم البشري",h:`
+<ul>
+<li><b>HGP</b> بدأ أكتوبر 1990 وخلص أبريل 2003، بـ 20 مركز في 6 دول، واستخدم Sanger sequencing.</li>
+<li>مسودة يونيو 2000 غطّت حوالي 90%، ونسخة 2003 حوالي 92%. أصعب الأماكن: الـ telomeres والـ centromeres لأنها متكررة جدًا.</li>
+<li><b>T2T</b> في مارس 2022: أول جينوم بشري كامل فعلًا.</li>
+<li>الأثر: الفحوصات الجينية، معرفة الأصول، والـ precision medicine.</li>
+<li><b>مشروع الجينوم المصري (مارس 2021)</b>: جينوم مرجعي مصري، جينات الأمراض الشائعة، جينومات المصريين القدماء، والطب الشخصي.</li>
+</ul>
+<div class="pearl"><strong>احفظي:</strong> البشر متطابقين بنسبة 99.9%، والـ 0.1% (زي الـ SNPs) هي اللي بتحدد الصفات وخطر الأمراض.</div>`}
+},
+physio:{
+1:{t:"سوائل الجسم والنقل عبر الغشاء وتوازن الماء",h:`
+<p><b>Physiology</b> = الوظيفة الطبيعية، و<b>Pathophysiology</b> = الخلل اللي بيحصل في المرض. التنظيم: خلية ← نسيج ← عضو ← جهاز ← كائن.</p>
+<h4>أنواع النقل</h4>
+<ul>
+<li><b>Simple diffusion</b>: من غير طاقة ومع التدرج ومن غير بروتين (O₂ و CO₂).</li>
+<li><b>Facilitated diffusion</b>: من غير طاقة بس عن طريق carrier أو channel (الجلوكوز بالـ GLUT).</li>
+<li><b>Primary active</b>: بيستخدم ATP مباشرة ضد التدرج، زي <b>Na⁺/K⁺-ATPase</b> (3 صوديوم برّه و 2 بوتاسيوم جوّه).</li>
+<li><b>Secondary active</b>: بيستغل تدرج الصوديوم الموجود، زي نقل Na⁺ مع الجلوكوز في الأمعاء.</li>
+</ul>
+<h4>توازن الماء</h4>
+<p>الجفاف يرفع تركيز الدم ← الـ osmoreceptors في الـ hypothalamus ← <b>ADH</b> من الـ posterior pituitary ← الكلى ترجّع ماء.</p>
+<ul>
+<li><b>علامات الجفاف</b>: ضغط واطي، نبض سريع، جلد وأغشية ناشفة؛ والشديد (فقد 10–15%) خمول وهذيان. كبار السن أكتر عرضة.</li>
+<li><b>Hyponatremia</b>: الماء يدخل خلايا المخ ← وذمة دماغية ← تشوش وتشنجات.</li>
+<li><b>Hyperkalemia</b>: بتغيّر جهد الراحة ← اضطراب نظم خطير.</li>
+<li>محلول <b>hypotonic</b>: كرات الدم تنتفخ وتنفجر؛ <b>hypertonic</b>: تنكمش.</li>
+</ul>`},
+2:{t:"الدم وأمراض الدم",h:`
+<p>الدم = بلازما + خلايا (RBCs و WBCs و platelets). الـ pH من 7.35 لـ 7.45. بروتينات البلازما: albumin و globulins و fibrinogen.</p>
+<div class="pearl"><strong>الألبومين والوذمة:</strong> الألبومين كبير ومش بيخرج من الشعيرات، وبيعمل حوالي 80% من الـ colloid osmotic pressure. لو قلّ (زي فشل الكبد) السوائل تفضل في الأنسجة فتحصل <b>وذمة (oedema)</b>.</div>
+<h4>كرات الدم الحمراء</h4>
+<ul>
+<li>مقعرة الوجهين ومن غير نواة، والـ spectrin بيخلي الغشاء مرن. عمرها 100–120 يوم.</li>
+<li>الهيموجلوبين = 2α + 2β + 4 heme (Fe²⁺) فيشيل 4 جزيئات O₂. مع CO يدي carboxyhemoglobin، والأدوية المؤكسدة تحوّل Fe²⁺ لـ Fe³⁺ فيبقى methemoglobin.</li>
+<li>تكوين الدم بيزيد مع نقص الأكسجين (erythropoietin)، ومحتاج نخاع سليم وكبد وحديد و B12 وفولات.</li>
+</ul>
+<h4>الأنيميا</h4>
+<ul>
+<li><b>Microcytic</b>: مشكلة في تصنيع الهيموجلوبين، أشهرها نقص الحديد.</li>
+<li><b>Macrocytic (megaloblastic)</b>: مشكلة في تصنيع الـ DNA، نقص B12 أو الفولات.</li>
+<li><b>Pernicious</b>: مفيش intrinsic factor فالـ B12 مش بيتمتص.</li>
+<li><b>Hemolytic</b>: الكرات بتتكسر أسرع ما بتتعمل. <b>Aplastic</b>: فشل النخاع.</li>
+</ul>
+<p><b>Ferritin</b> = تخزين الحديد (بيقل في نقص الحديد)، <b>Transferrin</b> = نقل (بيزيد في نقص الحديد). الحديد بيتمتص كـ Fe²⁺ في الـ duodenum، والـ B12 بيتمتص في الـ terminal ileum.</p>
+<h4>أمراض وراثية</h4>
+<ul>
+<li><b>Sickle cell</b>: HbS، وراثة autosomal recessive.</li>
+<li><b>G6PD deficiency (أنيميا الفول)</b>: مفيش NADPH، والمحفزات: الفول، السلفا، أدوية الملاريا. وراثة X-linked.</li>
+<li><b>Thalassemia</b>: نقص تصنيع سلاسل الجلوبين، autosomal recessive.</li>
+</ul>`},
+3:{t:"الجهاز العصبي ١: الخلايا العصبية وجهد الفعل",h:`
+<ul>
+<li><b>Hippocampus</b>: الذاكرة والتعلم. <b>Hypothalamus</b>: الاتزان (الحرارة، الجوع، النوم، الهرمونات). <b>Medulla</b>: القلب والتنفس. <b>Cerebellum</b>: التوازن والحركة.</li>
+<li>الفصوص: occipital = النظر، temporal = السمع، frontal = التفكير، parietal = الإحساس بوضع الجسم.</li>
+<li>12 عصب قحفي، والـ <b>vagus (X)</b> هو العصب الباراسمبثاوي الرئيسي.</li>
+</ul>
+<h4>الخلية العصبية</h4>
+<p>الـ dendrites بتستقبل، والـ axon بينقل، والـ axon hillock بيولّد الإشارة. الـ <b>myelin</b> بيخلي التوصيل أسرع (saltatory من node لـ node).</p>
+<p><b>الخلايا الدبقية:</b> astrocytes (حاجز الدم والمخ)، ependymal (الـ CSF)، oligodendrocytes (ميالين الجهاز المركزي)، microglia (مناعة المخ)، Schwann (ميالين الطرفي والتجدد).</p>
+<h4>جهود الغشاء</h4>
+<ul>
+<li><b>جهد الراحة</b> حوالي <bdi>−70 mV</bdi>: بسبب تسريب K⁺ لبرّه أكتر من Na⁺ لجوّه، ومضخة Na⁺/K⁺، والبروتينات السالبة جوّه.</li>
+<li><b>Depolarization</b>: قنوات Na⁺ تفتح والصوديوم يدخل.</li>
+<li><b>Repolarization</b>: قنوات K⁺ تفتح والبوتاسيوم يخرج.</li>
+<li><b>Hyperpolarization</b>: قنوات K⁺ بتقفل ببطء.</li>
+<li><b>Absolute refractory</b>: مستحيل جهد جديد. <b>Relative refractory</b>: محتاج منبّه أقوى.</li>
+</ul>
+<p><b>القوس الانعكاسي:</b> مستقبل ← عصب حسي ← خلية وسيطة في النخاع الشوكي ← عصب حركي ← العضو المستجيب، وبيحصل قبل ما الإشارة توصل المخ.</p>`},
+4:{t:"الجهاز العصبي الذاتي والعضلات",h:`
+<h4>السمبثاوي مقابل الباراسمبثاوي</h4>
+<ul>
+<li><b>Sympathetic</b>: الخوف والهروب (fight or flight)، أصله thoracolumbar، والناقل الأخير <b>noradrenaline</b> على α/β (ما عدا الغدد العرقية ACh).</li>
+<li><b>Parasympathetic</b>: الراحة والهضم (rest and digest)، أصله craniosacral، والناقل <b>ACh</b> على مستقبلات muscarinic.</li>
+<li>العين: السمبثاوي يوسّع الحدقة (mydriasis)، والباراسمبثاوي يضيّقها (miosis) ويساعد على الرؤية القريبة.</li>
+<li>القلب والشعب الهوائية: السمبثاوي يسرّع القلب ويوسّع الشعب، والباراسمبثاوي يبطّأ القلب ويزوّد اللعاب.</li>
+<li>كل الألياف قبل العقدة بتفرز ACh على مستقبلات nicotinic (Nn).</li>
+</ul>
+<h4>انقباض العضلات</h4>
+<p><b>العضلات الملساء:</b> زيادة Ca²⁺ ← Ca²⁺–calmodulin ← تنشيط MLCK ← فسفرة الميوسين ← انقباض.</p>
+<p><b>العضلات الهيكلية:</b> إشارة عصبية ← ACh عند الـ NMJ ← دخول Na⁺ ← الإشارة في الـ T-tubules ← الـ SR يطلق Ca²⁺ ← انزلاق actin و myosin.</p>
+<h4>أمراض</h4>
+<ul>
+<li><b>Myasthenia gravis</b>: أجسام مضادة ضد مستقبلات nicotinic ← ضعف. العلاج: anticholinesterases ومثبطات مناعة.</li>
+<li><b>Alzheimer's</b>: نقص الـ cholinergic مع excitotoxicity بالجلوتامات.</li>
+<li><b>Parkinson's</b>: موت خلايا الدوبامين ← رعشة وبطء حركة.</li>
+<li><b>Epilepsy</b>: نشاط عصبي زايد. <b>Stroke</b>: انقطاع الدم. <b>MS</b>: التهاب يدمّر الميالين.</li>
+</ul>`},
+5:{t:"القلب ١: عضلة القلب والجهود الكهربية",h:`
+<ul>
+<li>الصمامات بتفتح وتقفل بفرق الضغط فالدم يمشي في اتجاه واحد.</li>
+<li>الشرايين التاجية: left main ← LAD و circumflex، وكمان الـ right coronary.</li>
+<li>خلايا التوصيل (SAN و AVN و Purkinje) بتبدأ وتنشر الإشارة، والخلايا الانقباضية بتضخ.</li>
+<li>الخواص: automaticity، excitability، conductivity، contractility.</li>
+</ul>
+<p><b>المعدل الذاتي:</b> SAN من 90 لـ 105 في الدقيقة (العصب الحائر يخليه حوالي 75)، AVN من 40 لـ 60، Purkinje من 15 لـ 40.</p>
+<p>الأدرينالين <b>chronotropic موجب</b>، والديجيتاليس <b>سالب</b>.</p>
+<h4>جهد خلايا الـ pacemaker (مفيش جهد راحة حقيقي)</h4>
+<ul>
+<li><b>Phase 4</b>: دخول Na⁺ البطيء (funny current) من حوالي <bdi>−60 mV</bdi>، ثم قنوات Ca²⁺ من نوع T.</li>
+<li><b>Phase 0</b>: دخول Ca²⁺ من نوع L، والعتبة من <bdi>−40</bdi> لـ <bdi>−30 mV</bdi>.</li>
+<li><b>Phase 3</b>: خروج K⁺.</li>
+</ul>
+<h4>جهد عضلة البطين (الراحة حوالي <bdi>−90 mV</bdi>)</h4>
+<p>0: دخول Na⁺ السريع · 1: خروج K⁺ قصير · 2: <b>plateau</b> بدخول Ca²⁺ · 3: خروج K⁺ · 4: راحة.</p>
+<div class="pearl"><strong>ليه القلب مش بيعمل tetanus؟</strong> لأن الـ absolute refractory period طويل (المراحل 0–2 ونص 3)، فلازم القلب يرتاح ويتملي قبل ما ينقبض تاني.</div>`},
+6:{t:"القلب ٢: التوصيل والدورة القلبية وضغط الدم",h:`
+<p><b>مسار التوصيل:</b> SAN ← الأذينين ← AVN ← bundle of His ← الفرعين ← ألياف Purkinje.</p>
+<ul>
+<li>الأبطأ في الـ <b>AVN</b> (0.05 m/s) عشان البطينين يتملوا.</li>
+<li>الأسرع في الـ <b>Purkinje</b> (4 m/s) عشان البطينين ينقبضوا مع بعض.</li>
+</ul>
+<h4>الربط بين الإثارة والانقباض</h4>
+<ol>
+<li>الإشارة تمشي على الغشاء والـ T-tubules.</li>
+<li>قنوات Ca²⁺ من نوع L (DHP) تدخّل كالسيوم قليل.</li>
+<li>الكالسيوم ده يفتح الـ ryanodine receptors فيطلع كالسيوم أكتر (calcium-induced calcium release).</li>
+<li>Ca²⁺ يرتبط بالـ troponin C ← انقباض.</li>
+<li><b>SERCA</b> ترجّع الكالسيوم للـ SR ← ارتخاء.</li>
+</ol>
+<h4>المعادلات</h4>
+<div class="formula">SV = EDV − ESV · CO = SV × HR · EF = SV / EDV<br>Pulse pressure = SBP − DBP = 40 mmHg · Mean ABP = DBP + ⅓ PP ≈ 93 mmHg</div>
+<ul>
+<li><b>Vasoconstrictors</b>: angiotensin II، adrenaline، noradrenaline. <b>Vasodilators</b>: NO، prostacyclin، histamine، bradykinin.</li>
+<li>المقاومة الطرفية بتعتمد على قطر الأوعية.</li>
+<li>السمبثاوي chronotropic و inotropic موجب، والباراسمبثاوي chronotropic سالب.</li>
+<li>الـ <b>baroreceptors</b> بتتحكم في الضغط لحظة بلحظة، والـ chemoreceptors بتتنشط مع نقص O₂، والـ medulla بتجمع الإشارات.</li>
+</ul>`}
+},
+analytical:{
+1:{t:"مقدمة في تفاعلات الأكسدة والاختزال",h:`
+<ul>
+<li><b>العامل المؤكسد (oxidizing agent)</b>: نفسه بيتختزل، بياخد إلكترونات، ورقم أكسدته بيقل. أمثلة: KMnO₄، K₂Cr₂O₇، I₂، KIO₃، KBrO₃، Ce⁴⁺.</li>
+<li><b>العامل المختزل (reducing agent)</b>: نفسه بيتأكسد، بيدي إلكترونات، ورقم أكسدته بيزيد. أمثلة: Na₂S₂O₃، الأوكسالات، Fe²⁺.</li>
+</ul>
+<h4>قواعد رقم الأكسدة</h4>
+<p>العنصر الحر = صفر، H = +1 (ما عدا الهيدريدات)، O = −2 (ما عدا البيروكسيدات)، الأيون = شحنته، والمركب المتعادل مجموعه صفر. مثال: Mn في KMnO₄ = +7.</p>
+<h4>الوزن المكافئ</h4>
+<div class="formula">Eq. wt = Molecular weight ÷ التغير في رقم الأكسدة<br>KMnO₄ في وسط حمضي: +7 → +2 (5 e) → 158/5 = 31.6<br>KMnO₄ في وسط قلوي: +7 → +4 (3 e) → 158/3 = 52.67</div>
+<h4>الموازنة بأنصاف المعادلات</h4>
+<ol>
+<li>قسّمي التفاعل لنص معادلة للمؤكسد ونص للمختزل.</li>
+<li>وازني الذرات (O بالماء و H بـ H⁺)، وبعدين الشحنات بالإلكترونات.</li>
+<li>اضربي بحيث الإلكترونات المفقودة = المكتسبة، واجمعي.</li>
+</ol>
+<div class="formula">MnO₄⁻ + 8H⁺ + 5Fe²⁺ → Mn²⁺ + 5Fe³⁺ + 4H₂O</div>`},
+2:{t:"جهد القطب (Electrode potential)",h:`
+<ul>
+<li>لو <b>solution pressure</b> أكبر: الفلز يدوب (يتأكسد)، القطب يبقى سالب ووزنه يقل. مثال: Zn⁰ → Zn²⁺.</li>
+<li>لو <b>ionic pressure</b> أكبر: الأيونات تترسب (تتختزل)، القطب يبقى موجب ووزنه يزيد. مثال: Cu²⁺ → Cu⁰.</li>
+</ul>
+<p>الجهود القياسية بتتقاس بالنسبة لـ <b>قطب الهيدروجين القياسي</b> (E⁰ = صفر).</p>
+<p>القطب بياخد نفس إشارة الـ E⁰ بتاعه، والتيار بيمشي من الأكثر سالبية للأكثر موجبية (مثلًا Mg −2.36 إلى Ag +0.80).</p>
+<div class="formula">E = E⁰ + (0.059/n) log [Mⁿ⁺] → E = E⁰ لما التركيز = 1 M</div>
+<div class="pearl"><strong>السلسلة الكهروكيميائية:</strong> الفلزات اللي جهدها أكثر سالبية عوامل مختزلة، وبتحل محل الفلزات اللي تحتها في المحلول.</div>`},
+3:{t:"الخلايا الكهروكيميائية",h:`
+<ul>
+<li><b>الخلية الجلفانية (Galvanic)</b>: تفاعل تلقائي بيولّد تيار. الأكسدة عند الـ <b>anode</b> والاختزال عند الـ <b>cathode</b>.</li>
+<li><b>الخلية الإلكتروليتية</b>: تيار خارجي بيجبر تفاعل غير تلقائي يحصل.</li>
+<li><b>Salt bridge</b>: بيوصل نصفي الخلية، يقفل الدائرة، ويحافظ على تعادل الشحنات بحركة الأيونات.</li>
+</ul>
+<div class="formula">EMF = E⁰(cathode) − E⁰(anode)</div>
+<div class="pearl"><strong>نصيحة:</strong> لو الـ EMF موجب يبقى التفاعل تلقائي.</div>`},
+4:{t:"جهد الأكسدة والعوامل المؤثرة عليه",h:`
+<div class="formula">E = E⁰ + (0.059/n) log [Ox]/[Red] → E = E⁰ لما [Ox] = [Red]</div>
+<ul>
+<li>كل ما الـ E⁰ يكون موجب أكتر يبقى <b>عامل مؤكسد أقوى</b>، والسالب = عامل مختزل قوي.</li>
+<li>عشان التفاعل يكمل لازم الفرق بين النظامين حوالي <b>0.4 V</b>.</li>
+<li>شيل الصورة المؤكسدة (ترسيب أو تكوين معقد) ← الجهد يقل. شيل الصورة المختزلة ← الجهد يزيد.</li>
+</ul>
+<p><b>جهود مهمة:</b> MnO₄⁻/Mn²⁺ = 1.51 · Ce⁴⁺ = 1.44 · Cl₂ = 1.36 · Cr₂O₇²⁻ = 1.36 · Fe³⁺/Fe²⁺ = 0.77 · I₂/I⁻ = 0.54. يعني البرمنجنات تقدر تأكسد Cl⁻ و Fe²⁺، بس Fe³⁺ يأكسد I⁻ بس.</p>
+<h4>مسائل تطبيقية</h4>
+<ul>
+<li><b>معايرة FeCl₂ بالبرمنجنات</b>: الكلوريد كمان هيتأكسد، فنضيف <b>Zimmermann–Reinhardt reagent</b>: MnSO₄ (يقلل جهد البرمنجنات تحت الكلور وفوق الحديد)، H₃PO₄ (يعمل معقد عديم اللون مع Fe³⁺ ويقلل جهده)، H₂SO₄ (للحموضة).</li>
+<li><b>معايرة FeCl₂ باليود</b>: اليود (0.54) أضعف من الحديد (0.77)، فنضيف HgCl₂ (يشيل I⁻ فيرفع جهد اليود) و H₃PO₄ (يقلل جهد الحديد).</li>
+</ul>`},
+5:{t:"الكواشف والمعايرات ومنحنى المعايرة",h:`
+<h4>أنواع الكواشف</h4>
+<ul>
+<li><b>Self</b>: KMnO₄ (أول لون وردي ثابت) و I₂.</li>
+<li><b>External</b>: K-ferricyanide كاختبار نقطة للـ Fe²⁺.</li>
+<li><b>Internal</b>: diphenylamine (0.76، من عديم اللون لبنفسجي)، ferroin (1.06، من أحمر لأزرق)، N-phenylanthranilic acid (1.08).</li>
+<li><b>Irreversible</b>: methyl orange و methyl red. <b>Specific</b>: النشا مع اليود و SCN⁻ مع Fe³⁺.</li>
+</ul>
+<div class="pearl"><strong>احفظي:</strong> الـ diphenylamine (0.76) قريب جدًا من جهد الحديد (0.77)، فلازم نضيف فوسفات أو فلوريد يقلل جهد الحديد. أما phenylanthranilic acid (1.08) فبيشتغل مباشرة لأنه بين 0.77 و 1.36.</div>
+<h4>المعايرات الثلاثة</h4>
+<ul>
+<li><b>KMnO₄</b>: الأقوى، كاشف ذاتي، مش primary standard (يتعاير ضد sodium oxalate)، وسط حمضي.</li>
+<li><b>Ce⁴⁺</b>: التاني في القوة، كاشف ذاتي ضعيف، الكاشف ferroin، يشتغل في أي وسط.</li>
+<li><b>K₂Cr₂O₇</b>: التالت، <b>primary standard</b>، مش كاشف ذاتي، الكاشف ferroin أو diphenylamine.</li>
+</ul>
+<p>عينات الحديديك لازم تتختزل الأول لـ Fe²⁺ (بـ SnCl₂ أو الزنك).</p>
+<h4>منحنى المعايرة</h4>
+<div class="formula">E عند نقطة التكافؤ = (n₁E₁⁰ + n₂E₂⁰) / (n₁ + n₂)<br>مثال I⁻ مع Ce⁴⁺: (2×0.54 + 1×1.44)/3 = 0.84 V</div>
+<p>الجهد بيتغير ببطء قبل نقطة النهاية وبيقفز فجأة عند نقطة التكافؤ.</p>`},
+6:{t:"Iodimetry و Iodometry و KIO₃ و KBrO₃",h:`
+<ul>
+<li><b>Iodimetry (مباشرة)</b>: المعاير هو I₂ القياسي، وبتقدّر <b>العوامل المختزلة</b> زي الثيوسلفات وفيتامين C.</li>
+<li><b>Iodometry (غير مباشرة)</b>: نضيف KI زيادة، واليود اللي يتحرر نعايره بالثيوسلفات، وبتقدّر <b>العوامل المؤكسدة</b> زي H₂O₂ و Cu²⁺.</li>
+</ul>
+<div class="formula">I₂ + 2S₂O₃²⁻ → 2I⁻ + S₄O₆²⁻ (tetrathionate)<br>H₂O₂ + 2H⁺ + 2I⁻ → I₂ + 2H₂O</div>
+<p><b>الكاشف:</b> النشا (خاص باليود). اليود بيدوب في الكلوروفورم أو CCl₄ أكتر من الماء بحوالي 90 مرة.</p>
+<h4>KIO₃ – الناتج بيعتمد على الحموضة</h4>
+<ul>
+<li>وسط متعادل: يتحول لـ I⁻ (6 إلكترونات).</li>
+<li>وسط حمضي خفيف: يتحول لـ ½I₂ (5 إلكترونات).</li>
+<li>وسط حمضي قوي: يتحول لـ I⁺ (4 إلكترونات).</li>
+</ul>`},
+7:{t:"مراجعة الميدترم",h:`
+<p>المحاضرة السابعة مراجعة للمحاضرات من 1 لـ 6. ذاكري معاها الكويز: موازنة المعادلات، الفرق بين جهد القطب وجهد الأكسدة، العوامل المؤثرة على الجهد، كاشف Zimmermann، اختيار الكاشف، المعايرات الثلاثة، ومنحنى المعايرة.</p>
+<h4>عينات مختزلة وإزاي تتعاير</h4>
+<ul>
+<li><b>الأوكسالات</b> ← CO₂: بالبرمنجنات أو Ce⁴⁺.</li>
+<li><b>Fe²⁺</b> ← Fe³⁺: بالبرمنجنات أو Ce⁴⁺ أو الداي كرومات.</li>
+<li><b>Ferrocyanide</b> ← ferricyanide: بالبرمنجنات أو Ce⁴⁺.</li>
+<li><b>H₂O₂</b> ← O₂: بالبرمنجنات أو Ce⁴⁺.</li>
+<li><b>As³⁺ و Sb³⁺ و SO₃²⁻ و NO₂⁻</b>: بالبرمنجنات.</li>
+</ul>`}
+},
+dosage:{
+1:{t:"الأشكال الصيدلانية السائلة وزيادة الذوبانية",h:`
+<p>الـ <b>dosage form</b> هو الشكل اللي الدوا بيوصل بيه لمكان تأثيره. المحلول خليط متجانس من مذاب ومذيب. استثناء: <b>Syrup BP</b> فيه 66.7% سكروز و 33.3% ماء بس.</p>
+<ul>
+<li><b>مميزات المحاليل</b>: سهلة البلع للأطفال وكبار السن، امتصاص سريع، تهييج أقل للمعدة، جرعة متجانسة، وطرق إعطاء كتير.</li>
+<li><b>عيوبها</b>: حجمها كبير، أقل ثباتًا (hydrolysis)، الميكروبات بتنمو فيها، الطعم واضح، والجرعة بتعتمد على قياس المريض.</li>
+</ul>
+<p><b>Solubilization</b> = زيادة ذوبان دوا ضعيف الذوبان في الماء. حوالي 40% من الأدوية المرشحة بتفشل بسبب ضعف الـ bioavailability.</p>
+<p><b>BCS:</b> Class I ذوبان ونفاذية عالية · II ذوبان قليل ونفاذية عالية · III ذوبان عالي ونفاذية قليلة · IV الاتنين قليل.</p>
+<h4>الطرق</h4>
+<ul>
+<li><b>تغيير الـ pH / تكوين ملح</b>: الأبسط للأدوية القابلة للتأين. بيفيد Class II وممكن يضر Class III.</li>
+<li><b>تعديل كيميائي</b>: مشتق ذواب، زي hydrocortisone sodium phosphate.</li>
+<li><b>Co-solvency</b>: مذيبات بتمتزج بالماء (glycerol و ethanol و propylene glycol)، زي paracetamol elixir.</li>
+<li><b>Micellar solubilization</b>: surfactant فوق الـ CMC بيحبس الدوا في micelles، زي Tweens لفيتامينات A و D و E و K، والصابون في Dettol.</li>
+<li><b>Hydrotropy</b>: كمية كبيرة من مذاب تاني (sodium benzoate، urea)، ومفيش CMC.</li>
+<li><b>Complexation</b>: الـ cyclodextrins (α = 6، β = 7، γ = 8 وحدات جلوكوز) برّه محب للماء وجوّه كاره له.</li>
+<li><b>Solid dispersion</b>: الدوا منتشر في بوليمر محب للماء (PVP، HPMC، PEG 6000).</li>
+</ul>`},
+2:{t:"تصغير حجم الجزيئات: Micronization و Nanocrystals و Cocrystals",h:`
+<div class="formula">Noyes–Whitney: dm/dt = D·A·(Cs − C)/h<br>معدل الذوبان بيتناسب طرديًا مع المساحة السطحية A</div>
+<ul>
+<li><b>Micronization</b>: من 1 لـ 10 µm بالـ jet milling أو ball milling، أكثر ثباتًا. أمثلة: griseofulvin و spironolactone. ممكن ما يكفيش لو log P أكبر من 4.</li>
+<li><b>Nanocrystals</b>: من 100 لـ 1000 nm. Top-down بالـ high-pressure homogenization، أو bottom-up بالترسيب. بتتكتل فمحتاجة stabilizers. أمثلة: Tricor و Rapamune و Emend.</li>
+<li><b>Stabilizers</b>: steric (بوليمرات زي PVP و HPMC)، electrostatic (مشحونة زي SDS)، أو الاتنين.</li>
+</ul>
+<h4>Cocrystals</h4>
+<p>دوا + <b>coformer</b> في بلورة واحدة مربوطين بروابط غير تساهمية. بتغيّر الخواص الفيزيائية مش الفارماكولوجي. مثال: carbamazepine–saccharin.</p>
+<ul>
+<li><b>ليه الذوبان بيزيد؟</b> الشبكة البلورية أضعف، والترطيب أحسن، وفيه قوة دافعة ديناميكية حرارية.</li>
+<li><b>شروط الـ coformer</b>: يعمل روابط هيدروجينية، آمن (GRAS)، يحسّن الخواص، وما يتفاعلش مع الدوا.</li>
+<li><b>Multidrug cocrystals</b>: زي <b>Entresto</b> (sacubitril + valsartan) لفشل القلب.</li>
+<li><b>طرق التحضير</b>: الطحن الجاف، الطحن بسائل، تبخير المذيب، الموجات فوق الصوتية أو الميكروويف.</li>
+</ul>`},
+3:{t:"المياه الصيدلانية والمياه العطرية",h:`
+<ul>
+<li><b>مياه الحنفية</b>: ما تنفعش للصرف، فيها ميكروبات وأملاح.</li>
+<li><b>مياه مغلية ومبردة</b>: بتقتل البكتيريا النشطة بس الجراثيم والأملاح بتفضل.</li>
+<li><b>Purified Water USP</b>: خالية من الأيونات والميكروبات، لكل الأشكال ما عدا الحقن وقطرات العين.</li>
+<li><b>Water for Injection</b>: خالية من الـ pyrogens ومعقمة، عبوات جرعة واحدة لحد 1 لتر، من غير مادة حافظة.</li>
+<li><b>Bacteriostatic WFI</b>: فيها مادة مضادة للميكروبات، للعبوات متعددة الجرعات. لو محتاجين أكتر من 5 مل نستخدم sterile WFI.</li>
+</ul>
+<h4>تحضير المياه النقية</h4>
+<ul>
+<li><b>التقطير</b>: نرمي أول 10–20% وآخر 10–20%.</li>
+<li><b>Ion exchange</b>: الـ cation resin يبدّل Ca²⁺ و Mg²⁺ بـ H⁺، والـ anion resin يبدّل Cl⁻ بـ OH⁻. رخيصة ومن غير حرارة.</li>
+<li><b>Reverse osmosis</b>: ضغط بيدفع الماء عكس الأسموزية، وبيشيل الـ pyrogens و 90–99% من الأيونات.</li>
+</ul>
+<h4>المياه العطرية</h4>
+<p>محاليل مائية شبه مشبعة بزيوت طيارة (نعناع، ورد، يانسون، كافور، كلوروفورم)، وبتستخدم كـ vehicle بطعم حلو.</p>
+<ul>
+<li><b>مشاكلها</b>: salting out مع الأملاح، بتعكّر مع الوقت، وحساسة للضوء والحرارة.</li>
+<li><b>التحضير</b>: بالتقطير (الأفضل، والتقطير المتكرر اسمه cohobation زي ماء الورد)، أو محلول بسيط (2 جم زيت + 1000 مل ماء ونسيبه 12 ساعة ونفلتر)، أو بمادة مساعدة على الذوبان.</li>
+<li><b>الاستخدامات</b>: الكافور طارد للغازات، الكلوروفورم مقشع وحافظ، النعناع واليانسون طاردين للغازات.</li>
+</ul>`},
+4:{t:"الإضافات في السوائل والمحاليل الفموية والشراب",h:`
+<ul>
+<li><b>Buffers</b>: كربونات، سترات، فوسفات. البورات للاستخدام الخارجي بس. الحقن وقطرات العين حوالي 7.4.</li>
+<li><b>Isotonicity</b>: NaCl والدكستروز، والـ isotonic = 0.9% NaCl.</li>
+<li><b>Viscosity enhancers</b>: povidone و carbomer لتلامس أطول.</li>
+<li><b>Preservatives</b>: benzoic acid من 0.1 لـ 0.2%، parabens 0.1%، كحول أكتر من 20%. الـ parabens بتتحبس في الـ micelles وتفقد فاعليتها.</li>
+<li><b>Antioxidants</b>: EDTA، وللزيوت tocopherol و BHA و BHT، وللمحاليل المائية ascorbic acid.</li>
+<li><b>Sweeteners</b>: السكروز (ثابت من pH 4 لـ 8)، sorbitol، saccharin أقل من 0.2%، aspartame.</li>
+<li><b>Flavours</b>: للمر: يانسون وشوكولاتة ونعناع. للمالح: مشمش وعرقسوس. للحامض: موالح وتوت.</li>
+</ul>
+<h4>المحاليل الفموية</h4>
+<ul>
+<li>الجرعات: 5 مل (معلقة صغيرة)، 10 مل، 15 مل (معلقة كبيرة).</li>
+<li><b>ORS</b> لكل لتر: 45 mEq صوديوم، 20 بوتاسيوم، 35 كلوريد، 30 سترات، 25 جم دكستروز.</li>
+<li>Magnesium citrate ملين ملحي، و sodium citrate–citric acid بيقلّوِن البول (حصوات، نقرس).</li>
+</ul>
+<h4>الشراب واللينكتس</h4>
+<p>الشراب محلول سكر مركز. لمرضى السكر: <b>artificial syrup</b> = sodium CMC 1.5% + saccharin 0.6%. الشراب المشبع تقريبًا مش محتاج مادة حافظة (مفيش ماء حر). الـ <b>linctus</b> للكحة، يتشرب ببطء ومن غير تخفيف.</p>`},
+5:{t:"المحاليل الخارجية المائية وغير المائية",h:`
+<h4>مائية – للاستخدام الخارجي</h4>
+<ul>
+<li><b>Lotions</b>: قليلة اللزوجة وبتتحط من غير دعك (زي calamine).</li>
+<li><b>Douches</b>: تيار للتنظيف (عين، حلق، مهبل).</li>
+<li><b>Enemas</b>: للإخراج (نص لتر لـ لتر ماء)، أو للاحتفاظ لتأثير موضعي أو جهازي (hydrocortisone للقولون التقرحي) بحد أقصى 150 مل، أو تشخيصية (barium sulfate).</li>
+<li><b>Nasal</b>: isotonic و pH من 5.5 لـ 6.5 لحماية الأهداب. مزيلات الاحتقان أقصى حاجة 3–5 أيام عشان rhinitis medicamentosa.</li>
+<li><b>Otic</b>: الجلسرين والبروبيلين جليكول لزجين وبيمتصوا الرطوبة.</li>
+</ul>
+<h4>غير مائية</h4>
+<ul>
+<li>مناسبة للأدوية اللي ما بتدوبش في الماء أو بتتحلل فيه، وللحقن الزيتية طويلة المفعول.</li>
+<li><b>الإيثانول</b>: مذيب ومادة حافظة فوق 15–20% ومبرّد للجلد. الحد الأقصى في الأدوية الفموية: 0.5% تحت 6 سنين، 5% من 6 لـ 12، و 10% فوق 12.</li>
+<li>الكحول بيرسّب الـ tragacanth والـ acacia والأملاح.</li>
+<li><b>Glycerin</b> (3 OH) و <b>propylene glycol</b> (2 OH): مذيبات وحافظة ولزوجة.</li>
+<li><b>الزيوت الثابتة</b>: زيت اللوز، السمسم، الزيتون، الخروع، وجوز الهند.</li>
+</ul>
+<h4>خارجية غير مائية</h4>
+<ul>
+<li><b>Liniments</b>: بتتحط بالدعك، وما تتحطش على جلد مجروح.</li>
+<li><b>Collodion</b>: 4% pyroxylin في كحول وإيثر، بيعمل طبقة حماية. الـ flexible collodion فيه 2% كافور و 3% زيت خروع. salicylic acid collodion 10% لإزالة الكالو.</li>
+</ul>`},
+6:{t:"الغرويات: الأنواع والتحضير والتنقية",h:`
+<ul>
+<li><b>Molecular</b>: أقل من 1 nm، بيعدّي من الغشاء شبه المنفذ، انتشاره سريع.</li>
+<li><b>Colloidal</b>: من 1 لـ 500 nm، بيتشاف بالـ ultramicroscope، بيعدّي من ورق الترشيح بس مش من الغشاء، انتشاره بطيء جدًا.</li>
+<li><b>Coarse</b>: أكبر من 500 nm، بيتشاف بالميكروسكوب العادي وبيتحجز في ورق الترشيح.</li>
+</ul>
+<p>الغرويات مساحتها السطحية ضخمة: platinum black كعامل حفاز، الكاولين بيمتص السموم، و Al(OH)₃ مضاد حموضة، و dextran بديل للبلازما.</p>
+<h4>الأنواع</h4>
+<ul>
+<li><b>Lyophilic</b>: بوليمرات عضوية (جيلاتين، أكاسيا)، بتتكون تلقائيًا، اللزوجة بتزيد جدًا، وثابتة مع الإلكتروليتات.</li>
+<li><b>Lyophobic</b>: غير عضوية (ذهب، فضة، كبريت)، محتاجة طرق خاصة، ومش ثابتة مع كمية قليلة من الإلكتروليت.</li>
+<li><b>Association</b>: micelles من surfactant فوق الـ CMC.</li>
+</ul>
+<p><b>تحضير الـ lyophobic:</b> dispersion (من كبير لصغير: ultrasonic، electric arc، colloid mill) أو condensation (من صغير لكبير: التشبع الزائد أو تفاعلات كيميائية زي تحلل FeCl₃).</p>
+<h4>التنقية</h4>
+<ul>
+<li><b>Dialysis</b>: غشاء بيخرّج الأيونات الصغيرة ويحجز الغرويات.</li>
+<li><b>Electrodialysis</b>: مجال كهربي بيسرّع خروج الأيونات.</li>
+<li><b>Ultrafiltration</b>: شفط من خلال غشاء دقيق.</li>
+<li><b>الكلية الصناعية</b>: السيلوفان بيعدّي اليوريا والجلوكوز والأملاح، مش البروتينات أو الخلايا.</li>
+</ul>`},
+7:{t:"خواص الغرويات",h:`
+<h4>الخواص الضوئية</h4>
+<ul>
+<li><b>Faraday–Tyndall effect</b>: الغرويات بتشتت الضوء (مخروط واضح)، والمحاليل الحقيقية لأ.</li>
+<li>الـ <b>ultramicroscope</b>: الجزيئات بتبان نقط لامعة للعد. الـ <b>electron microscope</b>: الحجم والشكل الحقيقي بس العينة لازم تنشف.</li>
+</ul>
+<h4>الخواص الحركية</h4>
+<ul>
+<li><b>Brownian motion</b>: حركة عشوائية من خبط جزيئات المذيب، أسرع مع الجزيئات الأصغر واللزوجة الأقل.</li>
+<li><b>Diffusion</b> (قانون Fick الأول): <bdi>dm/dt = −D·A·dC/dx</bdi>.</li>
+<li><b>Sedimentation</b> (Stokes): <bdi>v = 2r²(ρ − ρ₀)g / 9η</bdi>. تحت 0.5 µm الحركة البراونية بتقاوم الترسيب، فبنستخدم ultracentrifuge.</li>
+<li><b>Viscosity</b>: الجزيئات الكروية lyophobic لزوجتها قليلة، والخطية lyophilic لزوجتها عالية.</li>
+</ul>`}
+},
+organic:{
+1:{t:"الألدهيدات والكيتونات: التسمية والخواص والتحضير",h:`
+<ul>
+<li><b>الألدهيدات</b>: النهاية <b>-al</b> وكربون الكربونيل رقم 1 (methanal). لو CHO على حلقة: carbaldehyde.</li>
+<li><b>الكيتونات</b>: النهاية <b>-one</b> وأقل رقم للـ C=O (propanone). الاسم الشائع: المجموعات أبجديًا + ketone. على حلقة بنزين: -phenone (acetophenone).</li>
+</ul>
+<div class="formula">الأولوية: −COOH > −COOR > −COCl > −CONH₂ > −CN > −CHO > C=O > −OH > −NH₂</div>
+<p><b>الاستخدامات:</b> الفورمالدهيد (حافظ ومطهر ولقاحات)، البنزالدهيد (نكهة)، الأسيتون (مذيب)، الأسيتوفينون (لتحضير الإيبوبروفين).</p>
+<p><b>الخواص:</b> قطبية، درجة غليانها أعلى من الألكانات وأقل من الكحولات، أقل من 6 كربون بيدوب في الماء، وبتعمل رابطة هيدروجين مع الماء بس مش مع بعض.</p>
+<h4>طرق التحضير</h4>
+<ul>
+<li>أكسدة الكحولات بـ <b>PCC</b>: الأولي يدي ألدهيد ويقف، والثانوي يدي كيتون.</li>
+<li>Nitrile + Grignard: كيتونات بس.</li>
+<li><b>Friedel–Crafts acylation</b>: كيتونات أروماتية بس.</li>
+<li>Acyl chloride + R₂Cd: كيتونات بس.</li>
+<li><b>Rosenmund</b>: RCOCl + H₂/Pd–BaSO₄ يدي ألدهيدات بس (الـ BaSO₄ بيوقف الاختزال للكحول).</li>
+<li><b>Reimer–Tiemann</b>: ألدهيدات فينولية (salicylaldehyde).</li>
+</ul>
+<div class="pearl"><strong>Keto–enol:</strong> التوازن ناحية الـ keto لأن الـ C=O أقوى بكتير من الـ C=C.</div>`},
+2:{t:"الإضافة النيوكليوفيلية والفراغية والاختزال",h:`
+<p><b>النشاط:</b> الألدهيدات أنشط من الكيتونات (عوائق فراغية أقل)، والأليفاتية أنشط من الأروماتية (الرنين بيقلل الإلكتروفيلية).</p>
+<h4>النيوكليوفيلات</h4>
+<ul>
+<li><b>2 ROH مع HCl جاف</b>: hemiacetal ثم acetal (بيرجع بالماء). الـ diols بتدي acetals حلقية كمجموعات حماية.</li>
+<li><b>HCN</b>: cyanohydrin ثم α-hydroxy acids (زي mandelic acid للبشرة).</li>
+<li><b>Grignard</b>: كحولات.</li>
+<li><b>مشتقات الأمونيا</b>: imines و oximes (ترياق للتسمم بالمبيدات الفوسفورية) و hydrazones.</li>
+</ul>
+<h4>الكيمياء الفراغية</h4>
+<ul>
+<li><b>Prochiral</b>: مش chiral بس يبقى chiral بعد تغيير واحد. الهجوم عليه من غير مركز تاني يدي <b>racemic mixture</b> 50:50 غير نشط ضوئيًا.</li>
+<li>لو فيه α-carbon كيرالي بالفعل: التفاعل stereoselective. <b>قاعدة Cram و عبد الحافظ</b>: النيوكليوفيل يهاجم من ناحية المجموعة الصغيرة ← threo (الأساسي).</li>
+<li><b>R/S في فيشر</b>: لو الأقل أولوية رأسي والاتجاه مع عقارب الساعة = R. لو أفقي اعكسي.</li>
+<li><b>Erythro</b>: المجموعات المتشابهة في نفس الجهة، <b>threo</b>: في جهتين.</li>
+<li><b>Enantiomers</b>: صورة مرآة، نفس الخواص ما عدا الدوران الضوئي. <b>Diastereomers</b>: مش صورة مرآة وخواصهم مختلفة.</li>
+</ul>
+<h4>الاختزال</h4>
+<ul>
+<li>لألكانات: <b>Clemmensen</b> (Zn(Hg)/HCl) أو <b>Wolff–Kishner</b> (N₂H₄/KOH).</li>
+<li>لكحولات: NaBH₄ أو LiAlH₄: الألدهيد يدي كحول أولي والكيتون يدي ثانوي.</li>
+</ul>`},
+3:{t:"تفاعلات الـ α-هيدروجين والأحماض الكربوكسيلية",h:`
+<p>الـ <b>α-H</b> حمضي لأن الكربونيل بيثبّت الـ carbanion بالـ −I والرنين.</p>
+<ul>
+<li><b>Aldol condensation</b>: محتاج α-H وقاعدة قوية. الـ enolate يهاجم كربونيل تاني ثم نزع ماء ← α,β-unsaturated carbonyl.</li>
+<li><b>Cannizzaro</b>: ألدهيدات من غير α-H (HCHO والبنزالدهيد) مع قلوي ساخن: جزيء يتختزل لكحول وجزيء يتأكسد لحمض.</li>
+<li><b>Haloform (iodoform)</b>: أي مجموعة CH₃CO− مع I₂/NaOH تدي CHI₃ أصفر + ملح حمض فيه كربون أقل بواحد.</li>
+<li>الـ −CHO والـ −COR بيقللوا نشاط الحلقة وبيوجّهوا لـ <b>meta</b>.</li>
+</ul>
+<h4>الأحماض الكربوكسيلية</h4>
+<ul>
+<li>التسمية: النهاية <b>-oic acid</b> والكربون رقم 1 هو كربون COOH. مثال: 4-chloropentanoic acid.</li>
+<li>الإسترات: اسم الألكيل + اسم الحمض بـ <b>-ate</b> (propyl hexanoate).</li>
+<li>درجة الغليان عالية لأن جزيئين بيعملوا <b>dimer</b> بروابط هيدروجينية. أول 4 أحماض بتمتزج بالماء تمامًا.</li>
+</ul>`},
+4:{t:"الحمضية وتحضير وتفاعلات الأحماض الكربوكسيلية",h:`
+<p>الحمضية بتعتمد على ثبات أيون الكربوكسيلات (الشحنة موزعة على أكسجينين).</p>
+<ul>
+<li>كل ما الـ s-character يزيد الحمضية تزيد: sp > sp² > sp³.</li>
+<li>مجموعات الألكيل (+I) بتقلل الحمضية. مجموعات −I بتزوّدها: كل ما تكتر، وتبقى أكتر سالبية كهربية (F > Cl > Br > I)، وأقرب للـ COOH.</li>
+<li>حمض البنزويك (pKa 4.2) أقوى من الأسيتيك.</li>
+<li>NO₂ في para بيأثر بـ −M فأقوى من meta. OH في para بـ +M بيضعّف الحمض.</li>
+<li><b>Ortho effect</b>: أي مجموعة ortho بتلف الـ COOH برّه مستوى الحلقة فيبقى الحمض أقوى، حتى لو المجموعة مانحة.</li>
+</ul>
+<h4>التحضير</h4>
+<ul>
+<li>أكسدة الكحولات الأولية أو الألدهيدات بـ KMnO₄.</li>
+<li>Grignard + CO₂ يدي حمض فيه كربون زيادة.</li>
+<li>تحلل الـ nitriles بالحمض.</li>
+</ul>
+<h4>التفاعلات</h4>
+<ul>
+<li><b>HVZ</b> (X₂/P): هلجنة الـ α ثم استبدال بـ OH أو NH₂.</li>
+<li>مع NaOH: أملاح. <b>Diclofenac potassium</b> أذوب فمفعوله أسرع (ألم حاد)، و <b>diclofenac sodium</b> أبطأ (التهاب مفاصل مزمن).</li>
+<li><b>Nucleophilic acyl substitution</b>: الـ acid chlorides هي الأنشط. مع كحول يدي إستر، ومع أمين يدي أميد.</li>
+<li><b>Fischer esterification</b> عكسية، فنستخدم زيادة من الكحول أو الحمض.</li>
+</ul>`},
+5:{t:"الأشكال الفراغية (Conformations) والهكسان الحلقي",h:`
+<p>الـ <b>Conformers</b>: نفس الجزيء بيتحول بالدوران حوالين الروابط الأحادية أو قلب الحلقة، وحاجز الطاقة صغير.</p>
+<ul>
+<li>عوامل الطاقة: torsional strain، steric strain، dipole–dipole، والرابطة الهيدروجينية.</li>
+<li><b>ثبات البيوتان</b>: anti > gauche > partially eclipsed > fully eclipsed.</li>
+<li>الإيثيلين جليكول والإيثانولامين: الـ <b>gauche</b> هو الأثبت بسبب رابطة هيدروجين داخلية.</li>
+</ul>
+<h4>Chair مقابل Boat</h4>
+<ul>
+<li><b>Chair</b>: مفيش angle strain (109.5°) ولا torsional ولا steric، فهو <b>الأثبت</b>.</li>
+<li><b>Boat</b>: فيه هيدروجينات eclipsed وهيدروجينات flagpole عند C1 و C4، فهو أقل ثباتًا.</li>
+</ul>
+<div class="pearl"><strong>احفظي:</strong> كل كربون ليه رابطة axial ورابطة equatorial، وقلب الحلقة بيبدّلهم. المجموعات بتفضّل <b>equatorial</b> عشان تبعد عن الـ 1,3-diaxial، والمجموعة الأكبر تاخد equatorial.</div>`},
+6:{t:"تسمية المركبات الحلقية غير المتجانسة",h:`
+<p>الـ <b>heterocycle</b> فيه ذرة واحدة على الأقل في الحلقة مش كربون (N أو O أو S). حوالي 59% من الأدوية المعتمدة من FDA فيها حلقات نيتروجينية، والأحماض النووية كمان heterocycles.</p>
+<ul>
+<li><b>أسماء شائعة خماسية</b>: pyrrole، furan، thiophene، imidazole، pyrazole، oxazole، thiazole.</li>
+<li><b>سداسية</b>: pyridine، pyrimidine، pyrazine، pyridazine.</li>
+</ul>
+<h4>نظام Hantzsch–Widman</h4>
+<p>الاسم = <b>بادئة</b> (نوع الذرة: oxa > thia > aza مع الأرقام) + <b>جذر</b> (حجم الحلقة) + <b>لاحقة</b> (مشبعة ولا لأ، وفيها نيتروجين ولا لأ).</p>
+<ul>
+<li>ثلاثية فيها N: غير مشبعة <b>-irine</b>، مشبعة <b>-iridine</b>.</li>
+<li>ثلاثية من غير N: غير مشبعة <b>-irene</b>، مشبعة <b>-irane</b>.</li>
+<li>أمثلة: aziridine (مشبعة فيها N)، oxirane (فيها O)، thiirane (فيها S).</li>
+</ul>`}
+}
+};
+
 const COMING_UP = [
  {date:"2026-11-04", title:"Dosage Forms 1 assignment due", course:"dosage"},
  {date:"2026-11-17", end:"2026-11-19", title:"Genetics Theoretical Practical Exam 1", note:"DNA extraction, PCR & gel electrophoresis, qPCR, northern and southern blotting", course:"genetics"}
@@ -852,14 +1441,263 @@ function renderLecture(){
   const nq=c.quiz.filter(q=>q.l===L.n).length;
   $("#pane").innerHTML=`<div class="layout">
     <nav class="lecnav" aria-label="Lectures">${c.lectures.map(l=>`<button class="lecbtn" data-n="${l.n}" aria-current="${l.n===L.n}"><span class="num">L${l.n}</span><span class="ttl">${l.t}</span><span class="ok ${s.includes(l.n)?"on":""}"></span></button>`).join("")}</nav>
-    <article class="lesson"><span class="ln">Lecture ${L.n}</span><h3>${L.t}</h3>${L.h}
+    <article class="lesson"><span class="ln">Lecture ${L.n}</span><h3>${L.t}</h3>
+      <div class="tools" role="group" aria-label="Lecture ${L.n} study tools">
+        <button class="tool" data-tool="pdf-en"><span class="ic">PDF · EN</span><b>Explain in English</b><span>Download the explanation as a PDF</span></button>
+        <button class="tool" data-tool="pdf-ar"><span class="ic">PDF · AR</span><b class="ar">الشرح بالعربي</b><span>Arabic explanation as a PDF</span></button>
+        <button class="tool" data-tool="pptx"><span class="ic">PPTX</span><b>PowerPoint</b><span>Slides for this lecture</span></button>
+        <button class="tool" data-tool="quiz"><span class="ic">QUIZ</span><b>Quiz</b><span>${nq?nq+" questions on this lecture":"Revision quiz, all lectures"}</span></button>
+      </div><p class="toolmsg" id="toolmsg" role="status"></p>${L.h}
       <div class="lessonfoot">
         <button class="btn ${s.includes(L.n)?"done":"ghost"}" id="mark">${s.includes(L.n)?"✓ Studied":"Mark as studied"}</button>
-        ${nq?`<button class="btn" id="qz">Quiz on lecture ${L.n} (${nq})</button>`:""}
       </div></article></div>`;
   document.querySelectorAll(".lecbtn").forEach(b=>b.onclick=()=>{state.lec=+b.dataset.n;renderLecture();if(innerWidth>760)scrollTo({top:0})});
   $("#mark").onclick=()=>{let a=studied(c.id);a=a.includes(L.n)?a.filter(x=>x!==L.n):[...a,L.n];store.set("studied:"+c.id,a);renderLecture()};
-  if($("#qz"))$("#qz").onclick=()=>{state.tab="quiz";state.filter=L.n;state.qs=null;renderCourse();scrollTo({top:0})};
+  document.querySelectorAll(".tool").forEach(b=>b.onclick=()=>runTool(b,b.dataset.tool,c,L));
+}
+
+/* ---------- lecture tools: PDF (EN/AR), PowerPoint, quiz ---------- */
+const LIBS={
+  pdf:"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js",
+  pptx:"https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"
+};
+const _libs={};
+function loadLib(k){
+  return _libs[k]||(_libs[k]=new Promise((ok,no)=>{const s=document.createElement("script");s.src=LIBS[k];s.onload=ok;s.onerror=()=>{delete _libs[k];no(new Error("Could not load the "+k.toUpperCase()+" tool. Check your internet connection and try again."))};document.head.appendChild(s)}));
+}
+const HUES={c1:"2F6FB5",c2:"C2416B",c3:"7A5BC4",c4:"0F8A7C",c5:"C46A1C"};
+const hueHex=c=>HUES[(c.hue.match(/c\d/)||["c4"])[0]];
+const safeName=s=>s.replace(/[^\w\s.-]/g,"").replace(/\s+/g," ").trim().slice(0,60);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+async function saveFile(name,blob){
+  // Inside Claude the page asks the viewer to confirm the download; on a normal website it downloads directly.
+  let dl=null;
+  try{ if(window.claude&&window.claude.use) dl=await window.claude.use("downloads") }catch(e){}
+  if(dl){
+    try{ await dl.save({filename:name,data:blob}); return "saved" }
+    catch(e){ if(e&&e.code==="declined") return "declined"; if(e&&e.code==="rate_limited") throw new Error("A download is already waiting for you to confirm."); }
+  }
+  const url=URL.createObjectURL(blob), a=document.createElement("a");
+  a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),60000);
+  return "saved";
+}
+
+async function runTool(btn,kind,c,L){
+  if(kind==="quiz"){
+    const has=c.quiz.some(q=>q.l===L.n);
+    state.tab="quiz"; state.filter=has?L.n:"all"; state.qs=null; renderCourse(); scrollTo({top:0}); return;
+  }
+  const msg=$("#toolmsg"), b=btn.querySelector("b"), label=b.innerHTML;
+  document.querySelectorAll(".tool").forEach(x=>x.disabled=true);
+  b.textContent="Preparing…"; msg.className="toolmsg"; msg.textContent="Building your file. This takes a few seconds.";
+  try{
+    const r = kind==="pptx" ? await makePptx(c,L) : await makePdf(c,L,kind==="pdf-ar"?"ar":"en");
+    msg.textContent = r==="declined" ? "Download cancelled." : "Done. Check your downloads.";
+  }catch(e){
+    msg.className="toolmsg err"; msg.textContent=(e&&e.message)||"Something went wrong. Please try again.";
+  }finally{
+    b.innerHTML=label; document.querySelectorAll(".tool").forEach(x=>x.disabled=false);
+  }
+}
+
+/* ---------- PDF ---------- */
+const PDF_CSS=`
+.pdfdoc{width:auto;background:#fff;color:#14211f;font-family:"Atkinson Hyperlegible","Segoe UI",sans-serif;font-size:14.5px;line-height:1.6;padding:0}
+.pdfdoc[dir=rtl]{font-family:"Cairo","Segoe UI",sans-serif;font-size:14.5px;line-height:1.85}
+.pdfdoc .band{display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--h);padding-bottom:8px;margin-bottom:18px;font-size:12px;color:#5a6a67}
+.pdfdoc .band b{color:#0f6b62;font-size:14px}
+.pdfdoc .band b span{color:#b97c06}
+.pdfdoc .code{font-family:"JetBrains Mono",monospace;color:var(--h);font-weight:600;font-size:12.5px}
+.pdfdoc h1{font-family:"Bricolage Grotesque","Segoe UI",sans-serif;font-size:26px;line-height:1.2;margin:4px 0 6px}
+.pdfdoc[dir=rtl] h1,.pdfdoc[dir=rtl] h2,.pdfdoc[dir=rtl] h4{font-family:"Cairo",sans-serif}
+.pdfdoc .en-t{color:#5a6a67;font-size:13px;margin:0 0 16px}
+.pdfdoc h4{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;margin:18px 0 6px;color:#0f6b62}
+.pdfdoc h2{font-family:"Bricolage Grotesque",sans-serif;font-size:19px;margin:26px 0 10px;padding-top:12px;border-top:1px solid #d6e0dd}
+.pdfdoc p,.pdfdoc ul,.pdfdoc ol{margin:0 0 10px}
+.pdfdoc ul,.pdfdoc ol{padding-left:22px}
+.pdfdoc[dir=rtl] ul,.pdfdoc[dir=rtl] ol{padding-left:0;padding-right:22px}
+.pdfdoc li{margin-bottom:4px}
+.pdfdoc .terms{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.pdfdoc .term{flex:1 1 180px;background:#eef3f1;border-radius:6px;padding:8px 10px}
+.pdfdoc .term b{display:block}.pdfdoc .term span{color:#5a6a67;font-size:13px}
+.pdfdoc table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0 12px}
+.pdfdoc th,.pdfdoc td{text-align:left;padding:6px 8px;border:1px solid #d6e0dd;vertical-align:top}
+.pdfdoc th{background:#eef3f1;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em}
+.pdfdoc .formula{font-family:"JetBrains Mono",monospace;font-size:12.5px;background:#dfeeea;padding:10px 14px;border-radius:6px;margin:10px 0;line-height:1.7;direction:ltr;text-align:left}
+.pdfdoc .formula small{display:block;font-family:"Atkinson Hyperlegible",sans-serif;color:#5a6a67}
+.pdfdoc .pearl{background:#fbf0d9;border-left:4px solid #b97c06;padding:10px 14px;margin:12px 0}
+.pdfdoc[dir=rtl] .pearl{border-left:0;border-right:4px solid #b97c06}
+.pdfdoc .pearl strong{color:#8a5c00}
+.pdfdoc .q{margin:0 0 12px;padding:10px 12px;border:1px solid #d6e0dd;border-radius:6px;direction:ltr;text-align:left;font-family:"Atkinson Hyperlegible",sans-serif;line-height:1.5}
+.pdfdoc[dir] .q ol{list-style:upper-alpha;margin:6px 0;padding-left:24px;padding-right:0}
+.pdfdoc .q .ans{font-size:13px;color:#1d7a45}
+.pdfdoc .q .ans span{color:#5a6a67}
+.pdfdoc .note{font-size:12px;color:#5a6a67;margin-top:20px}
+`;
+function buildPdfDoc(c,L,lang){
+  const ar=lang==="ar", A=ar&&AR[c.id]&&AR[c.id][L.n];
+  if(ar&&!A) throw new Error("The Arabic explanation for this lecture isn't ready yet.");
+  const qs=c.quiz.filter(q=>q.l===L.n);
+  const el=document.createElement("div");
+  el.className="pdfdoc"; el.setAttribute("dir",ar?"rtl":"ltr"); el.setAttribute("lang",ar?"ar":"en");
+  el.style.setProperty("--h","#"+hueHex(c));
+  el.innerHTML=`<style>${PDF_CSS}</style>
+  <div class="band" dir="ltr"><b>Noor <span>E-Learning</span></b><span>MSA University · Pharmacy · Year 2</span></div>
+  <div class="code">${c.code} · ${esc(c.name)} · ${ar?"المحاضرة":"Lecture"} ${L.n}</div>
+  <h1>${ar?A.t:esc(L.t)}</h1>
+  ${ar?`<p class="en-t" dir="ltr">${esc(L.t)}</p>`:`<p class="en-t">${esc(c.staff)}</p>`}
+  ${ar?A.h:L.h}
+  ${qs.length?`<h2>${ar?"أسئلة للمراجعة (بالإنجليزي زي الامتحان)":"Check yourself"}</h2>
+  ${qs.map((q,i)=>`<div class="q"><b>${i+1}. ${q.q}</b><ol>${q.o.map(o=>`<li>${o}</li>`).join("")}</ol><div class="ans"><b>Answer: ${"ABCD"[q.a]}.</b> <span>${q.e}</span></div></div>`).join("")}`:""}
+  <p class="note">${ar?"شرح مبسّط من محاضرات MSA. ارجعي دايمًا لسلايدات الدكتور قبل الامتحان.":"A study summary built from the MSA lecture slides. Always check against your lecturer's slides before the exam."}</p>`;
+  return el;
+}
+// The PDF renderer places each text run by itself; giving every word its own box keeps right-to-left lines in the right order.
+function isolateWords(root){
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>{const p=n.parentNode;return p.nodeName==="STYLE"||!n.textContent.trim()||p.closest("[dir=ltr],.formula")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}});
+  const nodes=[]; while(w.nextNode()) nodes.push(w.currentNode);
+  const LT="A-Za-z0-9Ͱ-Ͽ⁰-₟²³µ'′";
+  const RUN=new RegExp("[(\\["+LT+"](?:[^؀-ۿ]*["+LT+")\\]%°])?","g");
+  const span=(t,ltr)=>{const s=document.createElement("span");s.className="w";s.textContent=ltr?"\u2066"+t+"\u2069":t;return s};
+  const words=(f,t)=>t.split(/(\s+)/).forEach(x=>{if(!x)return; f.appendChild(/^\s+$/.test(x)?document.createTextNode(x):span(x,false))});
+  nodes.forEach(n=>{
+    const t=n.textContent, f=document.createDocumentFragment(); let i=0, m;
+    RUN.lastIndex=0;
+    while((m=RUN.exec(t))){ words(f,t.slice(i,m.index)); f.appendChild(span(m[0],true)); i=m.index+m[0].length; }
+    words(f,t.slice(i)); n.parentNode.replaceChild(f,n);
+  });
+}
+async function makePdf(c,L,lang){
+  const el=buildPdfDoc(c,L,lang);
+  if(lang==="ar") isolateWords(el);
+  await loadLib("pdf");
+  try{ await Promise.all(["400 16px Cairo","700 16px Cairo","400 16px 'Atkinson Hyperlegible'","700 16px 'Atkinson Hyperlegible'","700 16px 'Bricolage Grotesque'","600 14px 'JetBrains Mono'"].map(f=>document.fonts.load(f))) }catch(e){}
+  const opt={
+    margin:[14,14,16,14],
+    filename:"x.pdf",
+    image:{type:"jpeg",quality:0.95},
+    html2canvas:{scale:2,backgroundColor:"#ffffff",useCORS:true,logging:false,},
+    jsPDF:{unit:"mm",format:"a4",orientation:"portrait"},
+    pagebreak:{mode:["css","legacy"],avoid:["li","tr",".pearl",".formula",".term",".q","h4","h1"]}
+  };
+  const pdf=await window.html2pdf().set(opt).from(el).toPdf().get("pdf");
+  const n=pdf.internal.getNumberOfPages(), W=pdf.internal.pageSize.getWidth(), H=pdf.internal.pageSize.getHeight();
+  for(let i=1;i<=n;i++){ pdf.setPage(i); pdf.setFontSize(8); pdf.setTextColor(120,135,132);
+    pdf.text(`Noor E-Learning · ${c.code} · Lecture ${L.n}`,14,H-7); pdf.text(`${i} / ${n}`,W-14,H-7,{align:"right"}); }
+  const name=`${c.code} L${L.n} ${safeName(L.t)} (${lang==="ar"?"Arabic":"English"}).pdf`;
+  return saveFile(name,pdf.output("blob"));
+}
+
+/* ---------- PowerPoint ---------- */
+function runsOf(node){
+  const out=[];
+  node.childNodes.forEach(n=>{
+    if(n.nodeType===3){ if(n.textContent) out.push({text:n.textContent}) }
+    else if(n.nodeName==="BR") out.push({text:"; "});
+    else if(/^(B|STRONG)$/.test(n.nodeName)) out.push({text:n.textContent,options:{bold:true}});
+    else out.push({text:n.textContent});
+  });
+  if(out.length){ out[0].text=out[0].text.replace(/^\s+/,""); out[out.length-1].text=out[out.length-1].text.replace(/\s+$/,""); }
+  return out.map(r=>({...r,text:r.text.replace(/\s+/g," ")})).filter(r=>r.text);
+}
+const runsLen=r=>r.reduce((a,x)=>a+x.text.length,0);
+function lectureBlocks(h){
+  const root=new DOMParser().parseFromString("<div>"+h+"</div>","text/html").body.firstElementChild;
+  root.querySelectorAll("br").forEach(b=>b.replaceWith("\n"));
+  root.querySelectorAll(".formula small").forEach(x=>x.prepend("\n"));
+  const secs=[{title:null,items:[]}], cur=()=>secs[secs.length-1];
+  for(const el of root.children){
+    const cls=el.className||"";
+    if(el.tagName==="H4") secs.push({title:el.textContent.trim(),items:[]});
+    else if(el.tagName==="UL"||el.tagName==="OL") [...el.children].forEach((li,i)=>cur().items.push({t:"b",runs:runsOf(li),num:el.tagName==="OL"?i+1:0}));
+    else if(cls.includes("terms")) el.querySelectorAll(".term").forEach(t=>cur().items.push({t:"b",runs:[{text:t.querySelector("b").textContent+": ",options:{bold:true}},{text:t.querySelector("span").textContent}]}));
+    else if(cls.includes("tblwrap")||el.tagName==="TABLE") cur().items.push({t:"table",rows:[...el.querySelectorAll("tr")].map(tr=>[...tr.children].map(td=>({text:td.textContent.trim(),head:td.tagName==="TH"})))});
+    else if(cls.includes("pearl")) cur().items.push({t:"pearl",text:el.textContent.replace(/\s+/g," ").trim()});
+    else if(cls.includes("formula")) cur().items.push({t:"formula",text:el.textContent.split("\n").map(x=>x.replace(/\s+/g," ").replace(/ /g," ").trim()).filter(Boolean).join("\n")});
+    else { const r=runsOf(el); if(r.length) cur().items.push({t:"b",runs:r}); }
+  }
+  return secs.filter(s=>s.items.length);
+}
+// PptxGenJS writes paragraph settings before every text run; PowerPoint expects them once per paragraph, so keep only the first.
+async function cleanPptx(buf){
+  const zip=await window.JSZip.loadAsync(buf);
+  const files=Object.keys(zip.files).filter(f=>/^ppt\/slides\/slide\d+\.xml$/.test(f));
+  for(const f of files){
+    const xml=await zip.file(f).async("string");
+    zip.file(f,xml.replace(/<a:p>([\s\S]*?)<\/a:p>/g,(m,inner)=>{let n=0;return "<a:p>"+inner.replace(/<a:pPr\b[^>]*?(?:\/>|>[\s\S]*?<\/a:pPr>)/g,x=>n++?"":x)+"</a:p>"}));
+  }
+  return zip.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.presentationml.presentation",compression:"DEFLATE"});
+}
+async function makePptx(c,L){
+  await loadLib("pptx");
+  const hue=hueHex(c), TEAL="0F6B62", INK="14211F", MUTED="5A6A67", BG="F6F8F7";
+  const pres=new window.PptxGenJS(); pres.layout="LAYOUT_WIDE"; pres.title=`${c.code} Lecture ${L.n}: ${L.t}`; pres.author="Noor E-Learning";
+  const W=13.333, X=0.7, CW=W-1.4, TOP=1.45, BOTTOM=6.85, LINE=0.36, CPL=100;
+  const foot=s=>{ s.background={color:BG}; s.addShape(pres.ShapeType.rect,{x:0,y:0,w:0.18,h:7.5,fill:{color:hue},line:{color:hue}});
+    s.addText(`${c.code} · Lecture ${L.n} · Noor E-Learning`,{x:X,y:7.0,w:8,h:0.3,fontSize:10,color:MUTED,fontFace:"Calibri"});
+    s.slideNumber={x:W-1.2,y:7.0,w:0.6,h:0.3,fontSize:10,color:MUTED}; };
+  const head=(s,t)=>s.addText(t,{x:X,y:0.4,w:CW,h:0.8,fontSize:28,bold:true,color:INK,fontFace:"Calibri",valign:"middle"});
+  // title slide
+  let s=pres.addSlide(); s.background={color:TEAL};
+  s.addShape(pres.ShapeType.rect,{x:0,y:6.9,w:W,h:0.6,fill:{color:"B97C06"},line:{color:"B97C06"}});
+  s.addText(`${c.code} · ${c.name}`,{x:X,y:1.4,w:CW,h:0.5,fontSize:18,color:"DFEEEA",fontFace:"Calibri"});
+  s.addText(`Lecture ${L.n}`,{x:X,y:2.0,w:CW,h:0.6,fontSize:22,color:"FBF0D9",bold:true,fontFace:"Calibri"});
+  s.addText(L.t,{x:X,y:2.7,w:CW,h:2.2,fontSize:44,bold:true,color:"FFFFFF",fontFace:"Calibri",valign:"top"});
+  s.addText("Noor E-Learning · MSA University · Pharmacy Year 2",{x:X,y:6.95,w:CW,h:0.5,fontSize:14,color:"FFFFFF",fontFace:"Calibri"});
+  // content slides
+  const secs=lectureBlocks(L.h);
+  secs.forEach((sec,si)=>{
+    const base=sec.title||(si===0?"Overview":"Key points");
+    let page=0, slide=null, y=TOP, bullets=[];
+    const open=()=>{ slide=pres.addSlide(); foot(slide); head(slide,base+(page++?" (cont.)":"")); y=TOP; };
+    const flush=()=>{ if(!bullets.length) return; const lines=bullets.reduce((a,b)=>a+Math.max(1,Math.ceil(runsLen(b.runs)/CPL)),0);
+      const h=lines*LINE+0.1, txt=[];
+      bullets.forEach((b,i)=>b.runs.forEach((r,j)=>txt.push({text:r.text,options:{...(r.options||{}),...(j===0?{bullet:b.num?{type:"number",numberStartAt:b.num}:{characterCode:"25CF",indent:22},paraSpaceBefore:i?7:0}:{}),breakLine:j===b.runs.length-1}})));
+      slide.addText(txt,{x:X,y,w:CW,h,fontSize:17,color:INK,fontFace:"Calibri",valign:"top",lineSpacingMultiple:1.05}); y+=h+0.12; bullets=[]; };
+    const room=hh=>{ const pending=bullets.reduce((a,b)=>a+Math.max(1,Math.ceil(runsLen(b.runs)/CPL)),0)*LINE+(bullets.length?0.22:0); return y+pending+hh<=BOTTOM; };
+    open();
+    for(const it of sec.items){
+      if(it.t==="b"){ const hh=Math.max(1,Math.ceil(runsLen(it.runs)/CPL))*LINE; if(!room(hh)||bullets.length>=9){flush();if(y>TOP+0.05)open();} bullets.push(it); }
+      else if(it.t==="pearl"||it.t==="formula"){
+        const lines=it.text.split("\n").reduce((a,l)=>a+Math.max(1,Math.ceil(l.length/(it.t==="formula"?85:CPL))),0), hh=lines*LINE+0.35;
+        if(!room(hh)){flush();open();} flush();
+        slide.addText(it.text,{x:X,y,w:CW,h:hh,fontSize:it.t==="formula"?15:17,fontFace:it.t==="formula"?"Consolas":"Calibri",color:it.t==="formula"?TEAL:"6B4700",
+          fill:{color:it.t==="formula"?"DFEEEA":"FBF0D9"},line:{color:it.t==="formula"?"DFEEEA":"B97C06",width:it.t==="pearl"?1.5:0.5},margin:10,valign:"middle",bold:it.t==="pearl"});
+        y+=hh+0.15;
+      } else if(it.t==="table"){
+        flush();
+        const rows=it.rows, hdr=rows[0]&&rows[0].every(x=>x.head)?rows[0]:null, body=hdr?rows.slice(1):rows;
+        const cols=Math.max(...rows.map(r=>r.length)), cpl=Math.floor(CW*14/cols);
+        const rh=r=>Math.max(...r.map(x=>x.text.split("\n").reduce((a,l)=>a+Math.max(1,Math.ceil(l.length/cpl)),0)))*0.24+0.1;
+        let chunk=[], ch=hdr?rh(hdr):0;
+        const whole=ch+body.reduce((a,r)=>a+rh(r),0);
+        if(y>TOP+0.05&&y+whole>BOTTOM&&TOP+whole<=BOTTOM) open();
+        const put=()=>{ if(!chunk.length) return; if(y>TOP+0.05&&y+ch>BOTTOM) open();
+          const data=(hdr?[hdr]:[]).concat(chunk).map(r=>{const cells=r.map(x=>({text:x.text,options:x.head?{bold:true,fill:{color:"DFEEEA"},color:TEAL}:{}}));while(cells.length<cols)cells.push({text:""});return cells});
+          slide.addTable(data,{x:X,y,w:CW,fontSize:13,fontFace:"Calibri",color:INK,border:{type:"solid",pt:0.75,color:"D6E0DD"},fill:{color:"FFFFFF"},valign:"top",margin:0.06,autoPage:false});
+          y+=ch+0.2; chunk=[]; ch=hdr?rh(hdr):0; };
+        for(const r of body){ const h=rh(r); if((y>TOP+0.05?y:TOP)+ch+h>BOTTOM&&chunk.length){ put(); open(); } chunk.push(r); ch+=h; }
+        if(y+ch>BOTTOM) open(); put();
+      }
+    }
+    flush();
+  });
+  // quiz slides
+  const qs=c.quiz.filter(q=>q.l===L.n);
+  qs.forEach((q,i)=>{
+    const sl=pres.addSlide(); foot(sl); head(sl,`Check yourself · Question ${i+1}`);
+    sl.addText(q.q,{x:X,y:TOP,w:CW,h:1.2,fontSize:22,bold:true,color:INK,fontFace:"Calibri",valign:"top"});
+    q.o.forEach((o,j)=>sl.addText([{text:"ABCD"[j]+"   ",options:{bold:true,color:hue}},{text:o}],{x:X,y:TOP+1.35+j*0.95,w:CW,h:0.8,fontSize:18,color:INK,fontFace:"Calibri",fill:{color:"FFFFFF"},line:{color:"D6E0DD",width:1},margin:12,valign:"middle"}));
+    sl.addNotes(`Answer: ${"ABCD"[q.a]}. ${q.o[q.a]}\n${q.e}`);
+  });
+  if(qs.length){
+    const sl=pres.addSlide(); foot(sl); head(sl,"Answer key");
+    sl.addText(qs.map((q,i)=>({text:`${i+1}.  ${"ABCD"[q.a]}  ${q.o[q.a]}`,options:{breakLine:true,paraSpaceAfter:6}})),{x:X,y:TOP,w:CW,h:BOTTOM-TOP,fontSize:qs.length>5?15:18,color:INK,fontFace:"Calibri",valign:"top"});
+  }
+  const blob=await cleanPptx(await pres.write({outputType:"arraybuffer"}));
+  return saveFile(`${c.code} L${L.n} ${safeName(L.t)}.pptx`,blob);
 }
 
 function pool(){const c=state.course;return state.filter==="all"?c.quiz:c.quiz.filter(q=>q.l===state.filter)}
