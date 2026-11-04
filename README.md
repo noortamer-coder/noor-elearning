@@ -25,5 +25,5 @@ Edit the `COURSES` array in `index.html`: add `{n, t, h}` to a course's `lecture
 
 ## Status / next steps (as of 4 Nov 2026)
 - Done: all 5 courses, 33 lectures, 744 quiz questions (shuffled, answers balanced A–D), PDF + spreadsheet question banks.
-- To do: detailed EN+AR explanations for Physiology (PHO221) lectures 3–6 (lectures 1–2 done).
+- Done: detailed EN+AR explanations for every lecture in all 5 courses (Physiology PHO221 lectures 3–6 added 4 Nov 2026).
 - Live links: https://noortamer-coder.github.io/noor-elearning/ and mirror https://raw.githack.com/noortamer-coder/noor-elearning/main/index.html
